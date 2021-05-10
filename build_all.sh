@@ -80,6 +80,7 @@ targets="\
 	RPi|RPi|arm|noobs \
 	RPi|RPi2|arm|noobs \
 	RPi|RPi4|arm|noobs \
+	L4T|Switch|aarch64|image \
 	"
 
 # set the number of total build jobs and initialize counter for current build job
