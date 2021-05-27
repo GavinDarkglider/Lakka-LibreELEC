@@ -26,7 +26,7 @@ PKG_MESON_OPTS_TARGET="-Ddri-drivers=${DRI_DRIVERS// /,} \
                        -Dshader-cache=true \
                        -Dshared-glapi=true \
                        -Dopengl=true \
-                       -Dgbm=true \
+                       -Dgbm=false \
                        -Degl=true \
                        -Dglvnd=false \
                        -Dasm=true \

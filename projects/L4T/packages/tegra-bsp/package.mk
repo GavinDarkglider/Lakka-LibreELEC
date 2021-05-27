@@ -25,7 +25,7 @@ else
   PKG_VERSION="32.3.1"
 fi
 PKG_ARCH="any"
-PKG_DEPENDS_HOST=""
+PKG_DEPENDS_HOST="libgbm"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_SITE="https://developer.nvidia.com/EMBEDDED/linux-tegra%20/"
 case "$DEVICE" in
@@ -95,6 +95,8 @@ build_install() {
     ln -sfn libv4l2.so.0 libv4l2.so
     ln -sfn libv4lconvert.so.0.0.999999 libv4lconvert.so.0
     ln -sfn libv4lconvert.so.0 libv4lconvert.so
+    ln -sfn libnvgbm.so libgbm.so.1
+    ln -sfn libgbm.so.1 libgbm.so
 
     cd libv4l/plugins/nv
     rm *
@@ -131,7 +133,11 @@ makeinstall_target() {
   cp libv4l2.so.0 libv4l2.so
   mv libv4lconvert.so.0.0.999999 libv4lconvert.so.0
   cp libv4lconvert.so.0 libv4lconvert.so
+  rm libgbm.so.1 libgbm.so
+  cp libnvgbm.so libgbm.so.1
+  cp libnvgbm.so libgbm.so
   cd $PWD
+
   if [ "$DEVICE"=="Switch" ]; then
     #Audio Fix Service
     cp -Pv $PKG_DIR/assets/alsa-fix.service $INSTALL/usr/lib/systemd/system/
