@@ -70,6 +70,11 @@ if [ "$PROJECT" = "RPi" ] && [ "$ARCH" = "arm" ]; then
  fi
 fi
 
+if [ "$DEVICE" = "Switch" ]; then
+   PKG_DEPENDS_TARGET+=" jetson-ffmpeg"
+   PKG_PATCH_DIRS+=" Switch"
+   PKG_FFMPEG_NVMPI="--enable-nvmpi"
+fi
 if target_has_feature neon; then
   PKG_FFMPEG_FPU="--enable-neon"
 else
@@ -127,7 +132,6 @@ configure_target() {
               --pkg-config="$TOOLCHAIN/bin/pkg-config" \
               --enable-optimizations \
               --disable-extra-warnings \
-              --disable-programs \
               --enable-avdevice \
               --enable-avcodec \
               --enable-avformat \
@@ -201,7 +205,8 @@ configure_target() {
               --enable-asm \
               --disable-altivec \
               $PKG_FFMPEG_FPU \
-              --disable-symver
+              --disable-symver \
+              $PKG_FFMPEG_NVMPI
 }
 
 post_makeinstall_target() {
