@@ -12,7 +12,7 @@ PKG_DEPENDS_TARGET="toolchain util-macros Python2:host xcb-proto libpthread-stub
 PKG_LONGDESC="X C-language Bindings library."
 PKG_BUILD_FLAGS="+pic"
 
-PKG_CONFIGURE_OPTS_TARGET="--enable-static \
+PKG_CONFIGURE_OPTS_TARGET="--disable-static \
                            --enable-shared \
                            --disable-screensaver \
                            --disable-xprint \

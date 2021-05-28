@@ -103,8 +103,8 @@ if [ ! $PROJECT == "L4T" ]; then
   fi
 fi
 if [ "$PROJECT" = "L4T" ]; then
-   RETROARCH_GL="$RETROARCH_GL --disable-egl --enable-opengl --enable-vulkan --enable-xinerama --disable-vulkan_display"
-   RETROARCH_GL=${RETROARCH_GL//--enable-opengles/--disable-gles}
+   RETROARCH_GL="$RETROARCH_GL --enable-egl --enable-opengl --disable-opengles --enable-vulkan --disable-vulkan_display"
+   #RETROARCH_GL=${RETROARCH_GL//--enable-opengles/--disable-opengles}
    RETROARCH_GL=${RETROARCH_GL//--enable-kms/--disable-kms}
    RETROARCH_GL=${RETROARCH_GL//--enable-wayland/--disable-wayland}
    RETROARCH_GL=${RETROARCH_GL//--disable-x11/--enable-x11}

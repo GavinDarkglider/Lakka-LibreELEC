@@ -10,7 +10,7 @@ PKG_URL="http://xorg.freedesktop.org/archive/individual/lib/$PKG_NAME-$PKG_VERSI
 PKG_DEPENDS_TARGET="toolchain util-macros libX11 libSM"
 PKG_LONGDESC="LibXt provides the X Toolkit Intrinsics, an abstract widget library upon which other toolkits are based."
 
-PKG_CONFIGURE_OPTS_TARGET="--enable-static \
+PKG_CONFIGURE_OPTS_TARGET="--disable-static \
                            --enable-shared \
                            --with-gnu-ld \
                            --enable-malloc0returnsnull"

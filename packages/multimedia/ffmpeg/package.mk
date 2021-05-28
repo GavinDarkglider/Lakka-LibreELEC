@@ -75,6 +75,7 @@ if [ "$DEVICE" = "Switch" ]; then
    PKG_PATCH_DIRS+=" Switch"
    PKG_FFMPEG_NVMPI="--enable-nvmpi"
 fi
+
 if target_has_feature neon; then
   PKG_FFMPEG_FPU="--enable-neon"
 else
@@ -120,7 +121,6 @@ configure_target() {
               --extra-cflags="$CFLAGS" \
               --extra-ldflags="$LDFLAGS" \
               --extra-libs="$PKG_FFMPEG_LIBS" \
-              --disable-static \
               --enable-shared \
               --enable-gpl \
               --disable-version3 \

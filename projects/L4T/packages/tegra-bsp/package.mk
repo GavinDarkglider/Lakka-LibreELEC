@@ -26,7 +26,7 @@ else
 fi
 PKG_ARCH="any"
 PKG_DEPENDS_HOST="libgbm"
-PKG_DEPENDS_TARGET="toolchain"
+PKG_DEPENDS_TARGET="toolchain libgbm"
 PKG_SITE="https://developer.nvidia.com/EMBEDDED/linux-tegra%20/"
 case "$DEVICE" in
   tx2|xavier|agx)
@@ -84,6 +84,7 @@ build_install() {
     cd usr/lib/
     ln -sfn libcuda.so.1.1 libcuda.so
     mv libdrm.so.2 libdrm_nvdc.so
+    ln -sfn libdrm_nvdc.so libdrm.so.2
     ln -sfn libnvbufsurface.so.1.0.0 libnvbufsurface.so
     ln -sfn libnvbufsurftransform.so.1.0.0 libnvbufsurftransform.so
     ln -sfn libnvbuf_utils.so.1.0.0 libnvbuf_utils.so
@@ -98,14 +99,24 @@ build_install() {
     ln -sfn libnvgbm.so libgbm.so.1
     ln -sfn libgbm.so.1 libgbm.so
 
-    cd libv4l/plugins/nv
-    rm *
-    ln -sfn ../../../libv4l2_nvvideocodec.so libv4l2_nvvideocodec.so
-    ln -sfn ../../../libv4l2_nvvidconv.so  libv4l2_nvvidconv.so
-    cd ../../../
+    mkdir -p aarch64-linux-gnu/libv4l/plugins/nv
+    cd aarch64-linux-gnu/libv4l/plugins/nv
+    ln -sfn ../../../../libv4l2_nvvideocodec.so libv4l2_nvvideocodec.so
+    ln -sfn ../../../../libv4l2_nvvidconv.so  libv4l2_nvvidconv.so
+    cd ../../../../
+
+    rm -r libv4l/
 
     #Fix Vulkan ICD
     sed -i 's:libGLX_nvidia.so.0:/usr/lib/libGLX_nvidia.so.0:g' nvidia_icd.json
+
+    #Fix glvnd config
+    sed -i 's:libEGL_nvidia.so.0:/usr/lib/libEGL_nvidia.so.0:g' nvidia.json
+    rm ../share/glvnd/egl_vendor.d/*
+    mv nvidia.json ../share/glvnd/egl_vendor.d/10_nvidia.json
+
+    #Fix EGL configs
+    sed -i 's:libnvidia-egl-wayland.so.1:/usr/lib/libnvidia-egl-wayland.so.1:g' ../share/egl/egl_external_platform.d/nvidia_wayland.json
 
     #More symlinking
 
@@ -136,6 +147,8 @@ makeinstall_target() {
   rm libgbm.so.1 libgbm.so
   cp libnvgbm.so libgbm.so.1
   cp libnvgbm.so libgbm.so
+  rm libdrm.so.2
+  cp libdrm_nvdc.so libdrm.so.2
   cd $PWD
 
   if [ "$DEVICE"=="Switch" ]; then
