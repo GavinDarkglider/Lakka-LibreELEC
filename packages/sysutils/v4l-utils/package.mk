@@ -14,8 +14,8 @@ PKG_DEPENDS_TARGET="toolchain alsa-lib systemd"
 PKG_LONGDESC="Linux V4L2 and DVB API utilities and v4l libraries (libv4l)."
 
 PKG_CONFIGURE_OPTS_TARGET="--without-jpeg \
-	--enable-static \
-	--disable-shared"
+	--disable-static \
+	--enable-shared"
 
 pre_configure_target() {
   # cec-ctl fails to build in subdirs

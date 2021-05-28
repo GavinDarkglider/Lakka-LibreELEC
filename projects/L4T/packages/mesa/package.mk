@@ -8,7 +8,7 @@ PKG_SHA256="b15dafec2b62f23b3c9eec190c3fe2ac9e66602473bcb971910882db6a8f1f36"
 PKG_LICENSE="OSS"
 PKG_SITE="http://www.mesa3d.org/"
 PKG_URL="https://github.com/mesa3d/mesa/archive/mesa-$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain Mako:host expat libgbm vulkan-loader"
+PKG_DEPENDS_TARGET="toolchain Mako:host expat"
 PKG_LONGDESC="Mesa is a 3-D graphics library with an API."
 PKG_TOOLCHAIN="meson"
 
@@ -28,7 +28,7 @@ PKG_MESON_OPTS_TARGET="-Ddri-drivers=${DRI_DRIVERS// /,} \
                        -Dopengl=true \
                        -Dgbm=false \
                        -Degl=true \
-                       -Dglvnd=false \
+                       -Dglvnd=true \
                        -Dasm=true \
                        -Dvalgrind=false \
                        -Dlibunwind=false \
@@ -43,6 +43,7 @@ fi
 
 if [ "$PROJECT" = "L4T" ]; then
 	PKG_MESON_OPTS_TARGET="${PKG_MESON_OPTS_TARGET//-Dglvnd=false/-Dglvnd=true}"
+	#PKG_MESON_OPTS_TARGET="${PKG_MESON_OPTS_TARGET//-Degl=true/-Degl=false}"
 fi
 
 if [ "$DISPLAYSERVER" = "x11" ]; then
@@ -50,8 +51,8 @@ if [ "$DISPLAYSERVER" = "x11" ]; then
   export X11_INCLUDES=
   PKG_MESON_OPTS_TARGET+=" -Dplatforms=x11,drm -Ddri3=true -Dglx=dri"
 elif [ "$DISPLAYSERVER" = "weston" ]; then
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET wayland,drm wayland-protocols"
-  PKG_MESON_OPTS_TARGET+=" -Dplatforms=wayland -Ddri3=false -Dglx=disabled"
+  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET wayland wayland-protocols"
+  PKG_MESON_OPTS_TARGET+=" -Dplatforms=wayland,drm -Ddri3=false -Dglx=disabled"
 elif [ "$DISTRO" = "Lakka" ]; then
   PKG_DEPENDS_TARGET+=" glproto dri2proto dri3proto presentproto xorgproto libXext libXdamage libXfixes libXxf86vm libxcb libX11 libxshmfence xrandr systemd openssl"
   export X11_INCLUDES=
@@ -93,3 +94,10 @@ if [ ! "$OPENGLES" = "no" ]; then
 else
   PKG_MESON_OPTS_TARGET+=" -Dgles1=false -Dgles2=false"
 fi
+
+
+#post_makeinstall_target() {
+#  if [ "$PROJECT" = "L4T" ]; then
+#    rm ${INSTALL}/usr/lib/libEGL.so*
+#  fi
+#}

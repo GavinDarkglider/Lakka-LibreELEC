@@ -21,7 +21,7 @@
 PKG_NAME="jetson-ffmpeg"
 PKG_VERSION="1"
 PKG_ARCH="any"
-PKG_DEPENDS_TARGET="toolchain cmake:host gcc-linaro-aarch64-linux-gnu:host v4l-utils tegra-bsp"
+PKG_DEPENDS_TARGET="toolchain cmake:host gcc-linaro-aarch64-linux-gnu:host tegra-bsp"
 PKG_SITE="https://github.com/jocover/jetson-ffmpeg/"
 PKG_URL="https://github.com/cgutman/jetson-ffmpeg/archive/refs/heads/nvmpi_optional.tar.gz"
 
