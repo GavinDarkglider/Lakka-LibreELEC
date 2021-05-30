@@ -25,8 +25,8 @@ else
   PKG_VERSION="32.3.1"
 fi
 PKG_ARCH="any"
-PKG_DEPENDS_HOST="libgbm"
-PKG_DEPENDS_TARGET="toolchain libgbm"
+PKG_DEPENDS_HOST="libgbm libglvnd mesa"
+PKG_DEPENDS_TARGET="libgbm libglvnd mesa"
 PKG_SITE="https://developer.nvidia.com/EMBEDDED/linux-tegra%20/"
 case "$DEVICE" in
   tx2|xavier|agx)
@@ -44,6 +44,19 @@ PKG_AUTORECONF="no"
 
 build_install() {
   if [ ! -d $PKG_BUILD/install ]; then
+    #get and extract multimedia api stuff
+    wget https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.3.1-20191209225816_arm64.deb
+    mkdir multimedia_api
+    cd multimedia_api
+    ar x ../nvidia-l4t-jetson-multimedia-api_32.3.1-20191209225816_arm64.deb
+    mkdir data
+    cd data
+    tar xf ../data.tar.bz2
+    cd ..
+    rm *.tar* debian-binary
+    mv data/* ./
+    rmdir data
+
     mkdir -p $PKG_BUILD/install
     mkdir -p $INSTALL
     cd $PKG_BUILD/install
@@ -137,6 +150,10 @@ makeinstall_target() {
   build_install
   cp -PRv install/* $INSTALL/
   cp -PRv install/usr/lib/* ${TOOLCHAIN}/aarch64-libreelec-linux-gnueabi/sysroot/usr/lib/
+  #install multimedia_api_headers
+  cp -PRv multimedia_api/usr/src/jetson_multimedia_api/include/* ${SYSROOT_PREFIX}/usr/include
+  mkdir -p ${SYSROOT_PREFIX}/usr/src/jetson_multimedia_api/samples/common
+  cp -PRv multimedia_api/usr/src/jetson_multimedia_api/samples/common/*  ${SYSROOT_PREFIX}/usr/src/jetson_multimedia_api/samples/common 
   PWD=$(pwd)
   cd ${TOOLCHAIN}/aarch64-libreelec-linux-gnueabi/sysroot/usr/lib/
   rm libv4lconvert.so.0 libv4lconvert.so libv4l2.so.0 libv4l2.so

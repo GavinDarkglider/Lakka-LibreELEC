@@ -175,3 +175,4 @@ post_makeinstall_init() {
   mkdir -p $INSTALL/etc
     cp $PKG_DIR/config/nsswitch-init.conf $INSTALL/etc/nsswitch.conf
 }
+

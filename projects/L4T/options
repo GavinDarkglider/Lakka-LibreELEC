@@ -31,7 +31,8 @@
 ################################################################################
 
   # Project CFLAGS
-    PROJECT_CFLAGS=""
+    PROJECT_CFLAGS="-O0"
+    PKG_BUILD_FLAGS+="-strip"
 
   # SquashFS compression method (gzip / lzo / xz)
     SQUASHFS_COMPRESSION="lzo"
@@ -100,6 +101,7 @@
   # override some playlist core assignation
     RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//parallel_n64/mupen64plus}"
     LIBRETRO_CORES="${LIBRETRO_CORES// flycast /}"
+    LIBRETRO_CORES="${LIBRETRO_CORES// desmume /}"
             
     if [ "$DISTRO" = "Lakka" ]; then
       DRIVER_ADDONS=""

@@ -30,6 +30,7 @@ PKG_SECTION="libretro"
 PKG_SHORTDESC="Reference frontend for the libretro API."
 PKG_LONGDESC="RetroArch is the reference frontend for the libretro API. Popular examples of implementations for this API includes videogame system emulators and game engines, but also more generalized 3D programs. These programs are instantiated as dynamic libraries. We refer to these as libretro cores."
 
+PKG_BUILD_FLAGS="-strip"
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
@@ -157,7 +158,7 @@ pre_make_target() {
 
 make_target() {
   if [ "$DEVICE" == "Switch" ]; then
-    make V=1 HAVE_LAKKA=1 HAVE_LAKKA_SWITCH=1 HAVE_ZARCH=0 HAVE_BLUETOOTH=1
+    make V=1 DEBUG=1 HAVE_LAKKA=1 HAVE_LAKKA_SWITCH=1 HAVE_ZARCH=0 HAVE_BLUETOOTH=1
   else
     make V=1 HAVE_LAKKA=1 HAVE_ZARCH=0 HAVE_BLUETOOTH=1
   fi
