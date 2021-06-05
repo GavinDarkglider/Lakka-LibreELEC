@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="tegra-bsp"
-if [ ! $DEVICE == "Switch" ]; then
+if [ ! "$DEVICE" = "Switch" ]; then
   PKG_VERSION="32.4.4"
 else
   PKG_VERSION="32.3.1"
@@ -167,13 +167,12 @@ makeinstall_target() {
   rm libdrm.so.2
   cp libdrm_nvdc.so libdrm.so.2
   cd $PWD
-
-  if [ "$DEVICE"=="Switch" ]; then
+  if [ "$DEVICE" = "Switch" ]; then
     #Audio Fix Service
     cp -Pv $PKG_DIR/assets/alsa-fix.service $INSTALL/usr/lib/systemd/system/
     mkdir -p $INSTALL/usr/lib/systemd/system/multi-user.target.wants
     ln -s $INSTALL/usr/lib/systemd/system/alsa-fix.service $INSTALL/usr/lib/systemd/system/multi-user.target.wants/alsa-fix.service
-    if [ $DISPLAYSERVER="x11" ]; then
+    if [ "$DISPLAYSERVER" = "x11" ]; then
       cp -P $PKG_DIR/assets/xorg.conf $INSTALL/etc/X11/
       cat $PKG_DIR/assets/10-monitor.conf >> $INSTALL/etc/X11/xorg.conf
       cat $PKG_DIR/assets/50-joysticks.conf >> $INSTALL/etc/X11/xorg.conf

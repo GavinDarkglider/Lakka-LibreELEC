@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="pcsx_rearmed"
-PKG_VERSION="cf71346"
+PKG_VERSION="31d1b18"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/pcsx_rearmed"
@@ -45,17 +45,21 @@ fi
 
 make_target() {
   cd $PKG_BUILD
-  if [ "$ARCH" == "aarch64" ]; then
-    make -f Makefile.libretro platform=unix
-  elif [[ "$TARGET_FPU" =~ "neon" ]]; then
-    if [ "$DEVICE" == "OdroidGoAdvance" ]; then
-      sed -i "s|armv8-a|armv8-a+crc|" Makefile.libretro
-      make -f Makefile.libretro HAVE_NEON=1 USE_DYNAREC=1 DYNAREC=ari64 ARCH=arm BUILTIN_GPU=neon platform=classic_armv8_a35
+  if [ "$ARCH" = "aarch64" ]; then
+    if [ "$DEVICE" = "Switch" ]; then
+      make -f Makefile.libretro platform=arm64 BUILTIN_GPU=unai DYNAREC=0
     else
-      make -f Makefile.libretro HAVE_NEON=1 USE_DYNAREC=1 DYNAREC=ari64 ARCH=arm BUILTIN_GPU=neon
+      make -f Makefile.libretro platform=unix
     fi
-  elif [ "$ARCH" == "arm" ]; then
-    make -f Makefile.libretro HAVE_NEON=0 USE_DYNAREC=1 DYNAREC=ari64 ARCH=arm BUILTIN_GPU=unai
+  elif [[ "$TARGET_FPU" =~ "neon" ]]; then
+    if [ "$DEVICE" = "OdroidGoAdvance" ]; then
+      sed -i "s|armv8-a|armv8-a+crc|" Makefile.libretro
+      make -f Makefile.libretro HAVE_NEON=1 DYNAREC=ari64 ARCH=arm BUILTIN_GPU=neon platform=classic_armv8_a35
+    else
+      make -f Makefile.libretro HAVE_NEON=1 DYNAREC=ari64 ARCH=arm BUILTIN_GPU=neon
+    fi
+  elif [ "$ARCH" = "arm" ]; then
+    make -f Makefile.libretro HAVE_NEON=0 DYNAREC=ari64 ARCH=arm BUILTIN_GPU=unai
   else
     make -f Makefile.libretro
   fi
