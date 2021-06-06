@@ -31,8 +31,7 @@
 ################################################################################
 
   # Project CFLAGS
-    PROJECT_CFLAGS="-O0"
-    PKG_BUILD_FLAGS+="-strip"
+    PROJECT_CFLAGS="-O3"
 
   # SquashFS compression method (gzip / lzo / xz)
     SQUASHFS_COMPRESSION="lzo"
