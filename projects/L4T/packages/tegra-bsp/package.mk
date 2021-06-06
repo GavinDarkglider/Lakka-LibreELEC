@@ -111,6 +111,7 @@ build_install() {
     ln -sfn libv4lconvert.so.0 libv4lconvert.so
     ln -sfn libnvgbm.so libgbm.so.1
     ln -sfn libgbm.so.1 libgbm.so
+    ln -sfn libnvidia-egl-wayland.so libnvidia-egl-wayland.so.1
 
     mkdir -p aarch64-linux-gnu/libv4l/plugins/nv
     cd aarch64-linux-gnu/libv4l/plugins/nv
@@ -164,6 +165,7 @@ makeinstall_target() {
   rm libgbm.so.1 libgbm.so
   cp libnvgbm.so libgbm.so.1
   cp libnvgbm.so libgbm.so
+  cp libnvidia-egl-wayland.so libvnidia-egl-wayland.so.1
   rm libdrm.so.2
   cp libdrm_nvdc.so libdrm.so.2
   cd $PWD
