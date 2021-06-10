@@ -1,0 +1,60 @@
+diff -Naur ffmpeg-4.3.2-Matrix-19.1/libavcodec/allcodecs.c ffmpeg-4.3.2-Matrix-19.1-2/libavcodec/allcodecs.c
+--- ffmpeg-4.3.2-Matrix-19.1/libavcodec/allcodecs.c	2021-06-07 15:51:34.971238671 -0700
++++ ffmpeg-4.3.2-Matrix-19.1-2/libavcodec/allcodecs.c	2021-06-07 15:54:49.509472689 -0700
+@@ -925,10 +925,32 @@
+ }
+ 
+ AVCodec *avcodec_find_decoder(enum AVCodecID id)
+-{
+-    return find_codec(id, av_codec_is_decoder);
++ {
++    switch (id)
++    {
++       case AV_CODEC_ID_H264: //h264
++          return avcodec_find_decoder_by_name("h264_nvmpi");
++          break;
++       case AV_CODEC_ID_HEVC: //hevc
++           return avcodec_find_decoder_by_name("hevc_nvmpi");
++           break;
++       case AV_CODEC_ID_VP8: //vp8
++           return avcodec_find_decoder_by_name("vp8_nvmpi");
++           break;
++       case AV_CODEC_ID_VP9: //vp9
++           return avcodec_find_decoder_by_name("vp9_nvmpi");
++           break;
++       case AV_CODEC_ID_MPEG4: //MPEG4
++           return avcodec_find_decoder_by_name("mpeg4_nvmpi");
++           break;
++       case AV_CODEC_ID_MPEG2VIDEO: //MPEG2
++           return avcodec_find_decoder_by_name("mpeg2_nvmpi");
++           break;
++       default: // everything else
++           return find_codec(id, av_codec_is_decoder);
++          break;
++   }
+ }
+-
+ static AVCodec *find_codec_by_name(const char *name, int (*x)(const AVCodec *))
+ {
+     void *i = 0;
+@@ -954,5 +976,19 @@
+ 
+ AVCodec *avcodec_find_decoder_by_name(const char *name)
+ {
+-    return find_codec_by_name(name, av_codec_is_decoder);
++  if(name == "h264") { //h264
++      return avcodec_find_decoder_by_name("h264_nvmpi");
++  } else if(name == "hevc") { //hevc
++      return avcodec_find_decoder_by_name("hevc_nvmpi");
++  } else if(name == "vp8") { //vp8
++      return avcodec_find_decoder_by_name("vp8_nvmpi");
++  } else if(name == "vp9") { //vp9
++      return avcodec_find_decoder_by_name("vp9_nvmpi");
++  } else if(name == "mpeg4") { //MPEG4
++      return avcodec_find_decoder_by_name("mpeg4_nvmpi");
++  } else if(name == "mpeg2video") { //MPEG2
++      return avcodec_find_decoder_by_name("mpeg2_nvmpi");
++  } else { // everything else
++      return find_codec_by_name(name, av_codec_is_decoder);
++  }
+ }

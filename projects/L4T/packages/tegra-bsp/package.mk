@@ -26,7 +26,7 @@ else
 fi
 PKG_ARCH="any"
 PKG_DEPENDS_HOST="libgbm libglvnd mesa"
-PKG_DEPENDS_TARGET="libgbm libglvnd mesa"
+PKG_DEPENDS_TARGET="libgbm libglvnd mesa xauth"
 PKG_SITE="https://developer.nvidia.com/EMBEDDED/linux-tegra%20/"
 case "$DEVICE" in
   tx2|xavier|agx)

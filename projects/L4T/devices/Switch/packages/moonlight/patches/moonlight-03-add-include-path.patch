@@ -1,0 +1,11 @@
+diff -Naur moonlight-20d2d77/Makefile moonlight-20d2d77-2/Makefile
+--- moonlight-20d2d77/Makefile	2021-06-08 01:12:03.005555855 +0000
++++ moonlight-20d2d77-2/Makefile	2021-06-08 01:12:46.552999766 +0000
+@@ -193,6 +193,7 @@
+ 	-Ithird_party/moonlight-common-c/src \
+ 	-Ithird_party/moonlight-common-c/enet/include \
+ 	-Ithird_party/nanogui/include \
++        -Ithird_party/nanogui/include/nanogui \
+ 	-Ithird_party/nanogui/ext/nanovg/src \
+ 	-Ithird_party/json/single_include/nlohmann
+ 

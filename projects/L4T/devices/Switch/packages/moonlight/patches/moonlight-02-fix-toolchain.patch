@@ -1,0 +1,12 @@
+diff -Naur moonlight-20d2d77/Makefile moonlight-20d2d77-2/Makefile
+--- moonlight-20d2d77/Makefile	2021-06-08 00:49:23.822016273 +0000
++++ moonlight-20d2d77-2/Makefile	2021-06-08 00:50:02.183098195 +0000
+@@ -54,7 +54,7 @@
+ 	fpic += -mmacosx-version-min=10.12
+ # Lakka Switch
+ else ifeq ($(platform), lakka-switch)
+-   TOOLCHAIN := /home/rock88/Documents/Lakka-LibreELEC/build.Lakka-L4T.aarch64-2.2-devel/toolchain
++   #TOOLCHAIN := /home/rock88/Documents/Lakka-LibreELEC/build.Lakka-L4T.aarch64-2.2-devel/toolchain
+    CC = $(TOOLCHAIN)/bin/aarch64-libreelec-linux-gnueabi-gcc
+    CXX = $(TOOLCHAIN)/bin/aarch64-libreelec-linux-gnueabi-c++
+    TARGET := $(TARGET_NAME)_libretro.so

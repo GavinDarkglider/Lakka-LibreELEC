@@ -1,6 +1,6 @@
-diff -Naur ffmpeg-4.0.4-Leia-18.4/configure ffmpeg-4.0.4-Leia-18.4-new/configure
---- ffmpeg-4.0.4-Leia-18.4/configure	2021-05-24 20:57:40.702359586 -0700
-+++ ffmpeg-4.0.4-Leia-18.4-new/configure	2021-05-25 00:52:02.695261156 -0700
+diff -Naur ffmpeg-4.0.4-Leia-18.4/configure ffmpeg-4.0.4-Leia-18.4-2/configure
+--- ffmpeg-4.0.4-Leia-18.4/configure	2021-06-09 15:11:11.531186112 -0700
++++ ffmpeg-4.0.4-Leia-18.4-2/configure	2021-06-10 13:19:32.034991974 -0700
 @@ -328,6 +328,7 @@
    --disable-vaapi          disable Video Acceleration API (mainly Unix/Intel) code [autodetect]
    --disable-vdpau          disable Nvidia Video Decode and Presentation API for Unix code [autodetect]
@@ -86,9 +86,9 @@ diff -Naur ffmpeg-4.0.4-Leia-18.4/configure ffmpeg-4.0.4-Leia-18.4-new/configure
  
  if enabled gcrypt; then
      GCRYPT_CONFIG="${cross_prefix}libgcrypt-config"
-diff -Naur ffmpeg-4.0.4-Leia-18.4/configure.orig ffmpeg-4.0.4-Leia-18.4-new/configure.orig
---- ffmpeg-4.0.4-Leia-18.4/configure.orig	2021-05-24 20:57:40.702359586 -0700
-+++ ffmpeg-4.0.4-Leia-18.4-new/configure.orig	1969-12-31 16:00:00.000000000 -0800
+diff -Naur ffmpeg-4.0.4-Leia-18.4/configure.orig ffmpeg-4.0.4-Leia-18.4-2/configure.orig
+--- ffmpeg-4.0.4-Leia-18.4/configure.orig	2021-06-09 15:11:11.531186112 -0700
++++ ffmpeg-4.0.4-Leia-18.4-2/configure.orig	1969-12-31 16:00:00.000000000 -0800
 @@ -1,7295 +0,0 @@
 -#!/bin/sh
 -#
@@ -7385,9 +7385,9 @@ diff -Naur ffmpeg-4.0.4-Leia-18.4/configure.orig ffmpeg-4.0.4-Leia-18.4-new/conf
 -done
 -
 -cp_if_changed $TMPH ffbuild/config.sh
-diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/allcodecs.c ffmpeg-4.0.4-Leia-18.4-new/libavcodec/allcodecs.c
---- ffmpeg-4.0.4-Leia-18.4/libavcodec/allcodecs.c	2021-05-24 20:57:40.752356595 -0700
-+++ ffmpeg-4.0.4-Leia-18.4-new/libavcodec/allcodecs.c	2021-05-25 00:58:02.960598741 -0700
+diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/allcodecs.c ffmpeg-4.0.4-Leia-18.4-2/libavcodec/allcodecs.c
+--- ffmpeg-4.0.4-Leia-18.4/libavcodec/allcodecs.c	2021-06-09 15:11:11.567850545 -0700
++++ ffmpeg-4.0.4-Leia-18.4-2/libavcodec/allcodecs.c	2021-06-10 13:16:30.192931556 -0700
 @@ -140,11 +140,15 @@
  extern AVCodec ff_h264_mmal_decoder;
  extern AVCodec ff_h264_qsv_decoder;
@@ -7427,62 +7427,9 @@ diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/allcodecs.c ffmpeg-4.0.4-Leia-18.4-
  extern AVCodec ff_vp9_mediacodec_decoder;
  extern AVCodec ff_vp9_vaapi_encoder;
  
-@@ -862,7 +870,30 @@
- 
- AVCodec *avcodec_find_decoder(enum AVCodecID id)
- {
--    return find_codec(id, av_codec_is_decoder);
-+   switch (id)
-+   {
-+       case AV_CODEC_ID_H264: //h264
-+           return avcodec_find_decoder_by_name("h264_nvmpi");
-+           break;
-+       case AV_CODEC_ID_HEVC: //hevc
-+           return avcodec_find_decoder_by_name("hevc_nvmpi");
-+           break;
-+       case AV_CODEC_ID_VP8: //vp8
-+           return avcodec_find_decoder_by_name("vp8_nvmpi");
-+           break;
-+       case AV_CODEC_ID_VP9: //vp9
-+           return avcodec_find_decoder_by_name("vp9_nvmpi");
-+           break;
-+       case AV_CODEC_ID_MPEG4: //MPEG4
-+           return avcodec_find_decoder_by_name("mpeg4_nvmpi");
-+           break;
-+       case AV_CODEC_ID_MPEG2VIDEO: //MPEG2
-+           return avcodec_find_decoder_by_name("mpeg2_nvmpi");
-+           break;
-+       default: // everything else
-+           return find_codec(id, av_codec_is_decoder);
-+           break;
-+   }
- }
- 
- static AVCodec *find_codec_by_name(const char *name, int (*x)(const AVCodec *))
-@@ -890,5 +921,19 @@
- 
- AVCodec *avcodec_find_decoder_by_name(const char *name)
- {
--    return find_codec_by_name(name, av_codec_is_decoder);
-+  if(name == "h264") { //h264
-+      return avcodec_find_decoder_by_name("h264_nvmpi");
-+  } else if(name == "hevc") { //hevc
-+      return avcodec_find_decoder_by_name("hevc_nvmpi");
-+  } else if(name == "vp8") { //vp8
-+      return avcodec_find_decoder_by_name("vp8_nvmpi");
-+  } else if(name == "vp9") { //vp9
-+      return avcodec_find_decoder_by_name("vp9_nvmpi");
-+  } else if(name == "mpeg4") { //MPEG4
-+      return avcodec_find_decoder_by_name("mpeg4_nvmpi");
-+  } else if(name == "mpeg2video") { //MPEG2
-+      return avcodec_find_decoder_by_name("mpeg2_nvmpi");
-+  } else { // everything else
-+      return find_codec_by_name(name, av_codec_is_decoder);
-+  }
- }
-diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/allcodecs.c.orig ffmpeg-4.0.4-Leia-18.4-new/libavcodec/allcodecs.c.orig
---- ffmpeg-4.0.4-Leia-18.4/libavcodec/allcodecs.c.orig	2021-05-24 20:57:40.715692122 -0700
-+++ ffmpeg-4.0.4-Leia-18.4-new/libavcodec/allcodecs.c.orig	2021-05-25 00:25:47.395103655 -0700
+diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/allcodecs.c.orig ffmpeg-4.0.4-Leia-18.4-2/libavcodec/allcodecs.c.orig
+--- ffmpeg-4.0.4-Leia-18.4/libavcodec/allcodecs.c.orig	2021-06-09 15:11:11.561184285 -0700
++++ ffmpeg-4.0.4-Leia-18.4-2/libavcodec/allcodecs.c.orig	2021-06-10 13:15:35.316312212 -0700
 @@ -668,6 +668,7 @@
  extern AVCodec ff_libcelt_decoder;
  extern AVCodec ff_libcodec2_encoder;
@@ -7491,9 +7438,9 @@ diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/allcodecs.c.orig ffmpeg-4.0.4-Leia-
  extern AVCodec ff_libfdk_aac_encoder;
  extern AVCodec ff_libfdk_aac_decoder;
  extern AVCodec ff_libgsm_encoder;
-diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/Makefile ffmpeg-4.0.4-Leia-18.4-new/libavcodec/Makefile
---- ffmpeg-4.0.4-Leia-18.4/libavcodec/Makefile	2021-05-24 20:57:40.752356595 -0700
-+++ ffmpeg-4.0.4-Leia-18.4-new/libavcodec/Makefile	2021-05-25 00:45:54.620382015 -0700
+diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/Makefile ffmpeg-4.0.4-Leia-18.4-2/libavcodec/Makefile
+--- ffmpeg-4.0.4-Leia-18.4/libavcodec/Makefile	2021-06-09 15:11:11.581183068 -0700
++++ ffmpeg-4.0.4-Leia-18.4-2/libavcodec/Makefile	2021-06-10 13:16:30.192931556 -0700
 @@ -347,6 +347,8 @@
  OBJS-$(CONFIG_H264_NVENC_ENCODER)      += nvenc_h264.o
  OBJS-$(CONFIG_NVENC_ENCODER)           += nvenc_h264.o
@@ -7542,9 +7489,9 @@ diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/Makefile ffmpeg-4.0.4-Leia-18.4-new
  OBJS-$(CONFIG_VP9_MEDIACODEC_DECODER)  += mediacodecdec.o
  OBJS-$(CONFIG_VP9_RKMPP_DECODER)       += rkmppdec.o
  OBJS-$(CONFIG_VP9_VAAPI_ENCODER)       += vaapi_encode_vp9.o
-diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/Makefile.orig ffmpeg-4.0.4-Leia-18.4-new/libavcodec/Makefile.orig
---- ffmpeg-4.0.4-Leia-18.4/libavcodec/Makefile.orig	2021-05-24 20:57:40.715692122 -0700
-+++ ffmpeg-4.0.4-Leia-18.4-new/libavcodec/Makefile.orig	2021-05-25 00:25:47.708418520 -0700
+diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/Makefile.orig ffmpeg-4.0.4-Leia-18.4-2/libavcodec/Makefile.orig
+--- ffmpeg-4.0.4-Leia-18.4/libavcodec/Makefile.orig	2021-06-09 15:11:11.557851155 -0700
++++ ffmpeg-4.0.4-Leia-18.4-2/libavcodec/Makefile.orig	2021-06-10 13:15:35.332977852 -0700
 @@ -944,6 +944,7 @@
  OBJS-$(CONFIG_LIBCELT_DECODER)            += libcelt_dec.o
  OBJS-$(CONFIG_LIBCODEC2_DECODER)          += libcodec2.o codec2utils.o
@@ -7553,10 +7500,10 @@ diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/Makefile.orig ffmpeg-4.0.4-Leia-18.
  OBJS-$(CONFIG_LIBFDK_AAC_DECODER)         += libfdk-aacdec.o
  OBJS-$(CONFIG_LIBFDK_AAC_ENCODER)         += libfdk-aacenc.o
  OBJS-$(CONFIG_LIBGSM_DECODER)             += libgsmdec.o
-diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/nvmpi_dec.c ffmpeg-4.0.4-Leia-18.4-new/libavcodec/nvmpi_dec.c
+diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/nvmpi_dec.c ffmpeg-4.0.4-Leia-18.4-2/libavcodec/nvmpi_dec.c
 --- ffmpeg-4.0.4-Leia-18.4/libavcodec/nvmpi_dec.c	1969-12-31 16:00:00.000000000 -0800
-+++ ffmpeg-4.0.4-Leia-18.4-new/libavcodec/nvmpi_dec.c	2021-05-25 00:54:27.076713660 -0700
-@@ -0,0 +1,169 @@
++++ ffmpeg-4.0.4-Leia-18.4-2/libavcodec/nvmpi_dec.c	2021-06-10 13:16:30.192931556 -0700
+@@ -0,0 +1,171 @@
 +#include <stdio.h>
 +#include <stdlib.h>
 +#include <sys/time.h>
@@ -7608,7 +7555,7 @@ diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/nvmpi_dec.c ffmpeg-4.0.4-Leia-18.4-
 +	}
 +
 +	//Workaround for default pix_fmt not being set, so check if it isnt set and set it,
-+    //or if it is set, but isnt set to something we can work with.
++   //or if it is set, but isnt set to something we can work with.
 +
 +	if(avctx->pix_fmt ==AV_PIX_FMT_NONE){
 +		 avctx->pix_fmt=AV_PIX_FMT_YUV420P;
@@ -7626,6 +7573,8 @@ diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/nvmpi_dec.c ffmpeg-4.0.4-Leia-18.4-
 +   return 0;
 +
 +}
++
++
 +
 +static int nvmpi_close(AVCodecContext *avctx){
 +
@@ -7657,7 +7606,6 @@ diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/nvmpi_dec.c ffmpeg-4.0.4-Leia-18.4-
 +
 +	if(res<0)
 +		return avpkt->size;
-+
 +
 +	if (ff_get_buffer(avctx, frame, 0) < 0) {
 +		return AVERROR(ENOMEM);
@@ -7725,10 +7673,11 @@ diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/nvmpi_dec.c ffmpeg-4.0.4-Leia-18.4-
 +NVMPI_DEC(mpeg2, AV_CODEC_ID_MPEG2VIDEO,NULL);
 +NVMPI_DEC(mpeg4, AV_CODEC_ID_MPEG4,NULL);
 +NVMPI_DEC(vp9,  AV_CODEC_ID_VP9,NULL);
-+NVMPI_DEC(vp8,  AV_CODEC_ID_VP8,NULL);
-diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/nvmpi_enc.c ffmpeg-4.0.4-Leia-18.4-new/libavcodec/nvmpi_enc.c
++NVMPI_DEC(vp8, AV_CODEC_ID_VP8,NULL);
++
+diff -Naur ffmpeg-4.0.4-Leia-18.4/libavcodec/nvmpi_enc.c ffmpeg-4.0.4-Leia-18.4-2/libavcodec/nvmpi_enc.c
 --- ffmpeg-4.0.4-Leia-18.4/libavcodec/nvmpi_enc.c	1969-12-31 16:00:00.000000000 -0800
-+++ ffmpeg-4.0.4-Leia-18.4-new/libavcodec/nvmpi_enc.c	2021-05-25 00:45:55.540327566 -0700
++++ ffmpeg-4.0.4-Leia-18.4-2/libavcodec/nvmpi_enc.c	2021-06-10 13:16:30.192931556 -0700
 @@ -0,0 +1,272 @@
 +#include <nvmpi.h>
 +#include "avcodec.h"

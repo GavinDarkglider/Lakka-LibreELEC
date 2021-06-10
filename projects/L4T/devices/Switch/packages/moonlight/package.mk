@@ -18,40 +18,25 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="L4T"
-PKG_VERSION=""
-PKG_REV="1"
+PKG_NAME="moonlight"
+PKG_VERSION="20d2d77"
 PKG_ARCH="any"
-PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/lakkatv/Lakka"
-PKG_URL=""
-PKG_DEPENDS_TARGET="freetype libdrm pixman $OPENGL libepoxy glu retroarch $LIBRETRO_CORES alsa-plugins alsa-ucm-conf libdrm libXext libXdamage libXfixes libXxf86vm libxcb libX11 libXrandr tegra-bsp"
-PKG_PRIORITY="optional"
-PKG_SECTION="virtual"
-PKG_SHORTDESC="Lakka metapackage for L4T based systems"
-PKG_LONGDESC=""
-
-if [ "$DEVICE" == "Switch" ]; then
-  PKG_DEPENDS_TARGET+=" joycond mergerfs rewritefs switch-cpu-profile switch-gpu-profile wayland xdotool strace gdb"
-fi
+PKG_LICENSE="GPLv2"
+PKG_SITE="https://github.com/rock88/moonlight-libretro"
+PKG_URL="$PKG_SITE.git"
+PKG_DEPENDS_TARGET="toolchain ffmpeg opus"
+PKG_SECTION="libretro"
+PKG_SHORTDESC="Moonlight-libretro is a port of Moonlight Game Streaming Project for RetroArch platform."
+PKG_LONGDESC="Moonlight-libretro is a port of Moonlight Game Streaming Project for RetroArch platform."
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
-post_install() {
-  if [ "$DEVICE" == "Switch" ]; then
-    enable_service xorg-configure-switch.service
-    enable_service var-bluetoothconfig.mount
-    enable_service pair-joycon.service
-
-    mkdir -p $INSTALL/usr/bin
-
-    cp -P $PKG_DIR/scripts/pair-joycon.sh $INSTALL/usr/bin
-
-    mkdir -p $INSTALL/etc/profile.d
-    cp -P $PKG_DIR/scripts/dock-hotplug $INSTALL/usr/bin
-    mkdir -p $INSTALL/usr/lib/udev/rules.d/
-    cp -P $PKG_DIR/assets/93-dock_hotplug.rules $INSTALL/usr/lib/udev/rules.d/
-  fi
+make_target() {
+  make platform=lakka-switch TOOLCHAIN=${TOOLCHAIN}
 }
 
+makeinstall_target() {
+  mkdir -p $INSTALL/usr/lib/libretro
+  cp moonlight_libretro.so $INSTALL/usr/lib/libretro/
+}
