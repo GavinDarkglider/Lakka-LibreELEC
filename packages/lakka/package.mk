@@ -21,6 +21,10 @@ if [ "${PROJECT}" = "Generic" ]; then
   PKG_DEPENDS_TARGET+=" wii-u-gc-adapter"
 fi
 
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_DEPENDS_TARGET+=" L4T"
+fi
+
 if [ "${PROJECT}" = "RPi" ]; then
   if [ "${DEVICE}" != "GPICase" ] ; then
     PKG_DEPENDS_TARGET+=" wii-u-gc-adapter wiringPi mk_arcade_joystick_rpi"
