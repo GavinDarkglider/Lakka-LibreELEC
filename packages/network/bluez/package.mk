@@ -34,7 +34,7 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-dependency-tracking \
                            --disable-experimental \
                            --enable-sixaxis \
                            --with-gnu-ld \
-                           ${BLUEZ_CONFIG} \
+                           ${BLUEZ_CONFIG}"
 
 # bluez had the good idea to use ':' in storage filenames, fat32 doesn't like that
 if [ "$DEVICE" = "Switch" ]; then
@@ -59,14 +59,14 @@ post_makeinstall_target() {
   rm -rf ${INSTALL}/usr/share/dbus-1
 
   mkdir -p ${INSTALL}/etc/bluetooth
-    cp src/main.conf ${INSTALL}/etc/bluetooth
-    sed -i ${INSTALL}/etc/bluetooth/main.conf \
-        -e "s|^#\[Policy\]|\[Policy\]|g" \
-        -e "s|^#AutoEnable.*|AutoEnable=true|g" \
-        -e "s|^#JustWorksRepairing.*|JustWorksRepairing=always|g"
+  cp src/main.conf ${INSTALL}/etc/bluetooth
+  sed -i ${INSTALL}/etc/bluetooth/main.conf \
+      -e "s|^#\[Policy\]|\[Policy\]|g" \
+      -e "s|^#AutoEnable.*|AutoEnable=true|g" \
+      -e "s|^#JustWorksRepairing.*|JustWorksRepairing=always|g"
 
   #This fixes joycon connection issues after they have already been paired.
-  if [ "$DEVICE" == "Switch" ]; then
+  if [ "$DEVICE" = "Switch" ]; then
     sed -i 's/#FastConnectable = false/FastConnectable = true/' $INSTALL/etc/bluetooth/main.conf
   fi
 
