@@ -337,15 +337,15 @@ pre_make_target() {
   fi
 
   if [ "${DISTRO}" = "Lakka" ]; then
-	if [ "${LINUX}" = "L4T" ]; then
-		kernel_make olddefconfig
-		kernel_make prepare
-		kernel_make modules_prepare
-	else
-		kernel_make olddefconfig
-	fi
+    if [ "${LINUX}" = "L4T" ]; then
+      kernel_make olddefconfig
+      kernel_make prepare
+      kernel_make modules_prepare
+    else
+      kernel_make olddefconfig
+    fi
   else
-	kernel_make oldconfig  
+    kernel_make oldconfig  
   fi
 
   if [ -f "${DISTRO_DIR}/${DISTRO}/kernel_options" ]; then
