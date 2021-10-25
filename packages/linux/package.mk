@@ -418,7 +418,7 @@ make_target() {
       )
     fi
   fi
-  
+
   if [ -n "${KERNEL_UIMAGE_TARGET}" ]; then
     # determine compression used for kernel image
     KERNEL_UIMAGE_COMP=${KERNEL_UIMAGE_TARGET:7}
