@@ -414,7 +414,7 @@ make_target() {
         JOBS="${CONCURRENCY_MAKE_LEVEL}" \
           make ${PERF_BUILD_ARGS}
         mkdir -p ${INSTALL}/usr/bin
-        cp perf ${INSTALL}/usr/bin
+          cp perf ${INSTALL}/usr/bin
       )
     fi
   fi
