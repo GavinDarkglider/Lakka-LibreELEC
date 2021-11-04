@@ -2,7 +2,7 @@
 # setup system defaults
 ################################################################################
 
-  VALGRIND="yes"
+    #VALGRIND="yes"
   
   # Bootloader to use (syslinux / u-boot / bcm2835-bootloader)
     BOOTLOADER="u-boot" 
