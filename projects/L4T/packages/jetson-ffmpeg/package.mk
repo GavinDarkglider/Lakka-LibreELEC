@@ -20,6 +20,7 @@
 
 PKG_NAME="jetson-ffmpeg"
 PKG_VERSION="20067187641389ba309bd3ca51933718b6b475ef"
+#PKG_VERSION="7d675d46184b856b23a6bbb32fdb70511edc37ea"
 PKG_ARCH="any"
 PKG_DEPENDS_TARGET="toolchain cmake:host gcc-linaro-aarch64-linux-gnu:host tegra-bsp"
 PKG_SITE="https://github.com/jocover/jetson-ffmpeg/"
