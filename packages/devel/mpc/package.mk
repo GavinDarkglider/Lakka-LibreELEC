@@ -15,3 +15,6 @@ PKG_CONFIGURE_OPTS_HOST="--target=${TARGET_NAME} \
                          --enable-static --disable-shared \
                          --with-gmp=${TOOLCHAIN} \
                          --with-mpfr=${TOOLCHAIN}"
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_CONFIGURE_OPTS_HOST="${PKG_CONFIGURE_OPTS_HOST/--disable-shared/--enable-shared}"
+fi

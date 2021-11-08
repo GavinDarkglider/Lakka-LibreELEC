@@ -29,6 +29,11 @@ PKG_CONFIGURE_OPTS_TARGET="ac_cv_header_ansidecl_h=no \
                            --with-libxml-prefix=${SYSROOT_PREFIX}/usr \
                            --without-crypto"
 
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_CONFIGURE_OPTS_TARGET="${PKG_CONFIGURE_OPTS_TARGET/--disable-shared/--enable-shared}"
+  PKG_CONFIGURE_OPTS_HOST="${PKG_CONFIGURE_OPTS_HOST/--disable-shared/--enable-shared}"
+fi
+
 post_makeinstall_target() {
   sed -e "s:\(['= ]\)/usr:\\1${SYSROOT_PREFIX}/usr:g" -i ${SYSROOT_PREFIX}/usr/bin/xslt-config
 

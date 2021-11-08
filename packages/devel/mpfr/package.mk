@@ -16,3 +16,6 @@ PKG_CONFIGURE_OPTS_HOST="--target=${TARGET_NAME} \
                          --prefix=${TOOLCHAIN} \
                          --with-gmp-lib=${TOOLCHAIN}/lib \
                          --with-gmp-include=${TOOLCHAIN}/include"
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_CONFIGURE_OPTS_HOST="${PKG_CONFIGURE_OPTS_HOST/--disable-shared/--enable-shared}"
+fi

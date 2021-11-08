@@ -14,6 +14,10 @@ PKG_LONGDESC="A library that defines common error values for all GnuPG component
 pre_configure_target() {
   PKG_CONFIGURE_OPTS_TARGET="CC_FOR_BUILD=${HOST_CC} --enable-static --disable-shared --disable-nls --disable-rpath --with-gnu-ld --with-pic"
 
+  if [ "${PROJECT}" = "L4T" ]; then
+    PKG_CONFIGURE_OPTS_TARGET="${PKG_CONFIGURE_OPTS_TARGET/--disable-shared/--enable-shared}"
+  fi
+
 # inspired by openembedded
   case ${TARGET_ARCH} in
     aarch64)

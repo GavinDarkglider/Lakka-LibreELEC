@@ -8,14 +8,12 @@ PKG_VERSION="${GENERIC_L4T_VERSION}"
 PKG_ARCH="any"
 PKG_DEPENDS_HOST=""
 PKG_DEPENDS_TARGET="mesa libglvnd xorg-server"
-PKG_DEPENDS_HOST="xorg-server"
 
 if [ ! "${VULKAN}" = "" -o ! "${VULKAN}" = "no" ]; then
   PKG_DEPENDS_TARGET+=" vulkan-loader"
 fi
 
 PKG_SITE="https://developer.nvidia.com/EMBEDDED/linux-tegra%20/"
-
 case "${L4T_DEVICE_TYPE}" in
   t210)
     case "${GENERIC_L4T_VERSION}" in
@@ -24,35 +22,27 @@ case "${L4T_DEVICE_TYPE}" in
         MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.3.1-20191209225816_arm64.deb"
         ;;
       32.4.2)
-        PKG_URL="https://developer.nvidia.com/embedded/L4T/r32_Release_v4.2/t210ref_release_aarch64/Tegra210_Linux_R32.4.2_aarch64.tbz2"
-        MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.4.2-20200408182156_arm64.deb"
+        PKG_URL=""
+        MEDIA_API_URL=""
         ;;
       32.4.3)
-        PKG_URL="https://developer.nvidia.com/embedded/L4T/r32_Release_v4.3/t210ref_release_aarch64/Tegra210_Linux_R32.4.3_aarch64.tbz2"
-        MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.4.3-20200625213809_arm64.deb"
+        PKG_URL=""
+        MEDIA_API_URL=""
         ;;
       32.4.4)
-        PKG_URL="https://developer.nvidia.com/embedded/L4T/r32_Release_v4.4/r32_Release_v4.4-GMC3/T210/Tegra210_Linux_R32.4.4_aarch64.tbz2"
-        MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.4.4-20201027211359_arm64.deb"
+        PKG_URL="https://developer.nvidia.com/embedded/L4T/r32_Release_v4.4/r32_Release_v4.4-GMC3/T186/Tegra186_Linux_R32.4.4_aarch64.tbz2"
+        MEDIA_API_URL=""
         ;;
       32.5)
-        PKG_URL="https://developer.nvidia.com/embedded/L4T/r32_Release_v5.0/T210/Tegra210_Linux_R32.5.0_aarch64.tbz2"
-        MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.5.0-20210115145440_arm64.deb"
+        PKG_URL=""
+        MEDIA_API_URL=""
         ;;
       32.5.1)
-        PKG_URL="https://developer.nvidia.com/embedded/l4t/r32_release_v5.2/t210/jetson-210_linux_r32.5.2_aarch64.tbz2"
-        MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.5.1-20210519110732_arm64.deb"
-        ;;
-      32.5.2)
-        PKG_URL="https://developer.nvidia.com/embedded/l4t/r32_release_v5.2/t210/jetson-210_linux_r32.5.2_aarch64.tbz2"
-        MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.5.2-20210709090126_arm64.deb"
-        ;;
-      32.6.1)
-        PKG_URL="https://developer.nvidia.com/embedded/l4t/r32_release_v6.1/t210/jetson-210_linux_r32.6.1_aarch64.tbz2"
-        MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.6.1-20210916211029_arm64.deb"
+        PKG_URL=""
+        MEDIA_API_URL=""
         ;;
       *)
-        echo L4T-r"${GENERIC_L4T_VERSION}" is not supported
+        echo ${GENERIC_L4T_VERSION} is not supported
         exit 1
         ;;
     esac
@@ -60,77 +50,37 @@ case "${L4T_DEVICE_TYPE}" in
   t18x | t19x)
     case "${GENERIC_L4T_VERSION}" in
       32.3.1)
-        PKG_URL="https://developer.nvidia.com/embedded/dlc/r32-3-1_Release_v1.0/t186ref_release_aarch64/Tegra186_Linux_R32.3.1_aarch64.tbz2"
-        if [ "${L4T_DEVICE_TYPE}" = "t18x" ]; then
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t186/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.3.1-20191209230245_arm64.deb"
-        else
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t194/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.3.1-20191209230245_arm64.deb"
-        fi
+        PKG_URL=""
+        MEDIA_API_URL=""
         ;;
       32.4.2)
-        PKG_URL="https://developer.nvidia.com/embedded/L4T/r32_Release_v4.2/t186ref_release_aarch64/Tegra186_Linux_R32.4.2_aarch64.tbz2"
-        if [ "${L4T_DEVICE_TYPE}" = "t18x" ]; then
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t186/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.4.2-20200408182620_arm64.deb"
-        else
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t194/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.4.2-20200408182620_arm64.deb"
-        fi
+        PKG_URL=""
+        MEDIA_API_URL=""
         ;;
       32.4.3)
-        PKG_URL="https://developer.nvidia.com/embedded/L4T/r32_Release_v4.3/t186ref_release_aarch64/Tegra186_Linux_R32.4.3_aarch64.tbz2"
-        if [ "${L4T_DEVICE_TYPE}" = "t18x" ]; then
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t186/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.4.3-20200625213407_arm64.deb"
-        else
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t194/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.4.3-20200625213407_arm64.deb"
-        fi
+        PKG_URL=""
+        MEDIA_API_URL=""
         ;;
       32.4.4)
         PKG_URL="https://developer.nvidia.com/embedded/L4T/r32_Release_v4.4/r32_Release_v4.4-GMC3/T186/Tegra186_Linux_R32.4.4_aarch64.tbz2"
-        if [ "${L4T_DEVICE_TYPE}" = "t18x" ]; then
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t186/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.4.4-20201027211332_arm64.deb"
-        else
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t194/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.4.4-20201027211332_arm64.deb"
-        fi
+        MEDIA_API_URL=""
         ;;
       32.5)
-        PKG_URL="https://developer.nvidia.com/embedded/L4T/r32_Release_v5.0/T186/Tegra186_Linux_R32.5.0_aarch64.tbz2"
-        if [ "${L4T_DEVICE_TYPE}" = "t18x" ]; then
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t186/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.5.0-20210115151051_arm64.deb"
-        else
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t194/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.5.0-20210115151051_arm64.deb"
-        fi
+        PKG_URL=""
+        MEDIA_API_URL=""
         ;;
       32.5.1)
-        PKG_URL="https://developer.nvidia.com/embedded/l4t/r32_release_v5.2/t186/jetson_linux_r32.5.2_aarch64.tbz2"
-        if [ "${L4T_DEVICE_TYPE}" = "t18x" ]; then
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t186/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.5.1-20210519111140_arm64.deb"
-        else
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t194/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.5.1-20210519111140_arm64.deb"
-        fi
-        ;;
-      32.5.2)
-        PKG_URL="https://developer.nvidia.com/embedded/l4t/r32_release_v5.2/t186/jetson_linux_r32.5.2_aarch64.tbz2"
-        if [ "${L4T_DEVICE_TYPE}" = "t18x" ]; then
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t186/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.5.1-20210519111140_arm64.deb"
-        else
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t194/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.5.2-20210709090156_arm64.deb"
-        fi
-        ;;
-      32.6.1)
-        PKG_URL="https://developer.nvidia.com/embedded/l4t/r32_release_v6.1/t186/jetson_linux_r32.6.1_aarch64.tbz2"
-        if [ "${L4T_DEVICE_TYPE}" = "t18x" ]; then
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t186/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.6.1-20210916210945_arm64.deb"
-        else
-          MEDIA_API_URL="https://repo.download.nvidia.com/jetson/t194/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.6.1-20210726122859_arm64.deb"
-        fi
+        PKG_URL=""
+        MEDIA_API_URL=""
         ;;
       *)
-        echo L4T-r"${GENERIC_L4T_VERSION}" is not supported
+        echo ${GENERIC_L4T_VERSION} is not supported
         exit 1
         ;;
     esac
     ;;
   *)
-    echo L4T Tegra Platform "${L4T_DEVICE_TYPE}" is not supported
+    echo ${L4T_DEVICE_TYPE} is not supported
     exit 1
     ;;
 esac
@@ -212,7 +162,7 @@ make_host() {
   rm usr/lib/aarch64-linux-gnu/tegra/nvidia_icd.json usr/lib/aarch64-linux-gnu/tegra-egl/nvidia.json
 
   #remove not needed symlinks
-  rm usr/lib/libv4l usr/lib/tegra usr/lib/tegra-egl usr/lib/nvidia.json usr/lib/nvidia_icd.json
+  rm usr/lib/libv4l usr/lib/tegra usr/lib/tegra-egl usr/lib/nvidia.json usr/lib/nvidia_icd.json 
 
   # Refresh symlinks
   cd usr/lib/
@@ -356,26 +306,18 @@ echo "${PKG_BUILD}"
   else
     rm ../usr/lib/nvidia_icd.json
     cd ../
-  fi
+  fi 
 }
 
 makeinstall_host() {
-  PWD=$(pwd)
   cd "${PKG_BUILD}"/host_install/usr/lib
   for filename in *; do
-    rm  -rf ${SYSROOT_PREFIX}/usr/lib/${filename}
+    rm  ${SYSROOT}/usr/lib/${filename}
   done
   cd ../include
-  for filename in *; do
-    rm -rf  ${SYSROOT_PREFIX}/usr/include/${filename}
-  done
-  cd ../src
-  for filename in *; do
-    rm -rf  ${SYSROOT_PREFIX}/usr/src/${filename}
-  done
-  cd ${PWD}
+  
   #Install host
-  cp -PRv "${PKG_BUILD}"/host_install/* "${SYSROOT_PREFIX}"/
+  cp -PRv ${PKG_BUILD}/host_install/* "${SYSROOT}"/
 }
 
 makeinstall_init() {
@@ -387,7 +329,7 @@ makeinstall_target() {
     mkdir "${INSTALL}"
   fi
   #Install target
-  cp -PRv "${PKG_BUILD}"/target_install/* "${INSTALL}"/
+  cp -PRv target_install/* "${INSTALL}"/
 
   if [ "${DEVICE}" = "Switch" ]; then
     if [ "${DISPLAYSERVER}" = "x11" ]; then
@@ -399,3 +341,5 @@ makeinstall_target() {
   fi
 
 }
+
+

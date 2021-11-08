@@ -38,6 +38,10 @@ PKG_CONFIGURE_OPTS_COMMON="bash_cv_have_mbstate_t=set \
 
 [ "${DISTRO}" = "Lakka" ] && PKG_CONFIGURE_OPTS_COMMON="${PKG_CONFIGURE_OPTS_COMMON//--disable-tui/--enable-tui}" || true
 
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_CONFIGURE_OPTS_COMMON="${PKG_CONFIGURE_OPTS_COMMON/--disable-shared/--enable-shared}"
+fi
+
 PKG_CONFIGURE_OPTS_TARGET="${PKG_CONFIGURE_OPTS_COMMON} \
                            --with-libexpat-prefix=${SYSROOT_PREFIX}/usr"
 

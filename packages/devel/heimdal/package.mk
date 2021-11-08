@@ -28,6 +28,10 @@ PKG_CONFIGURE_OPTS_HOST="ac_cv_prog_COMPILE_ET=no \
                          --disable-otp \
                          --disable-heimdal-documentation"
 
+#if [ "${PROJECT}" = "L4T" ]; then
+#  PKG_CONFIGURE_OPTS_HOST="${PKG_CONFIGURE_OPTS_HOST/--disable-shared/--enable-shared}"
+#fi
+
 makeinstall_host() {
   mkdir -p ${TOOLCHAIN}/bin
     cp -PR lib/asn1/asn1_compile ${TOOLCHAIN}/bin/heimdal_asn1_compile

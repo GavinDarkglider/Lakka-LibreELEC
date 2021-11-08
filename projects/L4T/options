@@ -24,7 +24,7 @@
 ################################################################################
 
   # Project CFLAGS
-   if [ ! ${DEBUG} = "no" ]; then
+   if [ "${DEBUG}" = "no" -o "${DEBUG}" = "" ]; then
      PROJECT_CFLAGS="-O3"
    fi
   # SquashFS compression method (gzip / lzo / xz)

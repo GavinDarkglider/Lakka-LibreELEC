@@ -14,3 +14,6 @@ PKG_CONFIGURE_OPTS_TARGET="ac_cv_func_setpgrp_void=no \
                            --enable-static \
                            --disable-shared \
                            --disable-lynx"
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_CONFIGURE_OPTS_TARGET="${PKG_CONFIGURE_OPTS_TARGET/--disable-shared/--enable-shared}"
+fi

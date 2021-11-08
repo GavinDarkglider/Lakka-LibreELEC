@@ -24,6 +24,10 @@ PKG_CONFIGURE_OPTS_HOST="--disable-shared --enable-static \
 
 PKG_CONFIGURE_OPTS_TARGET="--disable-shared --enable-static"
 
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_CONFIGURE_OPTS_TARGET="${PKG_CONFIGURE_OPTS_TARGET/--disable-shared/--enable-shared}"
+fi
+
 post_makeinstall_target() {
   rm -rf ${INSTALL}
 }

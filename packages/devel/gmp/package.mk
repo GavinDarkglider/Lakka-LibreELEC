@@ -14,6 +14,9 @@ PKG_LONGDESC="A library for arbitrary precision arithmetic, operating on signed 
 PKG_BUILD_FLAGS="+pic:host"
 
 PKG_CONFIGURE_OPTS_HOST="--enable-cxx --enable-static --disable-shared"
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_CONFIGURE_OPTS_HOST="${PKG_CONFIGURE_OPTS_HOST/--disable-shared/--enable-shared}"
+fi
 
 pre_configure_host() {
   export CPPFLAGS="${CPPFLAGS} -fexceptions"

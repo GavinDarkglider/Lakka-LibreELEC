@@ -35,7 +35,7 @@ PKG_CONFIGURE_OPTS_TARGET="--target=${TARGET_NAME} \
                          --without-ppl \
                          --without-cloog \
                          --enable-static \
-                         --disable-shared \
+                         --enable-shared \
                          --disable-werror \
                          --disable-multilib \
                          --disable-libada \

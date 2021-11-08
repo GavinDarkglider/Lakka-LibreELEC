@@ -1,0 +1,16 @@
+diff -Naur ffmpeg-4.3.2-Matrix-19.1/libavcodec/nvv4l2_dec.c ffmpeg-4.3.2-Matrix-19.1-2/libavcodec/nvv4l2_dec.c
+--- ffmpeg-4.3.2-Matrix-19.1/libavcodec/nvv4l2_dec.c	2021-11-08 08:16:34.182710734 +0100
++++ ffmpeg-4.3.2-Matrix-19.1-2/libavcodec/nvv4l2_dec.c	2021-11-08 08:18:37.889280898 +0100
+@@ -826,9 +826,10 @@
+         }
+         /* Main Capture loop for DQ and Q. */
+ 
++        int buf_index=0;
++
+         while (!ctx->eos) {
+-            int buf_index;
+-            struct v4l2_buffer v4l2_buf;
++             struct v4l2_buffer v4l2_buf;
+             struct v4l2_plane planes[MAX_PLANES];
+             NvBufferRect src_rect, dest_rect;
+             NvBufferParams parm;

@@ -22,16 +22,19 @@ PKG_NAME="jetson-ffmpeg"
 PKG_VERSION="20067187641389ba309bd3ca51933718b6b475ef"
 #PKG_VERSION="7d675d46184b856b23a6bbb32fdb70511edc37ea"
 PKG_ARCH="any"
-PKG_DEPENDS_TARGET="toolchain cmake:host gcc-linaro-aarch64-linux-gnu:host tegra-bsp"
+PKG_DEPENDS_TARGET="toolchain cmake:host gcc-linaro-aarch64-linux-gnu:host tegra-bsp:host"
 PKG_SITE="https://github.com/jocover/jetson-ffmpeg/"
 PKG_URL="https://github.com/jocover/jetson-ffmpeg/archive/${PKG_VERSION}.tar.gz"
-PKG_BUILD_FLAGS="-strip"
+PKG_BUILD_FLAGS="-strip -lto -gold"
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 PKG_TOOLCHAIN="cmake"
 
 PKG_CMAKE_OPTS_TARGET="-DLAKKA_API_PATH=${SYSROOT_PREFIX} -DLAKKA_BUILD_LIBS=${TOOLCHAIN}/aarch64-libreelec-linux-gnueabi/sysroot/usr/lib/"
+
+CFLAGS="${CFLAGS/${PROJECT_CFLAGS}/}"
+HOST_CFLAGS="${HOST_CFLAGS/${PROJECT_CFLAGS}/}"
 
 post_makeinstall_target() {
   mkdir -p $SYSROOT_PREFIX/usr/include

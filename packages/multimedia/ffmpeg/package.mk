@@ -79,12 +79,15 @@ else
 fi
 
 #Re-enable when patches are rebased on newer version of ffmpeg,for now we use old version. 
-#
+
 if [ "$PROJECT" = "L4T" ]; then
-   PKG_DEPENDS_TARGET+=" jetson-ffmpeg"
+   PKG_DEPENDS_TARGET+=" jetson-ffmpeg tegra-bsp:host"
+   PKG_BUILD_FLAGS="-gold -lto"
    PKG_PATCH_DIRS+=" L4T"
-   PKG_FFMPEG_NVMPI="--enable-nvmpi"
-   PKG_FFMPEG_LIBS+=" -lnvmpi -lv4l2"
+   PKG_FFMPEG_NVMPI="--enable-nvmpi --enable-nvv4l2dec"
+   PKG_FFMPEG_LIBS+=" -lnvmpi -lv4l2 -lpthread -lm -lnvbuf_utils"
+   CFLAGS="${CFLAGS/${PROJECT_CFLAGS}/}"
+   HOST_CFLAGS="${HOST_CFLAGS/${PROJECT_CFLAGS}/}"
 else
    PKG_FFMPEG_NVMPI=""
 fi

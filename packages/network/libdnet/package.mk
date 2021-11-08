@@ -19,6 +19,10 @@ PKG_CONFIGURE_OPTS_TARGET="ac_cv_func_strlcat=no \
                            --disable-shared \
                            --disable-python"
 
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_CONFIGURE_OPTS_TARGET="${PKG_CONFIGURE_OPTS_TARGET/--disable-shared/--enable-shared}"
+fi
+
 pre_configure_target() {
   export CFLAGS+=" -I${PKG_BUILD}/include"
 }

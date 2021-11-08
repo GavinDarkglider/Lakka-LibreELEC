@@ -17,6 +17,10 @@ PKG_CONFIGURE_OPTS_TARGET="--enable-static \
                            --disable-documentation \
                            --disable-tests"
 
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_CONFIGURE_OPTS_TARGET="${PKG_CONFIGURE_OPTS_TARGET/--disable-shared/--enable-shared}"
+fi
+
 makeinstall_target() {
   make DESTDIR=${SYSROOT_PREFIX} install
 }
