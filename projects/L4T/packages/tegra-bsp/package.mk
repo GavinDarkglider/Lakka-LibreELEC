@@ -390,9 +390,10 @@ makeinstall_host() {
 }
 
 makeinstall_init() {
-  if [ ! -d "${INSTALL}" ]; then
-    mkdir -p "${INSTALL}"
+  if [ -d "${INSTALL}" ]; then
+    rm -rf ${INSTALL}
   fi
+  mkdir -p "${INSTALL}"/{firmware,splash}
   cp -PRv "${PKG_BUILD}"/init_install/* "${INSTALL}"/
 
   if [ -d "${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/firmware" ]; then
@@ -404,9 +405,10 @@ makeinstall_init() {
 
   if [ -d "${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/splash" ]; then
     if [ "${DISTRO}" = "Lakka" ]; then
-      cp ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/splash/splash-1280-lakka.png ${INSTALL}/splash/
-  elif [ "${DISTRO}" = "LibreELEC" ]; then
-      cp ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/splash/splash-1280-lakka.png ${INSTALL}/splash/
+      cp ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/splash/splash-1280-lakka.png ${INSTALL}/splash/splash-1280.png
+    elif [ "${DISTRO}" = "LibreELEC" ]; then
+      cp ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/splash/splash-1280-libreelec.png ${INSTALL}/splash/splash-1280.png
+    fi
   fi
 
 }
