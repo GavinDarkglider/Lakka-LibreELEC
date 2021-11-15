@@ -401,6 +401,14 @@ makeinstall_init() {
     cp -r * ${INSTALL}/usr/lib/firmware
     cd ${PWD}
   fi
+
+  if [ -d "${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/splash" ]; then
+    if [ "${DISTRO}" = "Lakka" ]; then
+      cp ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/splash/splash-1280-lakka.png ${INSTALL}/splash/
+  elif [ "${DISTRO}" = "LibreELEC" ]; then
+      cp ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/splash/splash-1280-lakka.png ${INSTALL}/splash/
+  fi
+
 }
 
 makeinstall_target() {
