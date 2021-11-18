@@ -1,7 +1,7 @@
 #!/bin/bash
 
 manufacturer="Nintendo"
-product="Switch(Lakka)"
+product="Switch(@DISTRO@)"
 #vid/pid defaults if not ran as attackmode.... Defaults are default for linux
 vid_default="0x1d6b" #linux foundation
 pid_default="0x0104" #Multifunction Gadget
@@ -28,7 +28,7 @@ create_gadget_framework() {
 	echo 0x02 > $gadget_config/usb_gadget/g/bDeviceSubClass
 	echo 0x01 > $gadget_config/usb_gadget/g/bDeviceProtocol
 	mkdir -p $gadget_config/usb_gadget/g/configs/c.1
-	echo 250 > $gadget_config/usb_gadget/g/configs/c.1/MaxPower
+	echo 32 > $gadget_config/usb_gadget/g/configs/c.1/MaxPower
 }
 
 create_ffs_mtp() {
@@ -49,8 +49,7 @@ finalize_gadget_framework() {
 	udevadm settle -t 5 || :
 }
 
-
 create_gadget_framework
-#create_ffs_mtp
+create_ffs_mtp
 create_serial
 finalize_gadget_framework
