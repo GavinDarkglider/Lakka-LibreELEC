@@ -3,11 +3,11 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="ntfs-3g_ntfsprogs"
-PKG_VERSION="2017.3.23AR.5"
-PKG_SHA256="04ccf583b495806cefb71850e5899e50aed5e7bf23365259f2badaa9af21e5ed"
+PKG_VERSION="2017.3.23AR.6"
+PKG_SHA256="e60556afbe7bc2f5ad710baf0ee954682324d411c324d328c652e731c6b7abd3"
 PKG_LICENSE="GPL"
 PKG_SITE="https://jp-andre.pagesperso-orange.fr/"
-PKG_URL="https://jp-andre.pagesperso-orange.fr/${PKG_NAME}-${PKG_VERSION}.tgz"
+PKG_URL="https://tuxera.com/opensource/${PKG_NAME}-${PKG_VERSION}.tgz"
 PKG_DEPENDS_TARGET="toolchain fuse libgcrypt"
 PKG_LONGDESC="A NTFS driver with read and write support."
 PKG_TOOLCHAIN="autotools"
