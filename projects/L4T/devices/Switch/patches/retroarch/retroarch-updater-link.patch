@@ -1,0 +1,12 @@
+diff -Naur retroarch-b9c77a48c982865597b2282123da42c29c127648/file_path_special.h retroarch-b9c77a48c982865597b2282123da42c29c127648-2/file_path_special.h
+--- retroarch-b9c77a48c982865597b2282123da42c29c127648/file_path_special.h	2022-02-09 04:06:43.201621613 +0100
++++ retroarch-b9c77a48c982865597b2282123da42c29c127648-2/file_path_special.h	2022-02-09 06:04:38.262862029 +0100
+@@ -77,6 +77,8 @@
+ #define FILE_PATH_CORE_THUMBNAILPACKS_URL "http://thumbnailpacks.libretro.com"
+ #ifdef HAVE_LAKKA_NIGHTLY
+ #define FILE_PATH_LAKKA_URL "http://nightly.builds.lakka.tv/.updater"
++#elif HAVE_LAKKA_SWITCH
++#define FILE_PATH_LAKKA_URL "http://nightly.builds.lakka.tv/members/gavin/.updater"
+ #else
+ #define FILE_PATH_LAKKA_URL "http://le.builds.lakka.tv"
+ #endif
