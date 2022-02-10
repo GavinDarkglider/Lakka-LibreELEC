@@ -162,7 +162,6 @@ make_host() {
   rm -r data
   cd ..
   rm -rf multimedia_api
-
   cd ${PKG_BUILD}/host_install
 
   # extract BSP files
@@ -397,6 +396,7 @@ EOF
 makeinstall_host() {
   PWD=$(pwd)
   cd ${PKG_BUILD}/host_install/usr/
+  cp  ${PKG_DIR}/assets/NvV4l2ElementPlane.cpp ${PKG_BUILD}/host_install/usr/src/jetson_multimedia_api/samples/common/classes/
   cd src
   for filename in *; do
     rm -rf  ${SYSROOT_PREFIX}/usr/src/${filename}

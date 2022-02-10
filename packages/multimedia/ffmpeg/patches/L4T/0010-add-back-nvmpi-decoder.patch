@@ -1,0 +1,314 @@
+diff -Naur ffmpeg1/configure ffmpeg2/configure
+--- ffmpeg1/configure	2022-02-09 18:13:55.000000000 -0800
++++ ffmpeg2/configure	2022-02-10 15:23:34.072718659 -0800
+@@ -3073,6 +3073,8 @@
+ h264_nvv4l2dec_decoder_deps="nvv4l2dec"
+ h264_nvv4l2dec_decoder_select="h264_mp4toannexb_bsf"
+ h264_nvmpi_encoder_deps="nvmpi"
++hevc_nvmpi_decoder_deps="nvmpi"
++hevc_nvmpi_decoder_select="hevc_mp4toannexb_bsf"
+ h264_omx_encoder_deps="omx"
+ h264_qsv_decoder_select="h264_mp4toannexb_bsf qsvdec"
+ h264_qsv_encoder_select="qsvenc"
+@@ -3091,6 +3093,8 @@
+ hevc_nvenc_encoder_deps="nvenc"
+ hevc_nvv4l2dec_decoder_deps="nvv4l2dec"
+ hevc_nvv4l2dec_decoder_select="hevc_mp4toannexb_bsf"
++hevc_nvmpi_decoder_deps="nvmpi"
++hevc_nvmpi_decoder_select="hevc_mp4toannexb_bsf"
+ hevc_nvmpi_encoder_deps="nvmpi"
+ hevc_qsv_decoder_select="hevc_mp4toannexb_bsf qsvdec"
+ hevc_qsv_encoder_select="hevcparse qsvenc"
+@@ -3115,6 +3119,7 @@
+ mpeg2_mmal_decoder_deps="mmal"
+ mpeg2_mediacodec_decoder_deps="mediacodec"
+ mpeg2_nvv4l2dec_decoder_deps="nvv4l2dec"
++mpeg2_nvmpi_decoder_deps="nvmpi"
+ mpeg2_qsv_decoder_select="qsvdec"
+ mpeg2_qsv_encoder_select="qsvenc"
+ mpeg2_vaapi_encoder_select="cbs_mpeg2 vaapi_encode"
+@@ -3124,6 +3129,7 @@
+ mpeg4_mediacodec_decoder_deps="mediacodec"
+ mpeg4_mmal_decoder_deps="mmal"
+ mpeg4_nvv4l2dec_decoder_deps="nvv4l2dec"
++mpeg4_nvmpi_decoder_deps="nvmpi"
+ mpeg4_omx_encoder_deps="omx"
+ mpeg4_v4l2m2m_decoder_deps="v4l2_m2m mpeg4_v4l2_m2m"
+ mpeg4_v4l2m2m_encoder_deps="v4l2_m2m mpeg4_v4l2_m2m"
+@@ -3138,6 +3144,7 @@
+ vp8_cuvid_decoder_deps="cuvid"
+ vp8_mediacodec_decoder_deps="mediacodec"
+ vp8_nvv4l2dec_decoder_deps="nvv4l2dec"
++vp8_nvmpi_decoder_deps="nvmpi"
+ vp8_qsv_decoder_select="qsvdec"
+ vp8_rkmpp_decoder_deps="rkmpp"
+ vp8_vaapi_encoder_deps="VAEncPictureParameterBufferVP8"
+@@ -3147,6 +3154,7 @@
+ vp9_cuvid_decoder_deps="cuvid"
+ vp9_mediacodec_decoder_deps="mediacodec"
+ vp9_nvv4l2dec_decoder_deps="nvv4l2dec"
++vp9_nvmpi_decoder_deps="nvmpi"
+ vp9_qsv_decoder_select="qsvdec"
+ vp9_rkmpp_decoder_deps="rkmpp"
+ vp9_vaapi_encoder_deps="VAEncPictureParameterBufferVP9"
+diff -Naur ffmpeg1/libavcodec/allcodecs.c ffmpeg2/libavcodec/allcodecs.c
+--- ffmpeg1/libavcodec/allcodecs.c	2022-02-09 18:13:55.000000000 -0800
++++ ffmpeg2/libavcodec/allcodecs.c	2022-02-10 15:30:29.512176429 -0800
+@@ -145,6 +145,7 @@
+ extern AVCodec ff_h264_mmal_decoder;
+ extern AVCodec ff_h264_qsv_decoder;
+ extern AVCodec ff_h264_rkmpp_decoder;
++extern AVCodec ff_h264_nvmpi_decoder;
+ extern AVCodec ff_h264_nvmpi_encoder;
+ extern AVCodec ff_hap_encoder;
+ extern AVCodec ff_hap_decoder;
+@@ -152,6 +153,7 @@
+ extern AVCodec ff_hevc_decoder;
+ extern AVCodec ff_hevc_qsv_decoder;
+ extern AVCodec ff_hevc_rkmpp_decoder;
++extern AVCodec ff_hevc_nvmpi_decoder;
+ extern AVCodec ff_hevc_nvmpi_encoder;
+ extern AVCodec ff_hevc_v4l2m2m_decoder;
+ extern AVCodec ff_hnm4_video_decoder;
+@@ -193,8 +195,10 @@
+ extern AVCodec ff_mpeg1video_encoder;
+ extern AVCodec ff_mpeg1video_decoder;
+ extern AVCodec ff_mpeg2_nvv4l2dec_decoder;
++extern AVCodec ff_mpeg2_nvmpi_decoder;
+ extern AVCodec ff_mpeg2video_encoder;
+ extern AVCodec ff_mpeg2video_decoder;
++extern AVCodec ff_mpeg4_nvmpi_decoder;
+ extern AVCodec ff_mpeg4_nvv4l2dec_decoder;
+ extern AVCodec ff_mpeg4_encoder;
+ extern AVCodec ff_mpeg4_decoder;
+@@ -349,10 +353,12 @@
+ extern AVCodec ff_vp6f_decoder;
+ extern AVCodec ff_vp7_decoder;
+ extern AVCodec ff_vp8_nvv4l2dec_decoder;
++extern AVCodec ff_vp8_nvmpi_decoder;
+ extern AVCodec ff_vp8_decoder;
+ extern AVCodec ff_vp8_rkmpp_decoder;
+ extern AVCodec ff_vp8_v4l2m2m_decoder;
+ extern AVCodec ff_vp9_nvv4l2dec_decoder;
++extern AVCodec ff_vp9_nvmpi_decoder;
+ extern AVCodec ff_vp9_decoder;
+ extern AVCodec ff_vp9_rkmpp_decoder;
+ extern AVCodec ff_vp9_v4l2m2m_decoder;
+diff -Naur ffmpeg1/libavcodec/Makefile ffmpeg2/libavcodec/Makefile
+--- ffmpeg1/libavcodec/Makefile	2022-02-09 18:13:55.000000000 -0800
++++ ffmpeg2/libavcodec/Makefile	2022-02-10 15:27:12.153523345 -0800
+@@ -368,6 +368,7 @@
+ OBJS-$(CONFIG_H264_NVENC_ENCODER)      += nvenc_h264.o
+ OBJS-$(CONFIG_NVENC_ENCODER)           += nvenc_h264.o
+ OBJS-$(CONFIG_NVENC_H264_ENCODER)      += nvenc_h264.o
++OBJS-$(CONFIG_H264_NVMPI_DECODER)      += nvmpi_dec.o
+ OBJS-$(CONFIG_H264_NVMPI_ENCODER)      += nvmpi_enc.o
+ OBJS-$(CONFIG_H264_OMX_ENCODER)        += omx.o
+ OBJS-$(CONFIG_H264_QSV_DECODER)        += qsvdec_h2645.o
+@@ -397,6 +398,7 @@
+ OBJS-$(CONFIG_HEVC_RKMPP_DECODER)      += rkmppdec.o
+ OBJS-$(CONFIG_HEVC_VAAPI_ENCODER)      += vaapi_encode_h265.o h265_profile_level.o
+ OBJS-$(CONFIG_HEVC_V4L2M2M_DECODER)    += v4l2_m2m_dec.o
++OBJS-$(CONFIG_HEVC_NVMPI_DECODER)      += nvmpi_dec.o
+ OBJS-$(CONFIG_HEVC_NVMPI_ENCODER)      += nvmpi_enc.o
+ OBJS-$(CONFIG_HEVC_V4L2M2M_ENCODER)    += v4l2_m2m_enc.o
+ OBJS-$(CONFIG_HNM4_VIDEO_DECODER)      += hnm4video.o
+@@ -487,6 +489,7 @@
+ OBJS-$(CONFIG_MPEG2VIDEO_ENCODER)      += mpeg12enc.o mpeg12.o
+ OBJS-$(CONFIG_MPEG2_CUVID_DECODER)     += cuviddec.o
+ OBJS-$(CONFIG_MPEG2_NVV4L2DEC_DECODER) += nvv4l2_dec.o
++OBJS-$(CONFIG_MPEG2_NVMPI_DECODER)     += nvmpi_dec.o
+ OBJS-$(CONFIG_MPEG2_MEDIACODEC_DECODER) += mediacodecdec.o
+ OBJS-$(CONFIG_MPEG2_VAAPI_ENCODER)     += vaapi_encode_mpeg2.o
+ OBJS-$(CONFIG_MPEG2_V4L2M2M_DECODER)   += v4l2_m2m_dec.o
+@@ -700,6 +703,7 @@
+ OBJS-$(CONFIG_VP8_DECODER)             += vp8.o vp56rac.o
+ OBJS-$(CONFIG_VP8_CUVID_DECODER)       += cuviddec.o
+ OBJS-$(CONFIG_VP8_NVV4L2DEC_DECODER)   += nvv4l2_dec.o
++OBJS-$(CONFIG_VP8_NVMPI_DECODER)       += nvmpi_dec.o
+ OBJS-$(CONFIG_VP8_MEDIACODEC_DECODER)  += mediacodecdec.o
+ OBJS-$(CONFIG_VP8_QSV_DECODER)         += qsvdec_other.o
+ OBJS-$(CONFIG_VP8_RKMPP_DECODER)       += rkmppdec.o
+@@ -711,6 +715,7 @@
+                                           vp9dsp_8bpp.o vp9dsp_10bpp.o vp9dsp_12bpp.o
+ OBJS-$(CONFIG_VP9_CUVID_DECODER)       += cuviddec.o
+ OBJS-$(CONFIG_VP9_NVV4L2DEC_DECODER)   += nvv4l2_dec.o
++OBJS-$(CONFIG_VP9_NVMPI_DECODER)       += nvmpi_dec.o
+ OBJS-$(CONFIG_VP9_MEDIACODEC_DECODER)  += mediacodecdec.o
+ OBJS-$(CONFIG_VP9_RKMPP_DECODER)       += rkmppdec.o
+ OBJS-$(CONFIG_VP9_VAAPI_ENCODER)       += vaapi_encode_vp9.o
+diff -Naur ffmpeg1/libavcodec/nvmpi_dec.c ffmpeg2/libavcodec/nvmpi_dec.c
+--- ffmpeg1/libavcodec/nvmpi_dec.c	1969-12-31 16:00:00.000000000 -0800
++++ ffmpeg2/libavcodec/nvmpi_dec.c	2022-02-10 15:46:15.321078399 -0800
+@@ -0,0 +1,171 @@
++#include <stdio.h>
++#include <stdlib.h>
++#include <sys/time.h>
++
++#include <nvmpi.h>
++#include "avcodec.h"
++#include "decode.h"
++#include "internal.h"
++#include "libavutil/buffer.h"
++#include "libavutil/common.h"
++#include "libavutil/frame.h"
++#include "libavutil/hwcontext.h"
++#include "libavutil/hwcontext_drm.h"
++#include "libavutil/imgutils.h"
++#include "libavutil/log.h"
++
++
++
++
++typedef struct {
++	char eos_reached;
++	nvmpictx* ctx;
++	AVClass *av_class;
++} nvmpiDecodeContext;
++
++static nvCodingType nvmpi_get_codingtype(AVCodecContext *avctx)
++{
++	switch (avctx->codec_id) {
++		case AV_CODEC_ID_H264:          return NV_VIDEO_CodingH264;
++		case AV_CODEC_ID_HEVC:          return NV_VIDEO_CodingHEVC;
++		case AV_CODEC_ID_VP8:           return NV_VIDEO_CodingVP8;
++		case AV_CODEC_ID_VP9:           return NV_VIDEO_CodingVP9;
++		case AV_CODEC_ID_MPEG4:		return NV_VIDEO_CodingMPEG4;
++		case AV_CODEC_ID_MPEG2VIDEO:    return NV_VIDEO_CodingMPEG2;
++		default:                        return NV_VIDEO_CodingUnused;
++	}
++};
++
++
++static int nvmpi_init_decoder(AVCodecContext *avctx){
++
++	nvmpiDecodeContext *nvmpi_context = avctx->priv_data;
++	nvCodingType codectype=NV_VIDEO_CodingUnused;
++
++	codectype =nvmpi_get_codingtype(avctx);
++	if (codectype == NV_VIDEO_CodingUnused) {
++		av_log(avctx, AV_LOG_ERROR, "Unknown codec type (%d).\n", avctx->codec_id);
++		return AVERROR_UNKNOWN;
++	}
++
++	//Workaround for default pix_fmt not being set, so check if it isnt set and set it,
++   //or if it is set, but isnt set to something we can work with.
++
++	if(avctx->pix_fmt ==AV_PIX_FMT_NONE){
++		 avctx->pix_fmt=AV_PIX_FMT_YUV420P;
++	}else if(avctx-> pix_fmt != AV_PIX_FMT_YUV420P){
++		av_log(avctx, AV_LOG_ERROR, "Invalid Pix_FMT for NVMPI Only yuv420p is supported\n");
++		return AVERROR_INVALIDDATA;
++	}
++
++	nvmpi_context->ctx=nvmpi_create_decoder(codectype,NV_PIX_YUV420);
++
++	if(!nvmpi_context->ctx){
++		av_log(avctx, AV_LOG_ERROR, "Failed to nvmpi_create_decoder (code = %d).\n", AVERROR_EXTERNAL);
++		return AVERROR_EXTERNAL;
++	}
++   return 0;
++
++}
++
++
++
++static int nvmpi_close(AVCodecContext *avctx){
++
++	nvmpiDecodeContext *nvmpi_context = avctx->priv_data;
++	return nvmpi_decoder_close(nvmpi_context->ctx);
++
++}
++
++
++
++static int nvmpi_decode(AVCodecContext *avctx,void *data,int *got_frame, AVPacket *avpkt){
++
++	nvmpiDecodeContext *nvmpi_context = avctx->priv_data;
++	AVFrame *frame = data;
++	nvFrame _nvframe={0};
++	nvPacket packet;
++	uint8_t* ptrs[3];
++	int res,linesize[3];
++
++	if(avpkt->size){
++		packet.payload_size=avpkt->size;
++		packet.payload=avpkt->data;
++		packet.pts=avpkt->pts;
++
++		res=nvmpi_decoder_put_packet(nvmpi_context->ctx,&packet);
++	}
++
++	res=nvmpi_decoder_get_frame(nvmpi_context->ctx,&_nvframe,avctx->flags & AV_CODEC_FLAG_LOW_DELAY);
++
++	if(res<0)
++		return avpkt->size;
++
++	if (ff_get_buffer(avctx, frame, 0) < 0) {
++		return AVERROR(ENOMEM);
++
++	}
++
++	linesize[0]=_nvframe.linesize[0];
++	linesize[1]=_nvframe.linesize[1];
++	linesize[2]=_nvframe.linesize[2];
++
++	ptrs[0]=_nvframe.payload[0];
++	ptrs[1]=_nvframe.payload[1];
++	ptrs[2]=_nvframe.payload[2];
++
++	av_image_copy(frame->data, frame->linesize, (const uint8_t **) ptrs, linesize, avctx->pix_fmt, _nvframe.width,_nvframe.height);
++
++	frame->width=_nvframe.width;
++	frame->height=_nvframe.height;
++
++	frame->format=AV_PIX_FMT_YUV420P;
++	frame->pts=_nvframe.timestamp;
++	frame->pkt_dts = AV_NOPTS_VALUE;
++
++	avctx->coded_width=_nvframe.width;
++	avctx->coded_height=_nvframe.height;
++	avctx->width=_nvframe.width;
++	avctx->height=_nvframe.height;
++
++	*got_frame = 1;
++
++	return avpkt->size;
++}
++
++
++
++
++#define NVMPI_DEC_CLASS(NAME) \
++	static const AVClass nvmpi_##NAME##_dec_class = { \
++		.class_name = "nvmpi_" #NAME "_dec", \
++		.version    = LIBAVUTIL_VERSION_INT, \
++	};
++
++#define NVMPI_DEC(NAME, ID, BSFS) \
++	NVMPI_DEC_CLASS(NAME) \
++	AVCodec ff_##NAME##_nvmpi_decoder = { \
++		.name           = #NAME "_nvmpi", \
++		.long_name      = NULL_IF_CONFIG_SMALL(#NAME " (nvmpi)"), \
++		.type           = AVMEDIA_TYPE_VIDEO, \
++		.id             = ID, \
++		.priv_data_size = sizeof(nvmpiDecodeContext), \
++		.init           = nvmpi_init_decoder, \
++		.close          = nvmpi_close, \
++		.decode         = nvmpi_decode, \
++		.priv_class     = &nvmpi_##NAME##_dec_class, \
++		.capabilities   = AV_CODEC_CAP_DELAY | AV_CODEC_CAP_AVOID_PROBING | AV_CODEC_CAP_HARDWARE, \
++		.pix_fmts	=(const enum AVPixelFormat[]){AV_PIX_FMT_YUV420P,AV_PIX_FMT_NV12,AV_PIX_FMT_NONE},\
++		.bsfs           = BSFS, \
++		.wrapper_name   = "nvmpi", \
++	};
++
++
++
++NVMPI_DEC(h264,  AV_CODEC_ID_H264,"h264_mp4toannexb");
++NVMPI_DEC(hevc,  AV_CODEC_ID_HEVC,"hevc_mp4toannexb");
++NVMPI_DEC(mpeg2, AV_CODEC_ID_MPEG2VIDEO,NULL);
++NVMPI_DEC(mpeg4, AV_CODEC_ID_MPEG4,NULL);
++NVMPI_DEC(vp9,  AV_CODEC_ID_VP9,NULL);
++NVMPI_DEC(vp8, AV_CODEC_ID_VP8,NULL);
++

@@ -1,0 +1,22 @@
+diff -Naur jetson-ffmpeg-20067187641389ba309bd3ca51933718b6b475ef/CMakeLists.txt jetson-ffmpeg-20067187641389ba309bd3ca51933718b6b475ef-2/CMakeLists.txt
+--- jetson-ffmpeg-20067187641389ba309bd3ca51933718b6b475ef/CMakeLists.txt	2022-02-10 04:46:23.767662579 +0100
++++ jetson-ffmpeg-20067187641389ba309bd3ca51933718b6b475ef-2/CMakeLists.txt	2022-02-10 04:48:12.933460533 +0100
+@@ -62,14 +62,11 @@
+ set_target_properties(nvmpi PROPERTIES SOVERSION 1)
+ set_target_properties(nvmpi nvmpi_static PROPERTIES PUBLIC_HEADER nvmpi.h)
+ target_link_libraries(nvmpi PRIVATE ${CMAKE_THREAD_LIBS_INIT} ${LIB_NVBUF}  ${LIB_V4L2})
+-if (LAKKA_API_PATH)
+-  target_include_directories(nvmpi PRIVATE ${LAKKA_API_PATH}/usr/include)
+-endif ()
+ 
+-target_include_directories(nvmpi PRIVATE /usr/src/jetson_multimedia_api/include)
+-target_include_directories(nvmpi PRIVATE /usr/local/cuda/include)
+-target_include_directories(nvmpi_static PRIVATE /usr/src/jetson_multimedia_api/include)
+-target_include_directories(nvmpi_static PRIVATE /usr/local/cuda/include)
++target_include_directories(nvmpi PRIVATE ${LAKKA_API_PATH}/usr/src/jetson_multimedia_api/include)
++target_include_directories(nvmpi PRIVATE ${LAKKA_API_PATH}/usr/local/cuda/include)
++target_include_directories(nvmpi_static PRIVATE ${LAKKA_API_PATH}/usr/src/jetson_multimedia_api/include)
++target_include_directories(nvmpi_static PRIVATE ${LAKKA_API_PATH}/usr/local/cuda/include)
+ configure_file(nvmpi.pc.in nvmpi.pc @ONLY)
+ include(GNUInstallDirs)
+ install(TARGETS nvmpi nvmpi_static
