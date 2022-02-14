@@ -42,7 +42,7 @@ L4T_DEVICE_CUSTOM_BOARD_NAME="icosa"
 
 L4T_KERNEL_4_9_REPO="https://gitlab.com/switchroot/kernel/l4t-kernel-4.9.git"
 L4T_KERNEL_4_9_REPO_BRANCH="linux-3.4.1-dev"
-L4T_KERNEL_4_9_REPO_SHA256="0ff369aeae051bce45f6619dcfb2043de186af3a"
+L4T_KERNEL_4_9_REPO_SHA256="70fa8b9f57516836200d3f7fa091329416a7d5c0"
 #L4T_KERNEL_4_9_URL=""
 
 L4T_KERNEL_NVIDIA_REPO="https://gitlab.com/switchroot/kernel/l4t-kernel-nvidia.git"
