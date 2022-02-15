@@ -1,5 +1,5 @@
 PKG_NAME="cannonball"
-PKG_VERSION="36f695e18ac2b3832479b3a2f6aabd9dfbb0f34d"
+PKG_VERSION="f7853748fe3a48f1b4d10156b10c64cd9d4acdc0"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/cannonball"
 PKG_URL="${PKG_SITE}.git"
