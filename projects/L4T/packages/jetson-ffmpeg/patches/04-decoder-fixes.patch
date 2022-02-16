@@ -1,0 +1,199 @@
+diff -Naur jetson-ffmpeg-20067187641389ba309bd3ca51933718b6b475ef/nvmpi_dec.cpp jetson-ffmpeg-20067187641389ba309bd3ca51933718b6b475ef-2/nvmpi_dec.cpp
+--- jetson-ffmpeg-20067187641389ba309bd3ca51933718b6b475ef/nvmpi_dec.cpp	2022-02-15 22:55:47.391181750 +0100
++++ jetson-ffmpeg-20067187641389ba309bd3ca51933718b6b475ef-2/nvmpi_dec.cpp	2022-02-16 05:11:54.238598337 +0100
+@@ -26,6 +26,7 @@
+ 	NvVideoDecoder *dec{nullptr};
+ 	bool eos{false};
+ 	bool got_res_event{false};
++	bool capture_plane_is_setup{false};
+ 	int index{0};
+ 	unsigned int coded_width{0};
+ 	unsigned int coded_height{0};
+@@ -47,13 +48,13 @@
+ };
+ 
+ void respondToResolutionEvent(v4l2_format &format, v4l2_crop &crop,nvmpictx* ctx){
+-	
++
+ 	int32_t minimumDecoderCaptureBuffers;
+ 	int ret=0;
+ 	NvBufferCreateParams input_params = {0};
+ 	NvBufferCreateParams cParams = {0};
+ 
+-	ret = ctx->dec->capture_plane.getFormat(format);	
++	ret = ctx->dec->capture_plane.getFormat(format);
+ 	TEST_ERROR(ret < 0, "Error: Could not get format from decoder capture plane", ret);
+ 
+ 	ret = ctx->dec->capture_plane.getCrop(crop);
+@@ -75,19 +76,20 @@
+ 	input_params.colorFormat = ctx->out_pixfmt==NV_PIX_NV12?NvBufferColorFormat_NV12: NvBufferColorFormat_YUV420;
+ 	input_params.nvbuf_tag = NvBufferTag_VIDEO_DEC;
+ 
+-	ctx->dec->capture_plane.deinitPlane();
++        if (ctx->capture_plane_is_setup) {
++		ctx->dec->capture_plane.deinitPlane();
+ 
+-	for (int index = 0; index < ctx->numberCaptureBuffers; index++)
+-	{
+-		if (ctx->dmaBufferFileDescriptor[index] != 0)
+-		{	
+-			ret = NvBufferDestroy(ctx->dmaBufferFileDescriptor[index]);
+-			TEST_ERROR(ret < 0, "Failed to Destroy NvBuffer", ret);
+-		}
++		for (int index = 0; index < ctx->numberCaptureBuffers; index++)
++		{
++			if (ctx->dmaBufferFileDescriptor[index] != 0)
++			{
++				ret = NvBufferDestroy(ctx->dmaBufferFileDescriptor[index]);
++				TEST_ERROR(ret < 0, "Failed to Destroy NvBuffer", ret);
++			}
+ 
++		}
+ 	}
+ 
+-
+ 	ret=ctx->dec->setCapturePlaneFormat(format.fmt.pix_mp.pixelformat,format.fmt.pix_mp.width,format.fmt.pix_mp.height);
+ 	TEST_ERROR(ret < 0, "Error in setting decoder capture plane format", ret);
+ 
+@@ -160,7 +162,7 @@
+ 		ret = NvBufferCreateEx(&ctx->dmaBufferFileDescriptor[index], &cParams);
+ 		TEST_ERROR(ret < 0, "Failed to create buffers", ret);
+ 
+-	}	
++	}
+ 
+ 	ctx->dec->capture_plane.reqbufs(V4L2_MEMORY_DMABUF, ctx->numberCaptureBuffers);
+ 	TEST_ERROR(ret < 0, "Error in decoder capture plane streamon", ret);
+@@ -188,17 +190,18 @@
+ 	}
+ 
+ 	ctx->got_res_event = true;
++	ctx->capture_plane_is_setup = true;
+ }
+ 
+ void *dec_capture_loop_fcn(void *arg){
+ 	nvmpictx* ctx=(nvmpictx*)arg;
+-	
++
+ 	struct v4l2_format v4l2Format;
+ 	struct v4l2_crop v4l2Crop;
+ 	struct v4l2_event v4l2Event;
+ 	int ret,buf_index=0;
+ 
+-	while (!(ctx->dec->isInError()||ctx->eos)){
++	while (ctx->dec->isInError() != 1 && ctx->eos == false){
+ 		NvBuffer *dec_buffer;
+ 
+ 		ret = ctx->dec->dqEvent(v4l2Event, ctx->got_res_event ? 0 : 500);
+@@ -210,7 +213,7 @@
+ 					respondToResolutionEvent(v4l2Format, v4l2Crop,ctx);
+ 					continue;
+ 			}
+-		}	
++		}
+ 
+ 		if (!ctx->got_res_event) {
+ 			continue;
+@@ -285,9 +288,9 @@
+ 
+ 
+ 				ret=NvBuffer2Raw(ctx->dst_dma_fd,0,parm.width[0],parm.height[0],ctx->bufptr_0[buf_index]);
+-				ret=NvBuffer2Raw(ctx->dst_dma_fd,1,parm.width[1],parm.height[1],ctx->bufptr_1[buf_index]);	
++				ret=NvBuffer2Raw(ctx->dst_dma_fd,1,parm.width[1],parm.height[1],ctx->bufptr_1[buf_index]);
+ 				if(ctx->out_pixfmt==NV_PIX_YUV420)
+-					ret=NvBuffer2Raw(ctx->dst_dma_fd,2,parm.width[2],parm.height[2],ctx->bufptr_2[buf_index]);	
++					ret=NvBuffer2Raw(ctx->dst_dma_fd,2,parm.width[2],parm.height[2],ctx->bufptr_2[buf_index]);
+ 
+ 				ctx->frame_pools->push(buf_index);
+ 				ctx->timestamp[buf_index]= (v4l2_buf.timestamp.tv_usec % 1000000) + (v4l2_buf.timestamp.tv_sec * 1000000UL);
+@@ -295,9 +298,8 @@
+ 				buf_index=(buf_index+1)%MAX_BUFFERS;
+ 
+ 			}
+-			
+-			ctx->mutex->unlock();
+ 
++			ctx->mutex->unlock();
+ 			if (ctx->eos) {
+ 				break;
+ 			}
+@@ -308,15 +310,18 @@
+ 			if (ctx->dec->capture_plane.qBuffer(v4l2_buf, NULL) < 0){
+ 				ERROR_MSG("Error while queueing buffer at decoder capture plane");
+ 			}
++                }
++		if (ctx->eos) {
++			// Wake all waiting threads at EOS or decoder error
++			ctx->has_frame_cv->notify_all();
++			return ctx->dec_capture_loop;
+ 		}
+-	}
+ 
+-	// Wake all waiting threads at EOS or decoder error
+-	ctx->has_frame_cv->notify_all();
++	}
+ }
+ 
+ nvmpictx* nvmpi_create_decoder(nvCodingType codingType,nvPixFormat pixFormat){
+-	
++
+ 	int ret;
+ 	log_level = LOG_LEVEL_INFO;
+ 
+@@ -366,6 +371,9 @@
+ 	ctx->dec->output_plane.setStreamStatus(true);
+ 	TEST_ERROR(ret < 0, "Error in output plane stream on", ret);
+ 
++        ret = ctx->dec->capture_plane.setupPlane(V4L2_MEMORY_MMAP, 0, true, false);
++        TEST_ERROR(ret < 0, "Could not setup capture plane", ret);
++
+ 	ctx->out_pixfmt=pixFormat;
+ 	ctx->dst_dma_fd=-1;
+ 	ctx->eos=false;
+@@ -393,7 +401,7 @@
+ 
+ int nvmpi_decoder_put_packet(nvmpictx* ctx,nvPacket* packet){
+ 	int ret;
+-	
++
+ 	struct v4l2_buffer v4l2_buf;
+ 	struct v4l2_plane planes[MAX_PLANES];
+ 	NvBuffer *nvBuffer;
+@@ -452,7 +460,7 @@
+ 
+ 
+ int nvmpi_decoder_get_frame(nvmpictx* ctx,nvFrame* frame,bool wait){
+-	
++
+ 	int ret,picture_index;
+ 	std::unique_lock<std::mutex> lock(*ctx->mutex);
+ 
+@@ -494,9 +502,10 @@
+ 	ctx->mutex->lock();
+ 	ctx->eos=true;
+ 	ctx->mutex->unlock();
+-	
++
++	ctx->dec->output_plane.setStreamStatus(false);
+ 	ctx->dec->capture_plane.setStreamStatus(false);
+-	
++
+ 	if (ctx->dec_capture_loop) {
+ 		ctx->dec_capture_loop->join();
+ 		delete ctx->dec_capture_loop;
+@@ -512,13 +521,13 @@
+ 	for (int index = 0; index < ctx->numberCaptureBuffers; index++)
+ 	{
+ 		if (ctx->dmaBufferFileDescriptor[index] != 0)
+-		{	
++		{
+ 			int ret = NvBufferDestroy(ctx->dmaBufferFileDescriptor[index]);
+ 			TEST_ERROR(ret < 0, "Failed to Destroy NvBuffer", ret);
+ 		}
+ 
+ 	}
+-	
++
+ 	delete ctx->dec; ctx->dec = nullptr;
+ 
+ 	for(int index=0;index<MAX_BUFFERS;index++){

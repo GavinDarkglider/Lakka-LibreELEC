@@ -21,6 +21,8 @@ if [ ${PULSEAUDIO_SUPPORT} = "yes" ]; then
   ADDITIONAL_PACKAGES+="  switch-pulseaudio-configs"
 fi
 
+#DISABLE_LIBRETRO_CORES="yes"
+
 BOOTLOADER="switch-bootloader" # this is a fake bootloader since coreboot and u-boot are sideloaded
 
 ADDITIONAL_DRIVERS+=" xf86-input-libinput"
