@@ -1,0 +1,42 @@
+diff -Naur tegra-udrm-gbm-v1.0.2/meson.build tegra-udrm-gbm-v1.0.2-2/meson.build
+--- tegra-udrm-gbm-v1.0.2/meson.build	2022-04-21 03:42:47.021516928 +0200
++++ tegra-udrm-gbm-v1.0.2-2/meson.build	2022-04-21 04:36:46.195413825 +0200
+@@ -11,6 +11,7 @@
+ )
+ project_description = 'mesa gbm loader for libnvgbm'
+ 
++
+ project_headers = [
+   'tegra_udrm_gbm_int.h'
+ ]
+@@ -22,12 +23,13 @@
+ cc = meson.get_compiler('c')
+ 
+ project_dependencies = [
+-  dependency('libdrm'),
+-  dependency('gbm', version : ['>=21.2.0'])
++    dependency('libdrm'),
++    dependency('gbm', version : ['>=21.2.0'])
+ ]
+ 
+ build_args = [
+   '-Wno-pedantic',
++  '-ldl',
+ ]
+ 
+ gbm_backends_path = get_option('gbm-backends-path')
+@@ -42,11 +44,13 @@
+   '-DPROJECT_VERSION=' + meson.project_version(),
+ ]
+ 
++dl_dep = meson.get_compiler('c').find_library('dl', required : true)
++
+ project_target = shared_library(
+   'tegra-udrm_gbm',
+   project_source_files,
+   name_prefix: '',
+-  dependencies: project_dependencies,
++  dependencies:  [dl_dep, project_dependencies],
+   install : true,
+   c_args : build_args,
+   gnu_symbol_visibility : 'hidden',

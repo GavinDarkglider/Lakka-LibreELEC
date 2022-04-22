@@ -8,6 +8,10 @@ PKG_LICENSE="MIT"
 PKG_SITE="https://wayland.freedesktop.org/"
 PKG_URL="https://wayland.freedesktop.org/releases/${PKG_NAME}-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain wayland wayland-protocols libdrm libxkbcommon libinput cairo pango libjpeg-turbo dbus seatd"
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_DEPENDS_TARGET+=" egl-wayland"
+fi
+
 PKG_LONGDESC="Reference implementation of a Wayland compositor"
 
 PKG_MESON_OPTS_TARGET="-Dbackend-drm=true \
@@ -46,6 +50,10 @@ PKG_MESON_OPTS_TARGET="-Dbackend-drm=true \
                        -Dtest-skip-is-failure=false \
                        -Dtest-gl-renderer=false \
                        -Ddoc=false"
+
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_MESON_OPTS_TARGET=${PKG_MESON_OPTS_TARGET//-Ddeprecated-wl-shell=false/-Ddeprecated-wl-shell=true}
+fi
 
 pre_configure_target() {
   # weston does not build with NDEBUG (requires assert for tests)

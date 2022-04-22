@@ -5,7 +5,7 @@
 . /run/sway/sway-daemon.conf
 SWAY_LOG_FILE=/var/log/sway.log
 
-if [ ! -z "$(lsmod | grep 'nvidia')" ]; then
+if [[ ! -z "$(lsmod | grep 'nvidia')" ]] || [[ ! -z "$(lsmod | grep 'nvgpu')" ]]; then
   export WLR_NO_HARDWARE_CURSORS=1
   SWAY_GPU_ARGS="--unsupported-gpu"
 fi

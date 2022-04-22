@@ -14,7 +14,7 @@ PKG_BUILD_FLAGS="+pic"
 PKG_TOOLCHAIN="configure"
 
 PKG_CONFIGURE_OPTS_TARGET="--enable-static \
-                           --disable-shared \
+                           --enable-shared \
                            --disable-mdi \
                            --disable-jbig \
                            --disable-lzma \

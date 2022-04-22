@@ -13,12 +13,13 @@ PKG_LONGDESC="Cairo is a vector graphics library with cross-device output suppor
 PKG_TOOLCHAIN="configure"
 
 configure_package() {
-  if [ "${DISPLAYSERVER}" = "x11" ]; then
-    PKG_DEPENDS_TARGET+=" libXrender libX11 mesa"
-  elif [ "${DISTRO}" = "Lakka" ]; then
+
+  if [[ "${DISPLAYSERVER}" = "x11" ]] || [[ "${DISTRO}" = "Lakka" ]] && [[ ! "${DISPLAYSERVER}" = "wl" ]]; then
     PKG_DEPENDS_TARGET+=" libXrender libX11 "
   fi
-
+  if [ "${DISPLAYSERVER}" = "x11" -a ! "${DISTRO}" = "Lakka" ]; then
+    PKG_DEPENDS_TARGET+=" mesa"
+  fi
   if [ "${OPENGL_SUPPORT}" = "yes" ]; then
     PKG_DEPENDS_TARGET+=" ${OPENGL}"
   elif [ "${OPENGLES_SUPPORT}" = "yes" ]; then
@@ -72,13 +73,7 @@ pre_configure_target() {
                              --enable-some-floating-point \
                              --with-gnu-ld"
 
-  if [ "${DISPLAYSERVER}" = "x11" ]; then
-    PKG_CONFIGURE_OPTS_TARGET+=" --x-includes="${SYSROOT_PREFIX}/usr/include" \
-                                 --x-libraries="${SYSROOT_PREFIX}/usr/lib" \
-                                 --enable-xlib \
-                                 --enable-xlib-xrender \
-                                 --with-x"
-  elif [ "${DISTRO}" = "Lakka" ]; then
+  if [[ "${DISPLAYSERVER}" = "x11" ]] || [[ "${DISTRO}" = "Lakka" ]] && [[ ! "${DISPLAYSERVER}" = "wl" ]]; then
     PKG_CONFIGURE_OPTS_TARGET+=" --x-includes="${SYSROOT_PREFIX}/usr/include" \
                                  --x-libraries="${SYSROOT_PREFIX}/usr/lib" \
                                  --enable-xlib \

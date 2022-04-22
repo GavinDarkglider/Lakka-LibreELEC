@@ -1,5 +1,5 @@
 PKG_NAME="glibc"
-PKG_VERSION="2.27"
+PKG_VERSION="2.28"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.gnu.org/software/libc/"
 PKG_URL="http://ftp.gnu.org/pub/gnu/glibc/$PKG_NAME-$PKG_VERSION.tar.xz"

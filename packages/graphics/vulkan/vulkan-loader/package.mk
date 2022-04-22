@@ -10,9 +10,6 @@ PKG_SITE="https://github.com/KhronosGroup/Vulkan-Loader"
 PKG_URL="https://github.com/KhronosGroup/Vulkan-Loader/archive/v${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_HOST="toolchain:host vulkan-headers:host"
 PKG_DEPENDS_TARGET="toolchain vulkan-headers"
-if [ ${DISPLAYSERVER} = "x11" ]; then
-  PKG_DEPENDS_TARGET+=" xrandr"
-fi
 PKG_LONGDESC="Vulkan Installable Client Driver (ICD) Loader."
 
 configure_package() {
@@ -23,7 +20,7 @@ configure_package() {
 
   # Displayserver Support
   if [ "${DISPLAYSERVER}" = "x11" ]; then
-    PKG_DEPENDS_TARGET+=" libxcb libX11"
+    PKG_DEPENDS_TARGET+=" libxcb libX11 xrandr"
   elif [ "${DISPLAYSERVER}" = "wl" ]; then
     PKG_DEPENDS_TARGET+=" wayland"
   fi
