@@ -50,6 +50,17 @@ if [ "${DISTRO}" = "Lakka" ]; then
     PKG_MESON_OPTS_TARGET="${PKG_MESON_OPTS_TARGET//-Dnouveau=disabled/-Dnouveau=enabled}"
 fi
 
+if [ "${PROJECT}" = "L4T" ]; then
+  PKG_MESON_OPTS_TARGET="${PKG_MESON_OPTS_TARGET//-Dtegra=false/-Dtegra=true}"
+
+  configure_target() {
+    create_meson_conf_target ${TARGET} ${MESON_CONF}
+    sed -i "s|'-fuse-ld=gold'|'-fuse-ld=gold', '-Bsymbolic-functions'|g"  ${PKG_BUILD}/.aarch64-libreelec-linux-gnueabi/meson.conf
+    echo "Executing (target): meson ${TARGET_MESON_OPTS} --cross-file=${MESON_CONF} ${PKG_MESON_OPTS_TARGET} ${PKG_MESON_SCRIPT%/*}" | tr -s " "
+    CC="${HOST_CC}" CXX="${HOST_CXX}" meson ${TARGET_MESON_OPTS} --cross-file=${MESON_CONF} ${PKG_MESON_OPTS_TARGET} ${PKG_MESON_SCRIPT%/*}
+  }
+fi
+
 post_makeinstall_target() {
   # Remove all test programs installed by install-test-programs=true except modetest
   for PKG_LIBDRM_TEST in \

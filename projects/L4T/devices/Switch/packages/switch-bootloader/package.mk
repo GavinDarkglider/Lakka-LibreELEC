@@ -35,9 +35,13 @@ EOF
      sed -i "s/@DISTRO_ID@/${ID}/g" ${PKG_BUILD}/README_CONFIG.txt
      sed -i "s/@DISTRO@/${DISTRO}/g" ${PKG_BUILD}/README_CONFIG.txt
   cp ${PKG_DIR}/assets/boot.txt ${PKG_BUILD}/
-    sed -i "s/@DISTRO_PATH@/${DISTRO_PATH}/g" ${PKG_BUILD}/boot.txt
-    sed -i "s/@DISTRO_ID@/${ID}/g" ${PKG_BUILD}/boot.txt
-
+  sed -i "s/@DISTRO_PATH@/${DISTRO_PATH}/g" ${PKG_BUILD}/boot.txt
+  sed -i "s/@DISTRO_ID@/${ID}/g" ${PKG_BUILD}/boot.txt
+  if [ "${DISPLAYSERVER}" = "x11" ]; then
+    sed -i "s/@WAYLAND_BOOT_ARGS@//g" ${PKG_BUILD}/boot.txt
+  elif [ "${DISPLAYSERVER}" = "wl" ]; then
+    sed -i "s/@WAYLAND_BOOT_ARGS@/tegra-udrm.modeset=1/g" ${PKG_BUILD}/boot.txt
+  fi
   mkimage -A arm -T script -O linux -d ${PKG_BUILD}/boot.txt ${PKG_BUILD}/boot.scr
 }
 

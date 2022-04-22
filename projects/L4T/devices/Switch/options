@@ -11,7 +11,7 @@ case ${TARGET_ARCH} in
         ;;
 esac
 
-ADDITIONAL_PACKAGES+=" switch-joycon-bluetooth-dock-configs switch-alsa-ucm-configs libcec v4l-utils usb-gadget-scripts switch-cpu-profile switch-gpu-profile" 
+ADDITIONAL_PACKAGES+=" switch-joycon-bluetooth-dock-configs switch-alsa-ucm-configs v4l-utils usb-gadget-scripts switch-cpu-profile switch-gpu-profile" 
 
 if [ "${DISTRO}" = "Lakka" ]; then
   ADDITIONAL_PACKAGES+=" mergerfs"
@@ -23,9 +23,11 @@ fi
 
 BOOTLOADER="switch-bootloader" # this is a fake bootloader since coreboot and u-boot are sideloaded
 
-ADDITIONAL_DRIVERS+=" xf86-input-libinput"
+if [ "${DISPLAYSERVER}" = "x11" ]; then
+  ADDITIONAL_DRIVERS+=" xf86-input-libinput"
+fi
 
-GENERIC_L4T_VERSION=32.3.1 
+GENERIC_L4T_VERSION=32.7.1 
 L4T_DEVICE_TYPE="t210" 
 #L4T_COMBINED_KERNEL_SHA256="346baf95b5e13f416eb07f7e354b6b2aec1138b72c745ef222b55247c5150211"
 

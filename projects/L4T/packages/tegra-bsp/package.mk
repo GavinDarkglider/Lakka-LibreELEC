@@ -4,16 +4,26 @@
 
 PKG_NAME="tegra-bsp"
 PKG_VERSION="${GENERIC_L4T_VERSION}"
+PKG_DEPENDS_INIT=""
+PKG_DEPENDS_HOST=""
+PKG_DEPENDS_TARGET="mesa libglvnd"
 
-PKG_DEPENDS_TARGET="mesa libglvnd xorg-server"
-PKG_DEPENDS_HOST="xorg-server"
 PKD_DEPENDS_INIT="busybox:init"
+if [ "${DISPLAYSERVER}" = "x11" ]; then
+  PKG_DEPENDS_HOST+=" xorg-server"
+  PKG_DEPENDS_TARGET+=" xorg-server"
+fi
 
 if [  "${VULKAN}" = "" -o "${VULKAN}" = "no" ]; then
   :
 else
   PKG_DEPENDS_TARGET+=" vulkan-loader"
+  if [ ! ${DISPLAYSERVER} = "x11" ]; then
+    #Vulkan requires these X11 packages on L4T.
+    PKG_DEPENDS_TARGET+=" libX11 libXau libXext"
+  fi
 fi
+
 if [  "${PULSEAUDIO_SUPPORT}" = "yes" ]; then
   PKG_DEPENDS_TARGET+=" alsa-plugins pulseaudio"
 fi
@@ -183,7 +193,10 @@ make_host() {
   rm -r data
   cd ..
   rm -rf multimedia_api
-
+  if [ ! -d ${PKG_BUILD}/host_install/usr/include/libdrm/nvidia ]; then
+    mkdir -p ${PKG_BUILD}/host_install/usr/include/libdrm/nvidia
+  fi
+  cp ${PKG_DIR}/assets/tegra_drm.h ${PKG_BUILD}/host_install/usr/include/libdrm/nvidia/
   cd ${PKG_BUILD}/host_install
 
   # extract BSP files
@@ -232,10 +245,10 @@ make_host() {
 
   # Remove unneeded files
   rm -rf usr/lib/ld.so.conf usr/lib/ubiquity etc var opt usr/lib/nvidia usr/share usr/lib/systemd usr/bin usr/sbin usr/lib/firmware usr/lib/xorg
-  rm usr/lib/aarch64-linux-gnu/tegra/nvidia_icd.json usr/lib/aarch64-linux-gnu/tegra-egl/nvidia.json
+  rm usr/lib/aarch64-linux-gnu/tegra/nvidia_icd.json #usr/lib/aarch64-linux-gnu/tegra-egl/nvidia.json
 
   #remove not needed symlinks
-  rm usr/lib/libv4l usr/lib/tegra usr/lib/tegra-egl usr/lib/nvidia.json usr/lib/nvidia_icd.json
+  rm usr/lib/libv4l usr/lib/tegra usr/lib/tegra-egl usr/lib/nvidia_icd.json
 
   # Refresh symlinks
   cd usr/lib/
@@ -252,8 +265,8 @@ make_host() {
   ln -sfn libv4l2.so.0 libv4l2.so
   ln -sfn libv4lconvert.so.0.0.999999 libv4lconvert.so.0
   ln -sfn libv4lconvert.so.0 libv4lconvert.so
-  ln -sfn libnvgbm.so libgbm.so.1
-  ln -sfn libnvidia-egl-wayland.so libnvidia-egl-wayland.so.1
+  #ln -sfn libnvidia-egl-wayland.so libnvidia-egl-wayland.so.1
+  rm libnvidia-egl-wayland.so
 }
 
 make_init() {
@@ -336,8 +349,14 @@ make_target() {
   rm -rf usr/lib/nvidia usr/share/backgrounds usr/share/doc usr/share/nvpmodel_indicator usr/share/polkit-1
   rm -rf opt var
 
+  if [ ! "${DISPLAYSERVER}" = "x11" ]; then
+    #Remove X11 drivers in non X builds.
+    #rm -r usr/lib/xorg
+    :
+  fi
+
   #remove not needed symlinks
-  rm usr/lib/libv4l usr/lib/tegra usr/lib/tegra-egl  usr/lib/nvidia.json
+  rm usr/lib/libv4l usr/lib/tegra usr/lib/tegra-egl #usr/lib/nvidia.json
 
   if [ "${DEVICE}" = "Switch" ]; then
     #We dont need these with Switch UCM
@@ -352,6 +371,12 @@ make_target() {
   cd usr/lib/
   ln -sfn libcuda.so.1.1 libcuda.so
   ln -sfn libdrm.so.2 libdrm_nvdc.so
+  #Debug remove
+#  rm libdrm.so.2
+#  rm libdrm_nvdc.so
+#  ln -sfn /storage/libdrm_nvdc.so libdrm_nvdc.so
+#  ln -sfn libdrm_nvdc.so libdrm.so.2
+
   ln -sfn libnvbufsurface.so.1.0.0 libnvbufsurface.so
   ln -sfn libnvbufsurftransform.so.1.0.0 libnvbufsurftransform.so
   ln -sfn libnvbuf_utils.so.1.0.0 libnvbuf_utils.so
@@ -363,8 +388,8 @@ make_target() {
   ln -sfn libv4l2.so.0 libv4l2.so
   ln -sfn libv4lconvert.so.0.0.999999 libv4lconvert.so.0
   ln -sfn libv4lconvert.so.0 libv4lconvert.so
-  ln -sfn libnvgbm.so libgbm.so.1
-  ln -sfn libnvidia-egl-wayland.so libnvidia-egl-wayland.so.1
+  #ln -sfn libnvidia-egl-wayland.so libnvidia-egl-wayland.so.1
+  rm libnvidia-egl-wayland.so
 
   if [ ! "${VULKAN}" = "" -a ! "${VULKAN}" = "no" ]; then
     #Fix Vulkan ICD
@@ -377,7 +402,8 @@ make_target() {
   mv aarch64-linux-gnu/tegra-egl/nvidia.json ../share/glvnd/egl_vendor.d/10_nvidia.json
 
   #Fix EGL configs
-  sed -i 's:libnvidia-egl-wayland.so.1:/usr/lib/libnvidia-egl-wayland.so.1:g' ../share/egl/egl_external_platform.d/nvidia_wayland.json
+  #sed -i 's:libnvidia-egl-wayland.so.1:/usr/lib/libnvidia-egl-wayland.so.1:g' ../share/egl/egl_external_platform.d/nvidia_wayland.json
+  rm ../share/egl/egl_external_platform.d/nvidia_wayland.json
 
   #More symlinking
   if [  -d "${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/custom-tegra-firmware" ]; then
@@ -474,6 +500,8 @@ makeinstall_target() {
       cat ${PKG_DIR}/assets/10-monitor.conf >> ${INSTALL}/etc/X11/xorg.conf
       cat ${PKG_DIR}/assets/50-joysticks.conf >> ${INSTALL}/etc/X11/xorg.conf
       cat ${PKG_DIR}/assets/20-touchscreen.conf >> ${INSTALL}/etc/X11/xorg.conf
+    else
+      echo tegra-udrm modeset=1 >> ${INSTALL}/etc/modules
     fi
   fi
 }

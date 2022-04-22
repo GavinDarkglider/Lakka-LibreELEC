@@ -11,7 +11,7 @@ PKG_DEPENDS_TARGET="toolchain"
 PKG_LONGDESC="libglvnd is a vendor-neutral dispatch layer for arbitrating OpenGL API calls between multiple vendors."
 
 configure_package() {
-  if [ "${DISPLAYSERVER}" = "x11" -o "${DISTRO}" = "Lakka" ]; then
+  if [ "${DISPLAYSERVER}" = "x11" ]; then
     PKG_DEPENDS_TARGET+=" libX11 libXext xorgproto"
   fi
 }
@@ -23,13 +23,7 @@ pre_configure_target(){
     if [ "${OPENGLES_SUPPORT}" = "no" ]; then
       PKG_MESON_OPTS_TARGET+=" -Dgles2=false"
     fi
-  else
-    PKG_MESON_OPTS_TARGET="-Dheaders=true \
-                           -Dx11=enabled \
-                           -Degl=true \
-                           -Dglx=enabled \
-                           -Dgles1=true \
-                           -Dgles2=true"
+
   fi
 
   if [ "${DEVICE}" = "Odin" ]; then

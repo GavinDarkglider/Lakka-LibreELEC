@@ -1,0 +1,110 @@
+From c532cd7f9f2dce599ad3cdf57361ce9b097328e2 Mon Sep 17 00:00:00 2001
+From: Ronald Brown <rbrown4014@yahoo.com>
+Date: Sun, 16 Apr 2023 03:48:33 +0200
+Subject: [PATCH] Sway almost compiles
+
+---
+ packages/graphics/gdk-pixbuf/package.mk     | 15 +++++++++++++++
+ packages/wayland/compositor/sway/package.mk |  2 +-
+ packages/wayland/lib/wlroots/package.mk     |  8 ++++----
+ packages/wayland/util/swaybg/package.mk     |  2 +-
+ projects/L4T/options                        |  5 ++++-
+ 5 files changed, 25 insertions(+), 7 deletions(-)
+
+diff --git a/packages/graphics/gdk-pixbuf/package.mk b/packages/graphics/gdk-pixbuf/package.mk
+index d18905e64e..cc1ef8d134 100644
+--- a/packages/graphics/gdk-pixbuf/package.mk
++++ b/packages/graphics/gdk-pixbuf/package.mk
+@@ -32,3 +32,18 @@ pre_configure_target() {
+     PKG_MESON_OPTS_TARGET+=" -Dbuiltin_loaders=all"
+   fi
+ }
++
++pre_configure_host() {
++  PKG_MESON_OPTS_HOST="--wrap-mode=nodownload \
++                         -Dgtk_doc=false \
++                         -Ddocs=false \
++                         -Dintrospection=disabled \
++                         -Dman=false \
++                         -Drelocatable=false \
++                         -Dinstalled_tests=false \
++                         -Dtests=false"
++
++  if [ "${DISPLAYSERVER}" != "x11" ]; then
++    PKG_MESON_OPTS_HOST+=" -Dbuiltin_loaders=all"
++  fi
++}
+diff --git a/packages/wayland/compositor/sway/package.mk b/packages/wayland/compositor/sway/package.mk
+index d0dd6bad7e..27244407c0 100644
+--- a/packages/wayland/compositor/sway/package.mk
++++ b/packages/wayland/compositor/sway/package.mk
+@@ -18,7 +18,7 @@ PKG_MESON_OPTS_TARGET="-Ddefault-wallpaper=false \
+                        -Dswaynag=true \
+                        -Dxwayland=disabled \
+                        -Dtray=disabled \
+-                       -Dgdk-pixbuf=enabled \
++                       -Dgdk-pixbuf=disabled \
+                        -Dman-pages=disabled \
+                        -Dsd-bus-provider=auto"
+ 
+diff --git a/packages/wayland/lib/wlroots/package.mk b/packages/wayland/lib/wlroots/package.mk
+index 73c16430da..90fb100a55 100644
+--- a/packages/wayland/lib/wlroots/package.mk
++++ b/packages/wayland/lib/wlroots/package.mk
+@@ -13,13 +13,13 @@ PKG_LONGDESC="A modular Wayland compositor library"
+ PKG_RENDERERS=""
+ 
+ # OpenGLES Support
+-if [ "${OPENGLES_SUPPORT}" = "yes" ]; then
+-  PKG_DEPENDS_TARGET+=" ${OPENGLES}"
++#if [ "${OPENGLES_SUPPORT}" = "yes" -o "${PROJECT}" ="L4T" ]; then
++#  PKG_DEPENDS_TARGET+=" ${OPENGLES}"
+   PKG_RENDERERS+=" gles2"
+-fi
++#fi
+ 
+ # Vulkan Support
+-if [ "${VULKAN_SUPPORT}" = "yes" ]; then
++if [ "${VULKAN_SUPPORT}" = "yes" -a ! "${PROJECT}" = "L4T" ]; then
+   PKG_DEPENDS_TARGET+=" ${VULKAN}"
+   PKG_RENDERERS+=" vulkan"
+ fi
+diff --git a/packages/wayland/util/swaybg/package.mk b/packages/wayland/util/swaybg/package.mk
+index 8feb5d42c2..46c462fef3 100644
+--- a/packages/wayland/util/swaybg/package.mk
++++ b/packages/wayland/util/swaybg/package.mk
+@@ -10,7 +10,7 @@ PKG_URL="https://github.com/swaywm/swaybg/archive/v${PKG_VERSION}.tar.gz"
+ PKG_DEPENDS_TARGET="toolchain wayland wayland-protocols cairo pango gdk-pixbuf"
+ PKG_LONGDESC="Wallpaper tool for Wayland compositors"
+ 
+-PKG_MESON_OPTS_TARGET="-Dgdk-pixbuf=enabled \
++PKG_MESON_OPTS_TARGET="-Dgdk-pixbuf=disabled \
+                        -Dman-pages=disabled"
+ 
+ pre_configure_target() {
+diff --git a/projects/L4T/options b/projects/L4T/options
+index 1ddf406c4e..7a0c3057af 100644
+--- a/projects/L4T/options
++++ b/projects/L4T/options
+@@ -2,6 +2,9 @@
+ # setup system defaults
+ ################################################################################
+ 
++  CUSTOM_LIBRETRO_CORES=""
++  LIBRETRO_CORES=""
++
+     #VALGRIND="yes"
+   
+   # Bootloader to use (syslinux / u-boot / bcm2835-bootloader)
+@@ -65,7 +68,7 @@
+     UVESAFB_SUPPORT="no"
+ 
+   # Displayserver to use (x11 / no)
+-    DISPLAYSERVER="x11"
++    DISPLAYSERVER="wl"
+ 
+   # Windowmanager to use (ratpoison / fluxbox / no)
+     WINDOWMANAGER="no"
+-- 
+2.25.1
+

@@ -9,6 +9,9 @@ PKG_LICENSE="OSS"
 PKG_SITE="http://www.mesa3d.org/"
 PKG_URL="https://mesa.freedesktop.org/archive/mesa-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain expat libdrm Mako:host"
+#if [ "${PROJECT}" = "L4T" ]; then
+#  PKG_DEPENDS_TARGET+=" tegra-bsp:host"
+#fi
 PKG_LONGDESC="Mesa is a 3-D graphics library with an API."
 
 get_graphicdrivers
@@ -107,9 +110,3 @@ if [ "${VULKAN_SUPPORT}" = "yes" ]; then
 else
   PKG_MESON_OPTS_TARGET+=" -Dvulkan-drivers="
 fi
-
-post_makeinstall_target() {
-  if [ "${PROJECT}" = "L4T" ]; then
-    safe_remove ${INSTALL}/usr/lib/libgbm.so.1
-  fi
-}

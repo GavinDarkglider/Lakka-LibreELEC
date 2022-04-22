@@ -33,46 +33,50 @@
   # SquashFS compression method (gzip / lzo / xz)
     SQUASHFS_COMPRESSION="lzo"
 
+  CUSTOM_LIBRETRO_CORES=""
+  LIBRETRO_CORES=""
 ################################################################################
 # setup project defaults
 ################################################################################
-  #Set LIBDRM config options.... this isnt needed on L4T, as we install seperate libDRM in tegra-bsp package.
-    #LIBDRM_CONFIG="--enable-tegra-experimental-api"
-  
+
   # build and install ALSA Audio support (yes / no)
     ALSA_SUPPORT="yes"
   
   # build and install PulseAudio support (yes / no)
     PULSEAUDIO_SUPPORT="yes"
 
-  # build and install WireGuard support (yes / no)
-    WIREGUARD_SUPPORT="no"
-
-    if [ "${DISTRO}" = "Lakka" ]; then
-      # OpenGL(X) implementation to use (no / Mesa)  
-        OPENGLES="no" #OpenGLES works, but breaks some cores that dont support it(Moonlight)
-
-      # OpenGL implementation to use (no / Mesa)
-        OPENGL="mesa"
-    else
-      # OpenGL(X) implementation to use (no / Mesa)  
-        OPENGLES="mesa" #OpenGLES works, but breaks some cores that dont support it(Moonlight)
-
-      # OpenGL implementation to use (no / Mesa)
-        OPENGL="mesa"
-    fi
-
-  # Vulkan Support
-   VULKAN="vulkan-loader"
-  # include uvesafb support (yes / no)
-    UVESAFB_SUPPORT="no"
-
   # Displayserver to use (x11 / no)
     DISPLAYSERVER="wl"
 
-  # Windowmanager to use (ratpoison / fluxbox / no)
-    WINDOWMANAGER="no"
+  # build and install WireGuard support (yes / no)
+    WIREGUARD_SUPPORT="no"
 
+ if [ "${DISTRO}" = "Lakka" ]; then  
+    if [ "${DISPLAYSERVER}" = "x11" ]; then
+     # OpenGL(X) implementation to use (no / Mesa)  
+       OPENGLES="no"
+
+     # OpenGL implementation to use (no / Mesa)
+       OPENGL="mesa"
+     else
+     # OpenGL(X) implementation to use (no / Mesa) 
+       OPENGLES="mesa"
+
+     # OpenGL implementation to use (no / Mesa)
+       OPENGL="no"
+    fi
+fi
+   # Vulkan Support
+     VULKAN="vulkan-loader"
+
+    UVESAFB_SUPPORT="no"
+
+  # Windowmanager to use (ratpoison / fluxbox / no)
+   if [ "${DISPLAYSERVER}" = "x11" ]; then
+      WINDOWMANAGER="no"
+   elif [ "${DISPLAYSERVER}" = "wl" ]; then
+      WINDOWMANAGER="sway"
+   fi
   # Xorg Graphic drivers to use (all / i915,i965,r200,r300,r600,nvidia,nouveau)
   # Space separated list is supported,
   # e.g. GRAPHIC_DRIVERS="i915 i965 r300 r600 radeonsi nvidia nouveau"
@@ -92,6 +96,10 @@
   # Space separated list is supported,
   # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
     ADDITIONAL_DRIVERS="tegra-bsp"
+  #Wayland additional drivers
+    if [ "${DISPLAYSERVER}" = "wl" ]; then
+        ADDITIONAL_DRIVERS+=" tegra-udrm-gbm"
+    fi
 
   # additional Firmware to use (dvb-firmware, misc-firmware, wlan-firmware)
   # Space separated list is supported,

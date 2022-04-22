@@ -20,9 +20,9 @@ PKG_BUILD_FLAGS="+pic +pic:host"
 
 PKG_CONFIGURE_OPTS_TARGET="ac_cv_lib_z_zlibVersion=yes \
                            --enable-static \
-                           --disable-shared"
+                           --enable-shared"
 
-PKG_CONFIGURE_OPTS_HOST="--enable-static --disable-shared"
+PKG_CONFIGURE_OPTS_HOST="--enable-static --enable-shared"
 
 pre_configure_host() {
   export CPPFLAGS="${CPPFLAGS} -I${TOOLCHAIN}/include"

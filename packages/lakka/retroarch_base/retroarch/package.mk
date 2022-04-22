@@ -3,7 +3,10 @@ PKG_VERSION="1ec036fb91759071eccf3e0b71aa82f0a93b61bf"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/RetroArch"
 PKG_URL="${PKG_SITE}.git"
-PKG_DEPENDS_TARGET="toolchain freetype zlib ffmpeg libass libvdpau libxkbcommon glsl_shaders slang_shaders systemd libpng fontconfig"
+PKG_DEPENDS_TARGET="toolchain freetype zlib ffmpeg libass libxkbcommon glsl_shaders slang_shaders systemd libpng fontconfig"
+if [ "${DISPLAYSERVER}" = "x11" ]; then
+  PKG_DEPENDS_TARGET+=" libvdpau"
+fi
 PKG_LONGDESC="Reference frontend for the libretro API."
 PKG_LR_UPDATE_TAG="yes"
 
@@ -115,14 +118,19 @@ else
 fi
 
 if [ "${PROJECT}" = "L4T" ]; then
+  if [ "${DISPLAYSERVER}" = "x11" ]; then
+    PKG_CONFIGURE_OPTS_TARGET+=" --enable-xinerama"
+  fi
   PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-kms/--disable-kms}
-  #EGL break gl1 support so if opengl enabled, force disable egl/gles
-  if [ "${OPENGL_SUPPORT}" = yes ]; then
-    PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-egl/--disable-egl}
-    PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-opengles3_1/}
-    PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-opengles3_2/}
-    PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-opengles3/}
-    PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-opengles/}
+  #EGL breaks gl1 support so if opengl enabled, force disable egl/gles
+  if [ "${DISPLAYSERVER}" = "x11" ]; then
+    if [ "${OPENGL_SUPPORT}" = yes ]; then
+      PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-egl/--disable-egl}
+      PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-opengles3_1/}
+      PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-opengles3_2/}
+      PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-opengles3/}
+      PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-opengles/}
+    fi
   fi
 
   if [ "${DEVICE}" = "Switch" ]; then
@@ -315,7 +323,10 @@ makeinstall_target() {
       echo 'video_hard_sync = "true"' >> ${INSTALL}/etc/retroarch.cfg
     fi
 
-    sed -i -e 's|^input_driver =.*|input_driver= "x"|' ${INSTALL}/etc/retroarch.cfg
+    if [ "${DISPLAYSERVER}" = "x11" ]; then
+      sed -i -e 's|^input_driver =.*|input_driver= "x"|' ${INSTALL}/etc/retroarch.cfg
+    fi
+
     sed -i -e 's|^video_smooth =.*|video_smooth = "true"|' ${INSTALL}/etc/retroarch.cfg
     sed -i -e 's|^menu_driver =.*|menu_driver = "ozone"|' ${INSTALL}/etc/retroarch.cfg
 
