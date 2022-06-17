@@ -52,6 +52,14 @@ case "${LINUX}" in
     PKG_URL="https://www.kernel.org/pub/linux/kernel/v5.x/${PKG_NAME}-${PKG_VERSION}.tar.xz"
     PKG_PATCH_DIRS="default ${DISTRO}-default"
     ;;
+
+  ayn-odin)
+   #PKG_VERSION="5.18"
+   PKG_SHA256="2b941fdcc8970b1343902f7856a740241ec5e726"
+   PKG_VERSION="${PKG_SHA256}"
+   PKG_URL="https://gitlab.com/tjstyle/linux.git"
+   PKG_PATCH_DIRS="default ayn-odin"
+   ;;
   *)
     if [ "${DISTRO}" = "Lakka" ]; then
       PKG_VERSION="5.10.109"
@@ -135,7 +143,7 @@ make_host() {
        headers_check
 
      export PATH=${CURRENT_PATH}
-  else
+  elif [ ! "${LINUX}" = "ayn-odin" ]; then
     make \
       ARCH=${HEADERS_ARCH:-$TARGET_KERNEL_ARCH} \
       HOSTCC="${TOOLCHAIN}/bin/host-gcc" \
@@ -486,9 +494,12 @@ makeinstall_target() {
   rm -f ${INSTALL}/$(get_kernel_overlay_dir)/lib/modules/*/build
   rm -f ${INSTALL}/$(get_kernel_overlay_dir)/lib/modules/*/source
 
-  if [ "$BOOTLOADER" = "switch-bootloader" ]; then
+  if [ "${BOOTLOADER}" = "switch-bootloader" ]; then
     mkdir -p $INSTALL/usr/share/bootloader/boot/
     cp arch/arm64/boot/dts/tegra210-icosa.dtb $INSTALL/usr/share/bootloader/boot/
+  elif [ "${BOOTLOADER}" = "odin-bootloader" ]; then
+    mkdir -p $INSTALL/usr/share/bootloader/boot/
+    cp arch/arm64/boot/dts/qcom/sdm845-ayn-odin.dtb $INSTALL/usr/share/bootloader/boot/
   elif [ "${BOOTLOADER}" = "u-boot" ]; then
     mkdir -p ${INSTALL}/usr/share/bootloader
     for dtb in arch/${TARGET_KERNEL_ARCH}/boot/dts/*.dtb arch/${TARGET_KERNEL_ARCH}/boot/dts/*/*.dtb; do
