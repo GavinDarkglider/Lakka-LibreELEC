@@ -1,6 +1,4 @@
 #!/bin/bash
-echo Initial Release file for odin, Doesnt actually do anything yet
-
 if [ "${DISTRO}" = "Lakka" ]; then
   DISTRO_FOLDER_NAME="lakka"
 elif [ "${DISTRO}" = "LibreELEC" ]; then
