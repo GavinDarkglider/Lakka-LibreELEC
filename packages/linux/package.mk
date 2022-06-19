@@ -38,7 +38,7 @@ case "${LINUX}" in
     PKG_SOURCE_NAME="linux-${LINUX}-${PKG_VERSION}.tar.gz"
     ;;
   L4T)
-    PKG_VERSION=$DEVICE
+    PKG_VERSION=${DEVICE}
     PKG_URL="l4t-kernel-sources"
     GET_HANDLER_SUPPORT="l4t-kernel-sources"
     PKG_PATCH_DIRS="${PROJECT} ${PROJECT}/${DEVICE}"
@@ -143,8 +143,10 @@ make_host() {
        headers_check
 
      export PATH=${CURRENT_PATH}
-  elif [ ! "${LINUX}" = "ayn-odin" ]; then
-    make \
+  elif [ "${LINUX}" = "ayn-odin" ]; then
+    :
+  else
+   make \
       ARCH=${HEADERS_ARCH:-$TARGET_KERNEL_ARCH} \
       HOSTCC="${TOOLCHAIN}/bin/host-gcc" \
       HOSTCXX="${TOOLCHAIN}/bin/host-g++" \
@@ -190,7 +192,6 @@ pre_make_target() {
   pkg_lock_status "ACTIVE" "linux:target" "build"
 
   cp ${PKG_KERNEL_CFG_FILE} ${PKG_BUILD}/.config
-
   # set initramfs source
   ${PKG_BUILD}/scripts/config --set-str CONFIG_INITRAMFS_SOURCE "$(kernel_initramfs_confs) ${BUILD}/initramfs"
 
@@ -494,12 +495,13 @@ makeinstall_target() {
   rm -f ${INSTALL}/$(get_kernel_overlay_dir)/lib/modules/*/build
   rm -f ${INSTALL}/$(get_kernel_overlay_dir)/lib/modules/*/source
 
-  if [ "${BOOTLOADER}" = "switch-bootloader" ]; then
+  if [ "${BOOTLOADER}" = "switch-bootloader" -o "${BOOTLOADER}" = "odin-bootloader" ]; then
     mkdir -p $INSTALL/usr/share/bootloader/boot/
-    cp arch/arm64/boot/dts/tegra210-icosa.dtb $INSTALL/usr/share/bootloader/boot/
-  elif [ "${BOOTLOADER}" = "odin-bootloader" ]; then
-    mkdir -p $INSTALL/usr/share/bootloader/boot/
-    cp arch/arm64/boot/dts/qcom/sdm845-ayn-odin.dtb $INSTALL/usr/share/bootloader/boot/
+    if [ "${BOOTLOADER}" = "switch-bootloader" ]; then
+      cp arch/arm64/boot/dts/tegra210-icosa.dtb ${INSTALL}/usr/share/bootloader/boot/
+    else
+      cp arch/arm64/boot/dts/qcom/sdm845-ayn-odin.dtb ${INSTALL}/usr/share/bootloader/boot/
+    fi
   elif [ "${BOOTLOADER}" = "u-boot" ]; then
     mkdir -p ${INSTALL}/usr/share/bootloader
     for dtb in arch/${TARGET_KERNEL_ARCH}/boot/dts/*.dtb arch/${TARGET_KERNEL_ARCH}/boot/dts/*/*.dtb; do

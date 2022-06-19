@@ -559,7 +559,7 @@ mount_flash() {
   else
     mount_part "$boot" "/flash" "rw,noatime"
   fi
-  
+
   if [ -f /flash/post-flash.sh ]; then
     . /flash/post-flash.sh
   fi
@@ -988,7 +988,7 @@ prepare_sysroot() {
 # Do init tasks to bring up system
 
 # hide kernel log messages on console
-echo '1 4 1 7' > /proc/sys/kernel/printk
+#echo '1 4 1 7' > /proc/sys/kernel/printk
 
 # run platform_init script if exists
 if [ -f "./platform_init" ]; then
@@ -996,8 +996,8 @@ if [ -f "./platform_init" ]; then
 fi
 
 # clear screen and hide cursor
-clear
-hidecursor
+#clear
+#hidecursor
 
 # parse command line arguments
 for arg in $(cat /proc/cmdline); do
@@ -1110,7 +1110,7 @@ if [ "${boot%%=*}" = "FILE" ]; then
 fi
 
 debug_msg "Unique identifier for this client: ${MACHINE_UID:-NOT AVAILABLE}"
-
+echo hello
 # main boot sequence
 for BOOT_STEP in \
     set_consolefont \
