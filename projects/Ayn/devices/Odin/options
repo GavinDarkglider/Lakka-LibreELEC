@@ -23,8 +23,6 @@ fi
 
 BOOTLOADER="odin-bootloader"
 
-ADDITIONAL_DRIVERS="xf86-input-libinput"
-
 
   # build and install ALSA Audio support (yes / no)
     ALSA_SUPPORT="yes"
@@ -64,6 +62,10 @@ ADDITIONAL_DRIVERS="xf86-input-libinput"
   # Space separated list is supported,
   # e.g. GRAPHIC_DRIVERS="i915 i965 r300 r600 radeonsi nvidia nouveau"
     GRAPHIC_DRIVERS="freedreno"
+
+    if [ "${DISPLAYSERVER}" = "x11" ]; then
+      ADDITIONAL_DRIVERS="xf86-input-libinput"
+    fi
 
   # KODI Player implementation to use (default / bcm2835-driver / libfslvpuwrap / libamcodec)
   #  KODIPLAYER_DRIVER="default"
