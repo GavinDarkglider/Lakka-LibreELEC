@@ -21,8 +21,8 @@ makeinstall_target() {
 makeinstall_init() {
   mkdir -p ${INSTALL}/splash
   if [ "${DISTRO}" = "Lakka" ]; then
-    cp ${PKG_DIR}/initramfs/splash/splash-1280-lakka.png ${INSTALL}/splash/splash-1280.png
+    cp ${PKG_DIR}/initramfs/splash/splash-1080-lakka.png ${INSTALL}/splash/splash-1080.png
   elif [ "${DISTRO}" = "LibreELEC" ]; then
-    cp ${PKG_DIR}/initramfs/splash/splash-1280-libreelec.png ${INSTALL}/splash/splash-1280.png
+    cp ${PKG_DIR}/initramfs/splash/splash-1080-libreelec.png ${INSTALL}/splash/splash-1080.png
   fi
 }
