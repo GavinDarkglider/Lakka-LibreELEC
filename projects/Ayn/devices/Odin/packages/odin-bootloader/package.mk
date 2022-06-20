@@ -5,14 +5,6 @@ PKG_DEPENDS_TARGET="odin-bootloader:init"
 PKG_DEPENDS_INIT="plymouth-lite:init"
 PKG_TOOLCHAIN="manual"
 
-make_target() {
-  echo 1
-}
-
-make_init() {
-  echo 2
-}
-
 makeinstall_target() {
   mkdir -p ${INSTALL}/usr/share/bootloader/boot/
   cp -Prv ${PKG_DIR}/files/boot/* ${INSTALL}/usr/share/bootloader/boot/

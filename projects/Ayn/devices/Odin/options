@@ -65,6 +65,7 @@ BOOTLOADER="odin-bootloader"
 
     if [ "${DISPLAYSERVER}" = "x11" ]; then
       ADDITIONAL_DRIVERS="xf86-input-libinput"
+      ADDITIONAL_PACKAGES+=" odin-xorg-configs"
     fi
 
   # KODI Player implementation to use (default / bcm2835-driver / libfslvpuwrap / libamcodec)
