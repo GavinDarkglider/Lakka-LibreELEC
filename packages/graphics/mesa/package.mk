@@ -37,7 +37,7 @@ PKG_MESON_OPTS_TARGET="-Ddri-drivers=${DRI_DRIVERS// /,} \
 if [ "${DISPLAYSERVER}" = "x11" ]; then
   PKG_DEPENDS_TARGET+=" xorgproto libXext libXdamage libXfixes libXxf86vm libxcb libX11 libxshmfence libXrandr libglvnd"
   export X11_INCLUDES=
-  PKG_MESON_OPTS_TARGET+=" -Dplatforms=x11 -Ddri3=enabled -Dglx=dri -Dglvnd=true"
+  PKG_MESON_OPTS_TARGET+=" -Dplatforms=x11 -Ddri3=enabled -Dglx=dri -Dglx-direct=true -Dglvnd=true"
 elif [ "${DISPLAYSERVER}" = "weston" ]; then
   PKG_DEPENDS_TARGET+=" wayland wayland-protocols"
   PKG_MESON_OPTS_TARGET+=" -Dplatforms=wayland -Ddri3=disabled -Dglx=disabled -Dglvnd=false"
@@ -49,6 +49,7 @@ else
 fi
 
 if [ "${LLVM_SUPPORT}" = "yes" ]; then
+  echo LLVM SUPPORT
   PKG_DEPENDS_TARGET+=" elfutils llvm"
   PKG_MESON_OPTS_TARGET+=" -Dllvm=enabled"
 else
@@ -73,16 +74,10 @@ if listcontains "${GRAPHIC_DRIVERS}" "crocus"; then
   PKG_MESON_OPTS_TARGET+=" -Dprefer-crocus=true"
 fi
 
-if [ listcontains "${GRAPHIC_DRIVERS}" "vmware" -o listcontains "${GRAPHIC_DRIVERS}" "freedreno" ]; then
+if listcontains "${GRAPHIC_DRIVERS}" "vmware" || listcontains "${GRAPHIC_DRIVERS}" "freedreno"; then
   PKG_MESON_OPTS_TARGET+=" -Dgallium-xa=enabled"
 else
   PKG_MESON_OPTS_TARGET+=" -Dgallium-xa=disabled"
-fi
-
-if listcontains "${GRAPHIC_DRIVERS}" "freedreno"; then
-  PKG_MESON_OPTS_TARGET+=" -Dgallium-freedreno=enabled"
-else
-  PKG_MESON_OPTS_TARGET+=" -Dgallium-freedreno=disabled"
 fi
 
 if [ "${OPENGLES_SUPPORT}" = "yes" ]; then
@@ -97,7 +92,7 @@ if [ "${VULKAN_SUPPORT}" = "yes" ]; then
     PKG_MESON_OPTS_TARGET="${PKG_MESON_OPTS_TARGET//-Dvulkan-drivers=/-Dvulkan-drivers=amd,intel}"
   elif [ "${PROJECT}" = "RPi" -a "${DEVICE:0:4}" = "RPi4" ]; then
     PKG_MESON_OPTS_TARGET="${PKG_MESON_OPTS_TARGET//-Dvulkan-drivers=/-Dvulkan-drivers=broadcom}"
-  elif [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ]; then
+  elif listcontains "${GRAPHIC_DRIVERS}" "freedreno"; then
     PKG_MESON_OPTS_TARGET="${PKG_MESON_OPTS_TARGET//-Dvulkan-drivers=/-Dvulkan-drivers=freedreno}"
   fi
 fi
