@@ -36,8 +36,8 @@ BOOTLOADER="odin-bootloader"
     WIREGUARD_SUPPORT="yes"
 
   # OpenGL implementation to use (no / Mesa)
-    OPENGL="mesa"
-    OPENGLES="no" #OpenGLES works, but breaks some cores that dont support it(Moonlight)
+    OPENGL="no"
+    OPENGLES="mesa"
     if [ "${DISTRO}" = "Lakka" ]; then
       # Enable Vulkan for Lakka
         VULKAN="vulkan-loader"

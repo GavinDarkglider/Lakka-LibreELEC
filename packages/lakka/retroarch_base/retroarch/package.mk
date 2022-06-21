@@ -304,24 +304,29 @@ makeinstall_target() {
   fi
 
   # Switch
-  if [ "${PROJECT}" = "L4T" -a "${DEVICE}" = "Switch" ]; then
+  if [ "${PROJECT}" = "L4T" -a "${DEVICE}" = "Switch" ] || [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ]; then
     echo 'menu_mouse_enable = "false"' >> ${INSTALL}/etc/retroarch.cfg
     echo 'menu_pointer_enable = "true"'>> ${INSTALL}/etc/retroarch.cfg
     echo 'video_hard_sync = "true"' >> ${INSTALL}/etc/retroarch.cfg
     echo 'video_crop_overscan = "false"' >> ${INSTALL}/etc/retroarch.cfg
-    echo 'input_joypad_driver = "udev"' >> ${INSTALL}/etc/retroarch.cfg
+
+    if [ ! "${PROJECT}" = "Ayn" -a ! "${DEVICE}" = "Odin" ]; then
+      echo 'input_joypad_driver = "udev"' >> ${INSTALL}/etc/retroarch.cfg
+    fi
 
     sed -i -e 's|^input_driver =.*|input_driver= "x"|' ${INSTALL}/etc/retroarch.cfg
     sed -i -e 's|^video_smooth =.*|video_smooth = "true"|' ${INSTALL}/etc/retroarch.cfg
-    sed -i -e 's|^menu_driver =.*|menu_driver = "ozone"|' ${INSTALL}/etc/retroarch.cfg
 
-    #Set Default Joycon index to Combined Joycons.
-    echo 'input_player1_joypad_index = "2"' >> ${INSTALL}/etc/retroarch.cfg
+    if [ ! "${PROJECT}" = "Ayn" -a ! "${DEVICE}" = "Odin" ]; then
+      sed -i -e 's|^menu_driver =.*|menu_driver = "ozone"|' ${INSTALL}/etc/retroarch.cfg
+      #Set Default Joycon index to Combined Joycons.
+      echo 'input_player1_joypad_index = "2"' >> ${INSTALL}/etc/retroarch.cfg
 
-    #Set Joypad as joypad with analog
-    echo 'input_libretro_device_p1 = "5"' >> ${INSTALL}/etc/retroarch.cfg
+      #Set Joypad as joypad with analog
+      echo 'input_libretro_device_p1 = "5"' >> ${INSTALL}/etc/retroarch.cfg
+    fi
 
-    #HACK: Temporary hack for touch in Nintendo Switch
+    #HACK: Temporary hack for touchscreen
     sed -i -e 's|^video_windowed_fullscreen =.*|video_windowed_fullscreen = "true"|' ${INSTALL}/etc/retroarch.cfg
   fi
 

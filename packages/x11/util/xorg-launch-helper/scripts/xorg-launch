@@ -5,6 +5,14 @@
 
 # wait for xorg-configure@.service
 # max 10 seconds
+
+if [ -f /storage/xorg-launch ]; then
+  cp /storage/xorg-launch /var/run/xorg-launch
+  chmod +x /var/run/xorg-launch
+  /var/run/xorg-launch
+  exit $?
+fi
+
 ARGS_FILE="/run/libreelec/xorg-settings.conf"
 for i in $(seq 1 40) ; do
   if [ -e "$ARGS_FILE" ] ; then
