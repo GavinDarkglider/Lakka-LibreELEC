@@ -1,0 +1,35 @@
+diff -Naur linux/arch/arm64/boot/dts/qcom/sdm845-ayn-odin.dts linux-2/arch/arm64/boot/dts/qcom/sdm845-ayn-odin.dts
+--- linux/arch/arm64/boot/dts/qcom/sdm845-ayn-odin.dts	2022-06-19 13:32:21.907253796 -0700
++++ linux-2/arch/arm64/boot/dts/qcom/sdm845-ayn-odin.dts	2022-06-27 12:31:35.775704571 -0700
+@@ -38,7 +38,7 @@
+ 
+ 		vol-up {
+ 			label = "Volume Up";
+-			linux,code = <KEY_VOLUMEUP>;
++			linux,code = <KEY_KPPLUS>;
+ 			gpios = <&pm8998_gpio 6 GPIO_ACTIVE_LOW>;
+ 		};
+ 	};
+@@ -403,7 +403,7 @@
+ 		interrupts = <0x0 0x8 1 IRQ_TYPE_EDGE_BOTH>;
+ 		debounce = <15625>;
+ 		bias-pull-up;
+-		linux,code = <KEY_VOLUMEDOWN>;
++		linux,code = <KEY_KPMINUS>;
+ 	};
+ };
+ 
+diff -Naur linux/drivers/input/misc/pm8941-pwrkey.c linux-2/drivers/input/misc/pm8941-pwrkey.c
+--- linux/drivers/input/misc/pm8941-pwrkey.c	2022-06-19 13:32:27.033639976 -0700
++++ linux-2/drivers/input/misc/pm8941-pwrkey.c	2022-06-27 12:32:33.275697030 -0700
+@@ -229,8 +229,8 @@
+ 				     &pwrkey->code);
+ 	if (error) {
+ 		dev_dbg(&pdev->dev,
+-			"no linux,code assuming power (%d)\n", error);
+-		pwrkey->code = KEY_POWER;
++			"no linux,code assuming sleep (%d)\n", error);
++		pwrkey->code = KEY_SLEEP;
+ 	}
+ 
+ 	pwrkey->input = devm_input_allocate_device(&pdev->dev);
