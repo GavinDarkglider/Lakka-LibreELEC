@@ -22,7 +22,7 @@ else
   XORG_COMPOSITE="--disable-composite"
 fi
 
-if [ ! "${OPENGL}" = "no" -o [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ] ]; then
+if [ ! "${OPENGL}" = "no" ]; then
   PKG_DEPENDS_TARGET+=" ${OPENGL} libepoxy"
   if [ ! "${PROJECT}" = "L4T" ]; then
     XORG_MESA="--enable-glx --enable-dri --enable-glamor"
@@ -31,6 +31,12 @@ if [ ! "${OPENGL}" = "no" -o [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ] ];
   fi
 else
   XORG_MESA="--disable-glx --disable-dri --disable-glamor"
+fi
+
+#We need to force this on Odin, no matter if we build for GL or GLES
+if [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ]; then
+  PKG_DEPENDS_TARGET+=" ${OPENGL} libepoxy"
+  XORG_MESA="--enable-glx --enable-dri --enable-glamor"
 fi
 
 PKG_CONFIGURE_OPTS_TARGET="--disable-debug \
@@ -137,8 +143,8 @@ post_makeinstall_target() {
       sed -i -e "s|@NVIDIA_VERSION@|$(get_pkg_version xf86-video-nvidia)|g" ${INSTALL}/usr/lib/xorg/xorg-configure
       sed -i -e "s|@NVIDIA_LEGACY_VERSION@|$(get_pkg_version xf86-video-nvidia-legacy)|g" ${INSTALL}/usr/lib/xorg/xorg-configure
 
-  if [ ! "${OPENGL}" = "no" -o [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ] ]; then
-    if [ ! "$PROJECT" = "L4T" ]; then
+  if [ ! "${OPENGL}" = "no" ]; then
+    if [[ ! "${PROJECT}" = "L4T" ]] || [[ ! "${PROJECT}" = "Ayn" ]] && [[ ! "${DEVICE}" = "Odin" ]]; then
       if [ -f ${INSTALL}/usr/lib/xorg/modules/extensions/libglx.so ]; then
         mv ${INSTALL}/usr/lib/xorg/modules/extensions/libglx.so \
            ${INSTALL}/usr/lib/xorg/modules/extensions/libglx_mesa.so # rename for cooperate with nvidia drivers
