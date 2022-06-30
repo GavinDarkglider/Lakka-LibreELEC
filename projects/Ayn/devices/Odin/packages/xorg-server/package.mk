@@ -36,7 +36,7 @@ fi
 #We need to force this on Odin, no matter if we build for GL or GLES
 if [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ]; then
   PKG_DEPENDS_TARGET+=" ${OPENGL} libepoxy"
-  XORG_MESA="--enable-glx --enable-dri --enable-glamor"
+  XORG_MESA="--enable-glx --enable-dri --enable-dri3 --enable-dri3 --enable-glamor"
 fi
 
 PKG_CONFIGURE_OPTS_TARGET="--disable-debug \

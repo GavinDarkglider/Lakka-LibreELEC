@@ -313,7 +313,7 @@ makeinstall_target() {
     echo 'audio_enable_menu_notice = "true"' >> ${INSTALL}/etc/retroarch.cfg
   fi
 
-  # Switch
+  # Switch and Odin
   if [ "${PROJECT}" = "L4T" -a "${DEVICE}" = "Switch" ] || [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ]; then
     echo 'menu_mouse_enable = "false"' >> ${INSTALL}/etc/retroarch.cfg
     echo 'menu_pointer_enable = "true"'>> ${INSTALL}/etc/retroarch.cfg
@@ -326,9 +326,9 @@ makeinstall_target() {
 
     sed -i -e 's|^input_driver =.*|input_driver= "x"|' ${INSTALL}/etc/retroarch.cfg
     sed -i -e 's|^video_smooth =.*|video_smooth = "true"|' ${INSTALL}/etc/retroarch.cfg
+    sed -i -e 's|^menu_driver =.*|menu_driver = "ozone"|' ${INSTALL}/etc/retroarch.cfg
 
     if [ ! "${PROJECT}" = "Ayn" -a ! "${DEVICE}" = "Odin" ]; then
-      sed -i -e 's|^menu_driver =.*|menu_driver = "ozone"|' ${INSTALL}/etc/retroarch.cfg
       #Set Default Joycon index to Combined Joycons.
       echo 'input_player1_joypad_index = "2"' >> ${INSTALL}/etc/retroarch.cfg
 

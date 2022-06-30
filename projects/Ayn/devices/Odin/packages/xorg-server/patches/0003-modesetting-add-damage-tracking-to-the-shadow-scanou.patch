@@ -1,0 +1,162 @@
+From f57f918303b3e4c8fbd538dedf4d33c5c57e5839 Mon Sep 17 00:00:00 2001
+From: Martin Peres <martin.peres@linux.intel.com>
+Date: Fri, 8 Jun 2018 18:41:50 +0300
+Subject: [PATCH 03/10] modesetting: add damage tracking to the shadow scanouts
+
+This allows to know what is the damaged part of the screen, in order to
+limit the amount of data needing to be blitted to the shadow.
+
+This change also introduces drmmode_update_scanout_buffer() which uses
+the damage information to blit the parts that need to be updated.
+
+Signed-off-by: Martin Peres <martin.peres@linux.intel.com>
+---
+ hw/xfree86/drivers/modesetting/driver.c       | 31 +++++++++++
+ .../drivers/modesetting/drmmode_display.c     | 53 +++++++++++++++++++
+ .../drivers/modesetting/drmmode_display.h     |  3 ++
+ 3 files changed, 87 insertions(+)
+
+diff --git a/hw/xfree86/drivers/modesetting/driver.c b/hw/xfree86/drivers/modesetting/driver.c
+index 2aaea5f7d..d0980b563 100644
+--- a/hw/xfree86/drivers/modesetting/driver.c
++++ b/hw/xfree86/drivers/modesetting/driver.c
+@@ -503,6 +503,34 @@ GetRec(ScrnInfoPtr pScrn)
+     return TRUE;
+ }
+ 
++static void
++ms_update_scanout_damages(ScrnInfoPtr scrn, DamagePtr damage)
++{
++    xf86CrtcConfigPtr xf86_config = XF86_CRTC_CONFIG_PTR(scrn);
++    RegionPtr dmg_region = DamageRegion(damage);
++    int c;
++
++    for (c = 0; c < xf86_config->num_crtc; c++) {
++        xf86CrtcPtr crtc = xf86_config->crtc[c];
++        drmmode_crtc_private_ptr drmmode_crtc = crtc->driver_private;
++        RegionRec pixregion;
++
++        /* do not do any copies for inactive or rotated displays */
++        if (!crtc->active || !drmmode_crtc->shadow_nonrotated)
++            continue;
++
++        /* compute the intersection between the damaged region and the current
++         * crtc, then make the union of the current damages found for the
++         * current BO.
++         */
++        RegionInit(&pixregion, &crtc->bounds, 1);
++        RegionIntersect(&pixregion, &pixregion, dmg_region);
++        RegionUnion(&drmmode_crtc->shadow_nonrotated->screen_damage,
++                    &drmmode_crtc->shadow_nonrotated->screen_damage,
++                    &pixregion);
++    }
++}
++
+ static int
+ dispatch_dirty_region(ScrnInfoPtr scrn,
+                       PixmapPtr pixmap, DamagePtr damage, int fb_id)
+@@ -512,6 +540,9 @@ dispatch_dirty_region(ScrnInfoPtr scrn,
+     unsigned num_cliprects = REGION_NUM_RECTS(dirty);
+     int ret = 0;
+ 
++    /* per-crtc scanout damage tracking */
++    ms_update_scanout_damages(scrn, damage);
++
+     if (num_cliprects) {
+         drmModeClip *clip = xallocarray(num_cliprects, sizeof(drmModeClip));
+         BoxPtr rect = REGION_RECTS(dirty);
+diff --git a/hw/xfree86/drivers/modesetting/drmmode_display.c b/hw/xfree86/drivers/modesetting/drmmode_display.c
+index 886115ca1..6c05eba20 100644
+--- a/hw/xfree86/drivers/modesetting/drmmode_display.c
++++ b/hw/xfree86/drivers/modesetting/drmmode_display.c
+@@ -1301,6 +1301,54 @@ drmmode_DisableSharedPixmapFlipping(xf86CrtcPtr crtc, drmmode_ptr drmmode)
+                                       &drmmode_crtc->prime_pixmap_back);
+ }
+ 
++void
++drmmode_update_scanout_buffer(xf86CrtcPtr crtc, drmmode_shadow_scanout_ptr scanout)
++{
++    ScreenPtr pScreen = xf86ScrnToScreen(crtc->scrn);
++    PixmapPtr screenpix = pScreen->GetScreenPixmap(pScreen);
++    PixmapPtr dst = scanout->pixmap;
++    BoxPtr b;
++    GCPtr pGC;
++    int n;
++
++    /* early exit if we have nothing to do */
++    if (RegionNil(&scanout->screen_damage))
++        return;
++
++    n = RegionNumRects(&scanout->screen_damage);
++    b = RegionRects(&scanout->screen_damage);
++
++    pGC = GetScratchGC(crtc->scrn->depth, pScreen);
++    if (pScreen->root) {
++        ChangeGCVal subWindowMode;
++
++        subWindowMode.val = IncludeInferiors;
++        ChangeGC(NullClient, pGC, GCSubwindowMode, &subWindowMode);
++    }
++    ValidateGC(&dst->drawable, pGC);
++
++    while (n--) {
++        BoxRec src_box;
++        int s_x, s_y, w, h, d_x, d_y;
++
++        src_box = *b;
++        s_x = src_box.x1;
++        s_y = src_box.y1;
++        w = src_box.x2 - src_box.x1;
++        h = src_box.y2 - src_box.y1;
++        d_x = src_box.x1 - crtc->x;
++        d_y = src_box.y1 - crtc->y;
++
++        pGC->ops->CopyArea(&screenpix->drawable, &dst->drawable, pGC,
++                           s_x, s_y, w, h, d_x, d_y);
++        b++;
++    }
++    FreeScratchGC(pGC);
++
++    /* We have blitted all the damages, reset them */
++    RegionEmpty(&scanout->screen_damage);
++}
++
+ static void
+ drmmode_ConvertFromKMode(ScrnInfoPtr scrn,
+                          drmModeModeInfo * kmode, DisplayModePtr mode)
+@@ -1834,6 +1882,11 @@ drmmode_scanout_allocate(xf86CrtcPtr crtc, int width, int height,
+         return FALSE;
+     }
+ 
++    /* set the initial damage to the size of the CRTC since it has not been
++     * initialized yet.
++     */
++    RegionInit(&scanout->screen_damage, &crtc->bounds, 1);
++
+     return TRUE;
+ }
+ 
+diff --git a/hw/xfree86/drivers/modesetting/drmmode_display.h b/hw/xfree86/drivers/modesetting/drmmode_display.h
+index b7e32e272..f7be3fafa 100644
+--- a/hw/xfree86/drivers/modesetting/drmmode_display.h
++++ b/hw/xfree86/drivers/modesetting/drmmode_display.h
+@@ -157,6 +157,7 @@ typedef struct {
+     drmmode_bo bo;
+     unsigned fb_id;
+     PixmapPtr pixmap;
++    RegionRec screen_damage;
+ } drmmode_shadow_scanout_rec, *drmmode_shadow_scanout_ptr;
+ 
+ typedef struct {
+@@ -280,6 +281,8 @@ Bool drmmode_SharedPixmapFlip(PixmapPtr frontTarget, xf86CrtcPtr crtc,
+                               drmmode_ptr drmmode);
+ void drmmode_DisableSharedPixmapFlipping(xf86CrtcPtr crtc, drmmode_ptr drmmode);
+ 
++void drmmode_update_scanout_buffer(xf86CrtcPtr crtc, drmmode_shadow_scanout_ptr scanout);
++
+ extern Bool drmmode_pre_init(ScrnInfoPtr pScrn, drmmode_ptr drmmode, int cpp);
+ extern Bool drmmode_init(ScrnInfoPtr pScrn, drmmode_ptr drmmode);
+ void drmmode_adjust_frame(ScrnInfoPtr pScrn, drmmode_ptr drmmode, int x, int y);
+-- 
+2.25.1
+
