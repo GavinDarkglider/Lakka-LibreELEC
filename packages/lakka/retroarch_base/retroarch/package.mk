@@ -130,12 +130,6 @@ fi
 
 if [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ]; then
   PKG_CONFIGURE_OPTS_TARGET+=" --enable-xinerama"
-  PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-kms/--disable-kms}
-  PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-egl/--disable-egl}
-  PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-opengles3_1/}
-  PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-opengles3_2/}
-  PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-opengles3/}
-  PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-opengles/}
 fi
 
 if [ "${LAKKA_NIGHTLY}" = yes ]; then
