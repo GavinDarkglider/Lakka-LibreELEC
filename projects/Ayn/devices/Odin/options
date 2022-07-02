@@ -15,13 +15,13 @@ esac
 #ADDITIONAL_PACKAGES+="xdotool" #Will be needed with dock, which I dont have.
 
 # Comment this line to build retroarch cores. At this point it is a waste of time to build them.
-LIBRETRO_CORES=""
+#LIBRETRO_CORES=""
 
 if [ "${DISTRO}" = "Lakka" ]; then
-  ADDITIONAL_PACKAGES+=" mergerfs rewritefs"
+  ADDITIONAL_PACKAGES+=" mergerfs"
 fi
 
-ADDITIONAL_PACKAGES+=" usb-gadget-scripts"
+ADDITIONAL_PACKAGES+=" rewritefs"
 ADDITIONAL_DRIVERS="pd-mapper tqftpserv rmtfs"
 BOOTLOADER="odin-bootloader"
 

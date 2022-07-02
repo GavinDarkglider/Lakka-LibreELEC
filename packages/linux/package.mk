@@ -54,8 +54,7 @@ case "${LINUX}" in
     ;;
 
   ayn-odin)
-   #PKG_VERSION="5.18"
-   PKG_SHA256="2b941fdcc8970b1343902f7856a740241ec5e726"
+   PKG_SHA256="b425b70a6379f3415ed349f5c5719d4a6f315523"
    PKG_VERSION="${PKG_SHA256}"
    PKG_URL="https://gitlab.com/tjstyle/linux.git"
    PKG_PATCH_DIRS="default ayn-odin"

@@ -1,11 +1,20 @@
 PKG_NAME="pulseaudio-configs"
 PKG_LICENSE="GPL"
-PKG_DEPENDS_TARGET="pulseaudio"
-PKG_SECTION="virtual"
+PKG_DEPENDS_TARGET="alsa-plugins pulseaudio"
+#PKG_SECTION="virtual"
 PKG_LONGDESC="Standard configs for pulseaudio"
+PKG_TOOLCHAIN="manual"
 
-post_install() {
-  mkdir -p ${INSTALL}/etc/pulse
-    cp -Prv ${PKG_DIR}/pulse/* ${INSTALL}/etc/pulse/
-    mv ${INSTALL}/etc/pulse/asound.conf ${INSTALL}/etc/
+make_target() {
+  mkdir -p ${PKG_BUILD}/install_target/etc/pulse
+    cp -r ${PKG_DIR}/pulse/* ${PKG_BUILD}/install_target/etc/pulse/
+    mv ${PKG_BUILD}/install_target/etc/pulse/asound.conf ${PKG_BUILD}/install_target/etc/
+}
+
+makeinstall_target() {
+  if [ ! -d "${INSTALL}" ]; then
+    mkdir -p ${INSTALL}
+  fi
+  echo ${INSTALL}
+  cp -r ${PKG_BUILD}/install_target/* ${INSTALL}/
 }

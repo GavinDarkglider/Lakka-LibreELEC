@@ -27,10 +27,10 @@ PKG_MAKE_OPTS_TARGET="V=1 \
                       HAVE_BLUETOOTH=1 \
                       HAVE_FREETYPE=1"
 
-if [ "${OPENGLES_SUPPORT}" = yes ]; then
+if [ "${OPENGLES_SUPPORT}" = "yes" ]; then
   PKG_DEPENDS_TARGET+=" ${OPENGLES}"
   PKG_CONFIGURE_OPTS_TARGET+=" --enable-opengles"
-  if [[ ${DEVICE} =~ ^RPi4.* ]] || [ ${DEVICE} = "RK3288" ] || [ "${DEVICE}" = "RK3399" ]; then
+  if [[ ${DEVICE} =~ ^RPi4.* ]] || [ ${DEVICE} = "RK3288" ] || [ "${DEVICE}" = "RK3399" ] || [ "${DEVICE}" = "Odin" ]; then
     PKG_CONFIGURE_OPTS_TARGET+=" --enable-opengles3 \
                                  --enable-opengles3_1"
   fi
@@ -38,7 +38,7 @@ else
   PKG_CONFIGURE_OPTS_TARGET+=" --disable-opengles"
 fi
 
-if [ "${OPENGL_SUPPORT}" = yes ]; then
+if [  "${OPENGL_SUPPORT}" = "yes" -a ! "${OPENGLES_SUPPORT}" = "yes" ]; then
   PKG_DEPENDS_TARGET+=" ${OPENGL}"
   PKG_CONFIGURE_OPTS_TARGET+=" --enable-opengl"
   PKG_MAKE_OPTS_TARGET+=" HAVE_OPENGL1=1"
@@ -67,7 +67,7 @@ fi
 
 if [ "${DISPLAYSERVER}" = "x11" ]; then
   PKG_DEPENDS_TARGET+=" libXxf86vm libXv"
-  PKG_CONFIGURE_OPTS_TARGET+=" --enable-x11"
+  PKG_CONFIGURE_OPTS_TARGET+=" --enable-x11 --enable-xinerama"
 else
   PKG_CONFIGURE_OPTS_TARGET+=" --disable-x11"
 fi
@@ -112,7 +112,6 @@ else
 fi
 
 if [ "${PROJECT}" = "L4T" ]; then
-  PKG_CONFIGURE_OPTS_TARGET+=" --enable-xinerama"
   PKG_CONFIGURE_OPTS_TARGET=${PKG_CONFIGURE_OPTS_TARGET//--enable-kms/--disable-kms}
   #EGL break gl1 support so if opengl enabled, force disable egl/gles
   if [ "${OPENGL_SUPPORT}" = yes ]; then
@@ -126,10 +125,6 @@ if [ "${PROJECT}" = "L4T" ]; then
   if [ "${DEVICE}" = "Switch" ]; then
     PKG_MAKE_OPTS_TARGET+=" HAVE_LAKKA_SWITCH=1"
   fi
-fi
-
-if [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ]; then
-  PKG_CONFIGURE_OPTS_TARGET+=" --enable-xinerama"
 fi
 
 if [ "${LAKKA_NIGHTLY}" = yes ]; then
@@ -318,16 +313,19 @@ makeinstall_target() {
       echo 'input_joypad_driver = "udev"' >> ${INSTALL}/etc/retroarch.cfg
     fi
 
-    sed -i -e 's|^input_driver =.*|input_driver= "x"|' ${INSTALL}/etc/retroarch.cfg
+    sed -i -e 's|^input_driver =.*|input_driver = "x"|' ${INSTALL}/etc/retroarch.cfg
     sed -i -e 's|^video_smooth =.*|video_smooth = "true"|' ${INSTALL}/etc/retroarch.cfg
-    sed -i -e 's|^menu_driver =.*|menu_driver = "ozone"|' ${INSTALL}/etc/retroarch.cfg
 
     if [ ! "${PROJECT}" = "Ayn" -a ! "${DEVICE}" = "Odin" ]; then
+      sed -i -e 's|^menu_driver =.*|menu_driver = "ozone"|' ${INSTALL}/etc/retroarch.cfg
       #Set Default Joycon index to Combined Joycons.
       echo 'input_player1_joypad_index = "2"' >> ${INSTALL}/etc/retroarch.cfg
 
       #Set Joypad as joypad with analog
       echo 'input_libretro_device_p1 = "5"' >> ${INSTALL}/etc/retroarch.cfg
+    else
+      echo 'video_driver = "glcore"' >> ${INSTALL}/etc/retroarch.cfg
+      sed -i -e 's|^audio_driver =.*|audio_driver = "pulse"|' ${INSTALL}/etc/retroarch.cfg
     fi
 
     #HACK: Temporary hack for touchscreen
