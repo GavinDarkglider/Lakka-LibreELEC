@@ -16,4 +16,4 @@ elif [ -f "$XORG_CONF_DEFAULT_DRV" ]; then
 fi
 XORG_ARGS="${XORG_ARGS} -ignoreABI"
 
-exec xorg-launch-helper $@ -logfile /storage/Xorg.0.log $XORG_ARGS
+exec xorg-launch-helper $@ $XORG_ARGS

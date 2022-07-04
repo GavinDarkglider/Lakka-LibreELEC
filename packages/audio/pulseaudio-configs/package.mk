@@ -1,7 +1,6 @@
 PKG_NAME="pulseaudio-configs"
 PKG_LICENSE="GPL"
 PKG_DEPENDS_TARGET="alsa-plugins pulseaudio"
-#PKG_SECTION="virtual"
 PKG_LONGDESC="Standard configs for pulseaudio"
 PKG_TOOLCHAIN="manual"
 
