@@ -1,5 +1,5 @@
 PKG_NAME="tic80"
-PKG_VERSION="ade10badac181c0a9c32b38c6d66705ab9b2f2c9"
+PKG_VERSION="31ea041978b63869589c1e49b6ee83e4e8ebdc54"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/nesbox/TIC-80"
 PKG_URL="${PKG_SITE}.git"

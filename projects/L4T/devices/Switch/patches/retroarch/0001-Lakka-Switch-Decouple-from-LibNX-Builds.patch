@@ -1,76 +1,7 @@
-From 5be42eaddbc5725a39eff275bec097f9eee3da7f Mon Sep 17 00:00:00 2001
-From: Ronald Brown <rbrown4014@yahoo.com>
-Date: Mon, 30 Jan 2023 08:05:50 -0800
-Subject: [PATCH 1/7] Lakka-Switch: Decouple from LibNX Builds
-
----
- intl/msg_hash_ar.h                | 15 ++-----
- intl/msg_hash_ast.h               |  7 ++--
- intl/msg_hash_ca.h                | 15 ++-----
- intl/msg_hash_chs.h               | 15 ++-----
- intl/msg_hash_cht.h               | 15 ++-----
- intl/msg_hash_cs.h                | 15 ++-----
- intl/msg_hash_cy.h                |  6 +--
- intl/msg_hash_da.h                |  6 +--
- intl/msg_hash_de.h                | 14 ++-----
- intl/msg_hash_el.h                | 15 ++-----
- intl/msg_hash_en.h                | 14 ++-----
- intl/msg_hash_eo.h                |  7 ++--
- intl/msg_hash_es.h                | 15 ++-----
- intl/msg_hash_fa.h                |  6 +--
- intl/msg_hash_fi.h                | 15 ++-----
- intl/msg_hash_fr.h                | 15 ++-----
- intl/msg_hash_gl.h                |  7 ++--
- intl/msg_hash_he.h                |  6 +--
- intl/msg_hash_hr.h                |  6 +--
- intl/msg_hash_hu.h                | 15 ++-----
- intl/msg_hash_id.h                | 15 ++-----
- intl/msg_hash_it.h                | 15 ++-----
- intl/msg_hash_ja.h                | 15 ++-----
- intl/msg_hash_ko.h                | 14 ++-----
- intl/msg_hash_lbl.h               |  8 +---
- intl/msg_hash_mt.h                |  7 ++--
- intl/msg_hash_nl.h                |  7 ++--
- intl/msg_hash_no.h                |  7 ++--
- intl/msg_hash_oc.h                |  6 +--
- intl/msg_hash_pl.h                | 15 ++-----
- intl/msg_hash_pt_br.h             | 15 ++-----
- intl/msg_hash_pt_pt.h             |  6 +--
- intl/msg_hash_ro.h                |  6 +--
- intl/msg_hash_ru.h                | 15 ++-----
- intl/msg_hash_si.h                |  6 +--
- intl/msg_hash_sk.h                | 15 ++-----
- intl/msg_hash_sr.h                |  6 +--
- intl/msg_hash_sv.h                |  6 +--
- intl/msg_hash_tr.h                | 15 ++-----
- intl/msg_hash_uk.h                | 10 ++---
- intl/msg_hash_us.h                | 15 ++-----
- intl/msg_hash_val.h               |  6 +--
- intl/msg_hash_vn.h                |  6 +--
- menu/cbs/menu_cbs_deferred_push.c | 11 +-----
- menu/cbs/menu_cbs_get_value.c     |  4 --
- menu/cbs/menu_cbs_left.c          |  4 --
- menu/cbs/menu_cbs_ok.c            | 53 +++----------------------
- menu/cbs/menu_cbs_right.c         |  5 +--
- menu/cbs/menu_cbs_sublabel.c      | 18 ++-------
- menu/cbs/menu_cbs_title.c         | 19 ++-------
- menu/drivers/ozone.c              | 15 +------
- menu/drivers/xmb.c                | 16 +-------
- menu/menu_displaylist.c           | 65 ++-----------------------------
- menu/menu_displaylist.h           |  5 +--
- menu/menu_driver.c                |  7 ----
- menu/menu_driver.h                |  5 +--
- menu/menu_setting.c               | 17 ++------
- retroarch.c                       |  7 ----
- runloop.c                         |  7 ----
- switch_performance_profiles.h     | 62 +----------------------------
- 60 files changed, 153 insertions(+), 632 deletions(-)
-
-diff --git a/intl/msg_hash_ar.h b/intl/msg_hash_ar.h
-index 875e477cf0..6c2b8233ab 100644
---- a/intl/msg_hash_ar.h
-+++ b/intl/msg_hash_ar.h
-@@ -9264,18 +9264,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ar.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ar.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ar.h	2023-04-04 05:39:02.874217001 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ar.h	2023-04-04 05:31:23.447652065 +0200
+@@ -9211,18 +9211,7 @@
     MENU_ENUM_LABEL_VALUE_INPUT_BLOCK_TIMEOUT,
     "مهلة كتلة الإدخال"
     )
@@ -90,7 +21,7 @@ index 875e477cf0..6c2b8233ab 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "تجاوز الساعة المعالج"
-@@ -9347,6 +9336,8 @@ MSG_HASH(
+@@ -9294,6 +9283,8 @@
     "ملف تكوين خاطئ - تعذر العثور على APNAME أو PASSWORD في %s"
     )
  #endif
@@ -99,11 +30,10 @@ index 875e477cf0..6c2b8233ab 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_ast.h b/intl/msg_hash_ast.h
-index 2781f26877..46d59a710e 100644
---- a/intl/msg_hash_ast.h
-+++ b/intl/msg_hash_ast.h
-@@ -3740,10 +3740,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ast.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ast.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ast.h	2023-04-04 05:39:02.878217093 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ast.h	2023-04-04 05:31:23.447652065 +0200
+@@ -3739,10 +3739,7 @@
     MSG_READ_ONLY,
     "Estáu del almacenamientu internu: namás llectura"
     )
@@ -115,7 +45,7 @@ index 2781f26877..46d59a710e 100644
  #endif
  #ifdef HAVE_LAKKA
  MSG_HASH(
-@@ -3779,6 +3776,8 @@ MSG_HASH(
+@@ -3778,6 +3775,8 @@
     "El ficheru de configuración ye incorreutu - nun se pudo atopar APNAME o PASSWORD en %s"
     )
  #endif
@@ -124,11 +54,10 @@ index 2781f26877..46d59a710e 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_ca.h b/intl/msg_hash_ca.h
-index b8d6f64940..e77761f933 100644
---- a/intl/msg_hash_ca.h
-+++ b/intl/msg_hash_ca.h
-@@ -8060,18 +8060,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ca.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ca.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ca.h	2023-04-04 05:39:02.878217093 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ca.h	2023-04-04 05:31:23.447652065 +0200
+@@ -8179,18 +8179,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "Augmenta o redueix la brillantor de la pantalla."
     )
@@ -148,7 +77,7 @@ index b8d6f64940..e77761f933 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "Força la CPU"
-@@ -8155,6 +8144,8 @@ MSG_HASH(
+@@ -8274,6 +8263,8 @@
     "Fitxer de configuració erroni — no s’han trobat APNAME ni PASSWORD a %s"
     )
  #endif
@@ -157,11 +86,10 @@ index b8d6f64940..e77761f933 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_chs.h b/intl/msg_hash_chs.h
-index dab028f818..5ef30de62f 100644
---- a/intl/msg_hash_chs.h
-+++ b/intl/msg_hash_chs.h
-@@ -12404,18 +12404,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_chs.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_chs.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_chs.h	2023-04-04 05:39:02.882217185 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_chs.h	2023-04-04 05:31:23.447652065 +0200
+@@ -12475,18 +12475,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "提高或降低屏幕亮度。"
     )
@@ -181,7 +109,7 @@ index dab028f818..5ef30de62f 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "CPU 超频"
-@@ -12503,6 +12492,8 @@ MSG_HASH(
+@@ -12574,6 +12563,8 @@
     "错误配置文件——在 %s 中找不到 APNAME 或 PASSWORD"
     )
  #endif
@@ -190,31 +118,29 @@ index dab028f818..5ef30de62f 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_cht.h b/intl/msg_hash_cht.h
-index 64c8dc53dc..a6b16defa5 100644
---- a/intl/msg_hash_cht.h
-+++ b/intl/msg_hash_cht.h
-@@ -14316,18 +14316,7 @@ MSG_HASH(
-    MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_cht.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_cht.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_cht.h	2023-04-04 05:39:02.886217276 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_cht.h	2023-04-04 05:34:45.436315456 +0200
+@@ -14560,17 +14560,7 @@
     "調整螢幕亮度。"
     )
--
+ 
 -#ifdef HAVE_LAKKA_SWITCH
 -MSG_HASH(
 -   MENU_ENUM_LABEL_VALUE_SWITCH_GPU_PROFILE,
--   "GPU 超頻"
+-   "GPU超頻"
 -   )
 -MSG_HASH(
 -   MENU_ENUM_SUBLABEL_SWITCH_GPU_PROFILE,
--   "Switch 圖形處理器超頻設定。"
+-   "Switch主機圖形處理器超頻設定。"
 -   )
 -#endif
 -#if defined(HAVE_LAKKA_SWITCH) || defined(HAVE_LIBNX)
 +#ifdef HAVE_LIBNX
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
-    "CPU 超頻"
-@@ -14423,6 +14412,8 @@ MSG_HASH(
+    "CPU超頻"
+@@ -14670,6 +14660,8 @@
     "錯誤的設定檔 - 遺失名稱或密碼 %s"
     )
  #endif
@@ -223,11 +149,10 @@ index 64c8dc53dc..a6b16defa5 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_cs.h b/intl/msg_hash_cs.h
-index a83dd55429..b19c4c0555 100644
---- a/intl/msg_hash_cs.h
-+++ b/intl/msg_hash_cs.h
-@@ -13892,18 +13892,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_cs.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_cs.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_cs.h	2023-04-04 05:39:02.890217368 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_cs.h	2023-04-04 05:31:23.463652435 +0200
+@@ -14031,18 +14031,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "Zvýšení Nebo Snížení Jasu Obrazovky."
     )
@@ -247,7 +172,7 @@ index a83dd55429..b19c4c0555 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "Přetaktování CPU"
-@@ -13991,6 +13980,8 @@ MSG_HASH(
+@@ -14130,6 +14119,8 @@
     "Chybný konfigurační soubor - nepodařilo se najít APNAME nebo HESLO v %s"
     )
  #endif
@@ -256,11 +181,10 @@ index a83dd55429..b19c4c0555 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_cy.h b/intl/msg_hash_cy.h
-index 930ab1df8d..f42444222f 100644
---- a/intl/msg_hash_cy.h
-+++ b/intl/msg_hash_cy.h
-@@ -1724,13 +1724,11 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_cy.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_cy.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_cy.h	2023-04-04 05:39:02.894217460 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_cy.h	2023-04-04 05:31:23.467652527 +0200
+@@ -1723,13 +1723,11 @@
     MSG_LOCAL,
     "Lleol"
     )
@@ -276,11 +200,10 @@ index 930ab1df8d..f42444222f 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_da.h b/intl/msg_hash_da.h
-index 2ef2c51845..c131c79b4d 100644
---- a/intl/msg_hash_da.h
-+++ b/intl/msg_hash_da.h
-@@ -1457,12 +1457,12 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_da.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_da.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_da.h	2023-04-04 05:39:02.894217460 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_da.h	2023-04-04 05:31:23.467652527 +0200
+@@ -1456,12 +1456,12 @@
     "Genstart RetroArch"
     )
  
@@ -296,11 +219,10 @@ index 2ef2c51845..c131c79b4d 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_de.h b/intl/msg_hash_de.h
-index 7a4da841e1..fe9a249523 100644
---- a/intl/msg_hash_de.h
-+++ b/intl/msg_hash_de.h
-@@ -13781,17 +13781,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_de.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_de.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_de.h	2023-04-04 05:39:02.898217551 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_de.h	2023-04-04 05:31:23.467652527 +0200
+@@ -13904,17 +13904,7 @@
     "Bildschirmhelligkeit erhöhen oder verringern."
     )
  
@@ -319,7 +241,7 @@ index 7a4da841e1..fe9a249523 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "CPU Übertakten"
-@@ -13887,6 +13877,8 @@ MSG_HASH(
+@@ -14010,6 +14000,8 @@
     "Falsche Konfigurationsdatei - APNAME oder PASSWORD in %s nicht gefunden"
     )
  #endif
@@ -328,11 +250,10 @@ index 7a4da841e1..fe9a249523 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_el.h b/intl/msg_hash_el.h
-index d7015b1ae7..7609fa5f8f 100644
---- a/intl/msg_hash_el.h
-+++ b/intl/msg_hash_el.h
-@@ -5600,18 +5600,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_el.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_el.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_el.h	2023-04-04 05:39:02.902217643 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_el.h	2023-04-04 05:31:23.467652527 +0200
+@@ -5587,18 +5587,7 @@
     MENU_ENUM_LABEL_VALUE_BRIGHTNESS_CONTROL,
     "Φωτεινότητα Οθόνης"
     )
@@ -352,7 +273,7 @@ index d7015b1ae7..7609fa5f8f 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "Υπερχρονισμός Επεξεργαστή"
-@@ -5659,6 +5648,8 @@ MSG_HASH(
+@@ -5646,6 +5635,8 @@
     "Επιλέξτε τη ζώνη ώρας σας για να προσαρμόσετε την ημερομηνία και την ώρα στην τοποθεσία σας."
     )
  #endif
@@ -361,11 +282,10 @@ index d7015b1ae7..7609fa5f8f 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_en.h b/intl/msg_hash_en.h
-index 5bea597830..428b700e1a 100644
---- a/intl/msg_hash_en.h
-+++ b/intl/msg_hash_en.h
-@@ -2169,17 +2169,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_en.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_en.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_en.h	2023-04-04 05:39:02.902217643 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_en.h	2023-04-04 05:31:23.467652527 +0200
+@@ -2156,17 +2156,7 @@
     "Use the lowest frequency available to save power. Useful on battery powered devices, but performance will be significantly reduced."
     )
  
@@ -384,7 +304,7 @@ index 5bea597830..428b700e1a 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "CPU Over-clock"
-@@ -2191,6 +2181,8 @@ MSG_HASH(
+@@ -2178,6 +2168,8 @@
  #endif
  #ifdef HAVE_LAKKA
  #endif
@@ -393,11 +313,10 @@ index 5bea597830..428b700e1a 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_SUBLABEL_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_eo.h b/intl/msg_hash_eo.h
-index f9dfec057a..62d7077fa4 100644
---- a/intl/msg_hash_eo.h
-+++ b/intl/msg_hash_eo.h
-@@ -1000,10 +1000,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_eo.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_eo.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_eo.h	2023-04-04 05:39:02.902217643 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_eo.h	2023-04-04 05:31:23.467652527 +0200
+@@ -1127,10 +1127,7 @@
     MENU_ENUM_LABEL_VALUE_INPUT_SMALL_KEYBOARD_ENABLE,
     "Small Keyboard Enable"
     )
@@ -409,7 +328,7 @@ index f9dfec057a..62d7077fa4 100644
  #endif
  #ifdef HAVE_LAKKA
  MSG_HASH(
-@@ -1027,6 +1024,8 @@ MSG_HASH(
+@@ -1154,6 +1151,8 @@
     "Enable or disable remote command line access."
     )
  #endif
@@ -418,11 +337,10 @@ index f9dfec057a..62d7077fa4 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_es.h b/intl/msg_hash_es.h
-index a90b3d279b..56769dea95 100644
---- a/intl/msg_hash_es.h
-+++ b/intl/msg_hash_es.h
-@@ -14104,18 +14104,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_es.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_es.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_es.h	2023-04-04 05:39:02.906217735 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_es.h	2023-04-04 05:31:23.467652527 +0200
+@@ -14227,18 +14227,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "Aumenta o reduce el brillo de la pantalla."
     )
@@ -442,7 +360,7 @@ index a90b3d279b..56769dea95 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "Acelerar CPU"
-@@ -14207,6 +14196,8 @@ MSG_HASH(
+@@ -14330,6 +14319,8 @@
     "Archivo de configuración incorrecto: no se encontraron los valores APNAME o PASSWORD en %s"
     )
  #endif
@@ -451,11 +369,10 @@ index a90b3d279b..56769dea95 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_fa.h b/intl/msg_hash_fa.h
-index 4c3df6c550..a6196a5bfa 100644
---- a/intl/msg_hash_fa.h
-+++ b/intl/msg_hash_fa.h
-@@ -2661,9 +2661,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_fa.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_fa.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_fa.h	2023-04-04 05:39:02.910217827 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_fa.h	2023-04-04 05:31:23.467652527 +0200
+@@ -2660,9 +2660,7 @@
     "ریستارت رتروآرچ"
     )
  
@@ -466,7 +383,7 @@ index 4c3df6c550..a6196a5bfa 100644
  #endif
  #ifdef HAVE_LAKKA
  MSG_HASH(
-@@ -2671,6 +2669,8 @@ MSG_HASH(
+@@ -2670,6 +2668,8 @@
     "بلوتوث"
     )
  #endif
@@ -475,11 +392,10 @@ index 4c3df6c550..a6196a5bfa 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_fi.h b/intl/msg_hash_fi.h
-index df1af3b122..1e7d57d34e 100644
---- a/intl/msg_hash_fi.h
-+++ b/intl/msg_hash_fi.h
-@@ -13144,18 +13144,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_fi.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_fi.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_fi.h	2023-04-04 05:39:02.910217827 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_fi.h	2023-04-04 05:31:23.471652620 +0200
+@@ -13171,18 +13171,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "Lisää tai vähennä näytön kirkkautta."
     )
@@ -499,7 +415,7 @@ index df1af3b122..1e7d57d34e 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "Suorittimen ylikellotus"
-@@ -13239,6 +13228,8 @@ MSG_HASH(
+@@ -13266,6 +13255,8 @@
     "Väärä kokoonpanotiedosto- APNAME tai PASSWORD ei löydy kohteesta %s"
     )
  #endif
@@ -508,11 +424,10 @@ index df1af3b122..1e7d57d34e 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_fr.h b/intl/msg_hash_fr.h
-index 21f5f0a517..6bc5d61714 100644
---- a/intl/msg_hash_fr.h
-+++ b/intl/msg_hash_fr.h
-@@ -14056,18 +14056,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_fr.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_fr.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_fr.h	2023-04-04 05:39:02.914217918 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_fr.h	2023-04-04 05:31:23.471652620 +0200
+@@ -14179,18 +14179,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "Augmenter ou diminuer la luminosité de l'écran."
     )
@@ -532,7 +447,7 @@ index 21f5f0a517..6bc5d61714 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "Overclocker le processeur"
-@@ -14151,6 +14140,8 @@ MSG_HASH(
+@@ -14274,6 +14263,8 @@
     "Mauvais fichier de configuration - impossible de trouver l'APNAME ou le PASSWORD dans %s"
     )
  #endif
@@ -541,11 +456,10 @@ index 21f5f0a517..6bc5d61714 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_gl.h b/intl/msg_hash_gl.h
-index e47d0bbc3b..789c8d2092 100644
---- a/intl/msg_hash_gl.h
-+++ b/intl/msg_hash_gl.h
-@@ -2176,10 +2176,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_gl.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_gl.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_gl.h	2023-04-04 05:39:02.918218010 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_gl.h	2023-04-04 05:31:23.471652620 +0200
+@@ -2175,10 +2175,7 @@
     MENU_ENUM_LABEL_VALUE_INPUT_META_RESTART_KEY,
     "Reiniciar RetroArch"
     )
@@ -557,7 +471,7 @@ index e47d0bbc3b..789c8d2092 100644
  #endif
  #ifdef HAVE_LAKKA
  MSG_HASH(
-@@ -2207,6 +2204,8 @@ MSG_HASH(
+@@ -2206,6 +2203,8 @@
     "Desconectando da wifi \"%s\""
     )
  #endif
@@ -566,11 +480,10 @@ index e47d0bbc3b..789c8d2092 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_he.h b/intl/msg_hash_he.h
-index e82ba0fb29..681ad0011b 100644
---- a/intl/msg_hash_he.h
-+++ b/intl/msg_hash_he.h
-@@ -901,12 +901,12 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_he.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_he.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_he.h	2023-04-04 05:39:02.918218010 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_he.h	2023-04-04 05:31:23.471652620 +0200
+@@ -900,12 +900,12 @@
     "אתחול RetroArch"
     )
  
@@ -586,11 +499,10 @@ index e82ba0fb29..681ad0011b 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_hr.h b/intl/msg_hash_hr.h
-index c91d3b9636..edb20cad99 100644
---- a/intl/msg_hash_hr.h
-+++ b/intl/msg_hash_hr.h
-@@ -1105,12 +1105,12 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_hr.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_hr.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_hr.h	2023-04-04 05:39:02.918218010 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_hr.h	2023-04-04 05:31:23.471652620 +0200
+@@ -1104,12 +1104,12 @@
     "Ponovno pokreni RetroArch"
     )
  
@@ -606,11 +518,10 @@ index c91d3b9636..edb20cad99 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_hu.h b/intl/msg_hash_hu.h
-index 90dabd53d5..38d85eb99b 100644
---- a/intl/msg_hash_hu.h
-+++ b/intl/msg_hash_hu.h
-@@ -13872,18 +13872,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_hu.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_hu.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_hu.h	2023-04-04 05:39:02.922218102 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_hu.h	2023-04-04 05:31:23.471652620 +0200
+@@ -13995,18 +13995,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "A kijelző fényerejének növelése vagy csökkentése."
     )
@@ -630,7 +541,7 @@ index 90dabd53d5..38d85eb99b 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "CPU túlhajtás"
-@@ -13971,6 +13960,8 @@ MSG_HASH(
+@@ -14094,6 +14083,8 @@
     "Rossz konfigurációs fájl - nincs APNAME vagy PASSWORD itt: %s"
     )
  #endif
@@ -639,11 +550,10 @@ index 90dabd53d5..38d85eb99b 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_id.h b/intl/msg_hash_id.h
-index 6daa5030b8..45c15cbb0e 100644
---- a/intl/msg_hash_id.h
-+++ b/intl/msg_hash_id.h
-@@ -3896,18 +3896,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_id.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_id.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_id.h	2023-04-04 05:39:02.922218102 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_id.h	2023-04-04 05:31:23.471652620 +0200
+@@ -3887,18 +3887,7 @@
     MENU_ENUM_LABEL_VALUE_INPUT_KEYBOARD_GAMEPAD_MAPPING_TYPE,
     "Jenis Pemetaan Stik Kendali Papan Ketik"
     )
@@ -663,7 +573,7 @@ index 6daa5030b8..45c15cbb0e 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "Percepatan CPU"
-@@ -3923,6 +3912,8 @@ MSG_HASH(
+@@ -3914,6 +3903,8 @@
     "Memutus sambungan dari Wi-Fi '%s'"
     )
  #endif
@@ -672,11 +582,10 @@ index 6daa5030b8..45c15cbb0e 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_it.h b/intl/msg_hash_it.h
-index 979b52b9f0..87a691802c 100644
---- a/intl/msg_hash_it.h
-+++ b/intl/msg_hash_it.h
-@@ -13936,18 +13936,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_it.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_it.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_it.h	2023-04-04 05:39:02.926218193 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_it.h	2023-04-04 05:31:23.475652712 +0200
+@@ -14067,18 +14067,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "Aumenta o diminuisce la luminosità dello schermo."
     )
@@ -696,7 +605,7 @@ index 979b52b9f0..87a691802c 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "Overclocca la CPU"
-@@ -14043,6 +14032,8 @@ MSG_HASH(
+@@ -14174,6 +14163,8 @@
     "File di configurazione errato: impossibile trovare APNAME o PASSWORD in %s"
     )
  #endif
@@ -705,11 +614,10 @@ index 979b52b9f0..87a691802c 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_ja.h b/intl/msg_hash_ja.h
-index 32453e4265..7b1966993e 100644
---- a/intl/msg_hash_ja.h
-+++ b/intl/msg_hash_ja.h
-@@ -11140,18 +11140,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ja.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ja.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ja.h	2023-04-04 05:39:02.930218285 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ja.h	2023-04-04 05:31:23.475652712 +0200
+@@ -11127,18 +11127,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "画面の明るさを増減します."
     )
@@ -729,7 +637,7 @@ index 32453e4265..7b1966993e 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "CPUオーバークロック"
-@@ -11243,6 +11232,8 @@ MSG_HASH(
+@@ -11230,6 +11219,8 @@
     "設定ファイルが不正です - APNAME または PASSWORD が %s に見つかりませんでした"
     )
  #endif
@@ -738,11 +646,10 @@ index 32453e4265..7b1966993e 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_ko.h b/intl/msg_hash_ko.h
-index 3458d87bd6..1178a67148 100644
---- a/intl/msg_hash_ko.h
-+++ b/intl/msg_hash_ko.h
-@@ -13917,17 +13917,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ko.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ko.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ko.h	2023-04-04 05:39:02.934218377 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ko.h	2023-04-04 05:31:23.475652712 +0200
+@@ -14280,17 +14280,7 @@
     "화면의 밝기를 조절합니다."
     )
  
@@ -761,7 +668,7 @@ index 3458d87bd6..1178a67148 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "CPU 오버클럭"
-@@ -14027,6 +14017,8 @@ MSG_HASH(
+@@ -14390,6 +14380,8 @@
     "잘못된 구성 파일 - %s에서 APNAME 또는 PASSWORD를 찾을 수 없습니다."
     )
  #endif
@@ -770,10 +677,9 @@ index 3458d87bd6..1178a67148 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_lbl.h b/intl/msg_hash_lbl.h
-index 4befe929b8..fbc3326315 100644
---- a/intl/msg_hash_lbl.h
-+++ b/intl/msg_hash_lbl.h
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_lbl.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_lbl.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_lbl.h	2023-04-04 05:39:02.942218560 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_lbl.h	2023-04-04 05:31:23.475652712 +0200
 @@ -1,10 +1,4 @@
 -#ifdef HAVE_LAKKA_SWITCH
 -MSG_HASH(
@@ -786,11 +692,10 @@ index 4befe929b8..fbc3326315 100644
  MSG_HASH(
     MENU_ENUM_LABEL_SWITCH_CPU_PROFILE,
     "switch_cpu_profile"
-diff --git a/intl/msg_hash_mt.h b/intl/msg_hash_mt.h
-index b664b5466d..a9ea62a81f 100644
---- a/intl/msg_hash_mt.h
-+++ b/intl/msg_hash_mt.h
-@@ -424,13 +424,12 @@
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_mt.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_mt.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_mt.h	2023-04-04 05:39:02.942218560 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_mt.h	2023-04-04 05:31:23.475652712 +0200
+@@ -423,13 +423,12 @@
  
  /* Environment Specific Settings */
  
@@ -807,11 +712,10 @@ index b664b5466d..a9ea62a81f 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_nl.h b/intl/msg_hash_nl.h
-index e4029b2f94..66496c97ba 100644
---- a/intl/msg_hash_nl.h
-+++ b/intl/msg_hash_nl.h
-@@ -6168,10 +6168,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_nl.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_nl.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_nl.h	2023-04-04 05:39:02.942218560 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_nl.h	2023-04-04 05:31:23.475652712 +0200
+@@ -6115,10 +6115,7 @@
     MENU_ENUM_LABEL_VALUE_INPUT_SMALL_KEYBOARD_ENABLE,
     "Small Keyboard Enable"
     )
@@ -823,7 +727,7 @@ index e4029b2f94..66496c97ba 100644
  #endif
  #ifdef HAVE_LAKKA
  MSG_HASH(
-@@ -6195,6 +6192,8 @@ MSG_HASH(
+@@ -6142,6 +6139,8 @@
     "Enable or disable remote command line access."
     )
  #endif
@@ -832,11 +736,10 @@ index e4029b2f94..66496c97ba 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_no.h b/intl/msg_hash_no.h
-index 521bdb4bf8..31e81cb755 100644
---- a/intl/msg_hash_no.h
-+++ b/intl/msg_hash_no.h
-@@ -2468,13 +2468,12 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_no.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_no.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_no.h	2023-04-04 05:39:02.942218560 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_no.h	2023-04-04 05:31:23.475652712 +0200
+@@ -2467,13 +2467,12 @@
     MENU_ENUM_LABEL_VALUE_INPUT_META_RESTART_KEY,
     "Start RetroArch på nytt"
     )
@@ -853,11 +756,10 @@ index 521bdb4bf8..31e81cb755 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_oc.h b/intl/msg_hash_oc.h
-index 45566d228d..5c04be6f4d 100644
---- a/intl/msg_hash_oc.h
-+++ b/intl/msg_hash_oc.h
-@@ -668,13 +668,11 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_oc.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_oc.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_oc.h	2023-04-04 05:39:02.942218560 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_oc.h	2023-04-04 05:31:23.475652712 +0200
+@@ -667,13 +667,11 @@
     MENU_ENUM_LABEL_VALUE_INPUT_META_RESTART_KEY,
     "Reaviar RetroArch"
     )
@@ -873,11 +775,10 @@ index 45566d228d..5c04be6f4d 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_pl.h b/intl/msg_hash_pl.h
-index e73ec8fcd0..e84e8fa2ab 100644
---- a/intl/msg_hash_pl.h
-+++ b/intl/msg_hash_pl.h
-@@ -12720,18 +12720,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_pl.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_pl.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_pl.h	2023-04-04 05:39:02.946218652 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_pl.h	2023-04-04 05:31:23.479652804 +0200
+@@ -12743,18 +12743,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "Zwiększ lub zmniejsz jasność ekranu."
     )
@@ -897,7 +798,7 @@ index e73ec8fcd0..e84e8fa2ab 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "Podkręcanie CPU"
-@@ -12827,6 +12816,8 @@ MSG_HASH(
+@@ -12850,6 +12839,8 @@
     "Niepoprawny plik konfiguracyjny - nie można znaleźć APNAME lub PASSWORD w %s"
     )
  #endif
@@ -906,11 +807,10 @@ index e73ec8fcd0..e84e8fa2ab 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_pt_br.h b/intl/msg_hash_pt_br.h
-index 982a3d072d..8b7443e1f6 100644
---- a/intl/msg_hash_pt_br.h
-+++ b/intl/msg_hash_pt_br.h
-@@ -12940,18 +12940,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_pt_br.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_pt_br.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_pt_br.h	2023-04-04 05:39:02.950218744 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_pt_br.h	2023-04-04 05:31:23.479652804 +0200
+@@ -12979,18 +12979,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "Aumenta ou diminui o brilho da tela."
     )
@@ -930,7 +830,7 @@ index 982a3d072d..8b7443e1f6 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "Overclock da CPU"
-@@ -13047,6 +13036,8 @@ MSG_HASH(
+@@ -13086,6 +13075,8 @@
     "Arquivo de configuração incorreto: valores APNAME ou PASSWORD não puderam ser encontrados em %s"
     )
  #endif
@@ -939,11 +839,10 @@ index 982a3d072d..8b7443e1f6 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_pt_pt.h b/intl/msg_hash_pt_pt.h
-index 801c17f706..99fd58354e 100644
---- a/intl/msg_hash_pt_pt.h
-+++ b/intl/msg_hash_pt_pt.h
-@@ -5201,9 +5201,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_pt_pt.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_pt_pt.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_pt_pt.h	2023-04-04 05:39:02.954218835 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_pt_pt.h	2023-04-04 05:31:23.479652804 +0200
+@@ -5256,9 +5256,7 @@
     "Ativar teclado pequeno"
     )
  
@@ -954,7 +853,7 @@ index 801c17f706..99fd58354e 100644
  #endif
  #ifdef HAVE_LAKKA
  MSG_HASH(
-@@ -5235,6 +5233,8 @@ MSG_HASH(
+@@ -5290,6 +5288,8 @@
     "Ativar/desativar acesso remoto pela linha de comandos."
     )
  #endif
@@ -963,11 +862,10 @@ index 801c17f706..99fd58354e 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_ro.h b/intl/msg_hash_ro.h
-index b664b5466d..c4d8f7a0a3 100644
---- a/intl/msg_hash_ro.h
-+++ b/intl/msg_hash_ro.h
-@@ -425,12 +425,12 @@
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ro.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ro.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ro.h	2023-04-04 05:39:02.954218835 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ro.h	2023-04-04 05:31:23.479652804 +0200
+@@ -424,12 +424,12 @@
  /* Environment Specific Settings */
  
  
@@ -983,11 +881,10 @@ index b664b5466d..c4d8f7a0a3 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_ru.h b/intl/msg_hash_ru.h
-index 25d722fbf4..636b461723 100644
---- a/intl/msg_hash_ru.h
-+++ b/intl/msg_hash_ru.h
-@@ -14088,18 +14088,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ru.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ru.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_ru.h	2023-04-04 05:39:02.954218835 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_ru.h	2023-04-04 05:31:23.479652804 +0200
+@@ -14307,18 +14307,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "Увеличить или уменьшить яркость экрана."
     )
@@ -1007,7 +904,7 @@ index 25d722fbf4..636b461723 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "Разгон СPU"
-@@ -14187,6 +14176,8 @@ MSG_HASH(
+@@ -14406,6 +14395,8 @@
     "Неправильный файл конфигурации - отсутствует APNAME или PASSWORD в %s"
     )
  #endif
@@ -1016,11 +913,10 @@ index 25d722fbf4..636b461723 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_si.h b/intl/msg_hash_si.h
-index bf9805492f..7a4e20a330 100644
---- a/intl/msg_hash_si.h
-+++ b/intl/msg_hash_si.h
-@@ -517,12 +517,12 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_si.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_si.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_si.h	2023-04-04 05:39:02.958218927 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_si.h	2023-04-04 05:31:23.479652804 +0200
+@@ -516,12 +516,12 @@
  /* Environment Specific Settings */
  
  
@@ -1036,11 +932,10 @@ index bf9805492f..7a4e20a330 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_sk.h b/intl/msg_hash_sk.h
-index 0149dbec22..04eca74c37 100644
---- a/intl/msg_hash_sk.h
-+++ b/intl/msg_hash_sk.h
-@@ -5688,18 +5688,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_sk.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_sk.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_sk.h	2023-04-04 05:39:02.962219019 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_sk.h	2023-04-04 05:31:23.479652804 +0200
+@@ -5763,18 +5763,7 @@
     MSG_LOCAL,
     "Miestne"
     )
@@ -1060,7 +955,7 @@ index 0149dbec22..04eca74c37 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "CPU pretaktovanie"
-@@ -5727,6 +5716,8 @@ MSG_HASH(
+@@ -5802,6 +5791,8 @@
     "[Žiadne SSID]"
     )
  #endif
@@ -1069,11 +964,10 @@ index 0149dbec22..04eca74c37 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_sr.h b/intl/msg_hash_sr.h
-index 329a5ed05e..4aaf51c1b4 100644
---- a/intl/msg_hash_sr.h
-+++ b/intl/msg_hash_sr.h
-@@ -2273,12 +2273,12 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_sr.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_sr.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_sr.h	2023-04-04 05:39:03.018220303 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_sr.h	2023-04-04 05:31:23.483652897 +0200
+@@ -2424,12 +2424,12 @@
     "Restartuj RetroArch"
     )
  
@@ -1089,11 +983,10 @@ index 329a5ed05e..4aaf51c1b4 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_sv.h b/intl/msg_hash_sv.h
-index c109b38a3d..cd7458c377 100644
---- a/intl/msg_hash_sv.h
-+++ b/intl/msg_hash_sv.h
-@@ -3981,9 +3981,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_sv.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_sv.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_sv.h	2023-04-04 05:39:03.018220303 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_sv.h	2023-04-04 05:31:23.483652897 +0200
+@@ -4056,9 +4056,7 @@
     "Lokal"
     )
  
@@ -1104,7 +997,7 @@ index c109b38a3d..cd7458c377 100644
  #endif
  #ifdef HAVE_LAKKA
  MSG_HASH(
-@@ -3995,6 +3993,8 @@ MSG_HASH(
+@@ -4070,6 +4068,8 @@
     "Tidszon"
     )
  #endif
@@ -1113,11 +1006,10 @@ index c109b38a3d..cd7458c377 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_tr.h b/intl/msg_hash_tr.h
-index 334af2e4d0..81f6573bdf 100644
---- a/intl/msg_hash_tr.h
-+++ b/intl/msg_hash_tr.h
-@@ -13396,18 +13396,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_tr.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_tr.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_tr.h	2023-04-04 05:39:03.022220394 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_tr.h	2023-04-04 05:31:23.483652897 +0200
+@@ -13423,18 +13423,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "Ekran parlaklığını arttır veya azalt."
     )
@@ -1137,7 +1029,7 @@ index 334af2e4d0..81f6573bdf 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "CPU Hız Aşırtma"
-@@ -13491,6 +13480,8 @@ MSG_HASH(
+@@ -13522,6 +13511,8 @@
     "Yanlış yapılandırma dosyası - %s içinde APNAME veya PASSWORD bulunamadı"
     )
  #endif
@@ -1146,11 +1038,10 @@ index 334af2e4d0..81f6573bdf 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_uk.h b/intl/msg_hash_uk.h
-index 097679c62a..b9239b0a75 100644
---- a/intl/msg_hash_uk.h
-+++ b/intl/msg_hash_uk.h
-@@ -7865,13 +7865,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_uk.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_uk.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_uk.h	2023-04-04 05:39:03.026220486 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_uk.h	2023-04-04 05:31:23.483652897 +0200
+@@ -8172,13 +8172,7 @@
     "Місцеві"
     )
  
@@ -1165,7 +1056,7 @@ index 097679c62a..b9239b0a75 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "Розгін CPU"
-@@ -7903,6 +7897,8 @@ MSG_HASH(
+@@ -8210,6 +8204,8 @@
     "Точка доступу Wi-Fi не запущена"
     )
  #endif
@@ -1174,11 +1065,10 @@ index 097679c62a..b9239b0a75 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_us.h b/intl/msg_hash_us.h
-index ea61093f65..85db8480fd 100644
---- a/intl/msg_hash_us.h
-+++ b/intl/msg_hash_us.h
-@@ -14908,18 +14908,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_us.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_us.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_us.h	2023-04-04 05:39:03.026220486 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_us.h	2023-04-04 05:31:23.483652897 +0200
+@@ -15031,18 +15031,7 @@
     MENU_ENUM_SUBLABEL_BRIGHTNESS_CONTROL,
     "Increase or decrease the screen brightness."
     )
@@ -1198,7 +1088,7 @@ index ea61093f65..85db8480fd 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
     "CPU Overclock"
-@@ -15019,6 +15008,8 @@ MSG_HASH(
+@@ -15142,6 +15131,8 @@
     "Wrong configuration file - could not find APNAME or PASSWORD in %s"
     )
  #endif
@@ -1207,11 +1097,10 @@ index ea61093f65..85db8480fd 100644
  #ifdef GEKKO
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
-diff --git a/intl/msg_hash_val.h b/intl/msg_hash_val.h
-index e8a09b521d..a1d5f5f756 100644
---- a/intl/msg_hash_val.h
-+++ b/intl/msg_hash_val.h
-@@ -3197,12 +3197,12 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_val.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_val.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_val.h	2023-04-04 05:39:03.030220578 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_val.h	2023-04-04 05:31:23.483652897 +0200
+@@ -3380,12 +3380,12 @@
     "Reinicia RetroArch"
     )
  
@@ -1227,11 +1116,10 @@ index e8a09b521d..a1d5f5f756 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/intl/msg_hash_vn.h b/intl/msg_hash_vn.h
-index 1ce7ba2439..0388691995 100644
---- a/intl/msg_hash_vn.h
-+++ b/intl/msg_hash_vn.h
-@@ -2609,9 +2609,7 @@ MSG_HASH(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_vn.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_vn.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/intl/msg_hash_vn.h	2023-04-04 05:39:03.030220578 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/intl/msg_hash_vn.h	2023-04-04 05:31:23.483652897 +0200
+@@ -2600,9 +2600,7 @@
     "Small Keyboard Enable"
     )
  
@@ -1242,7 +1130,7 @@ index 1ce7ba2439..0388691995 100644
  #endif
  #ifdef HAVE_LAKKA
  MSG_HASH(
-@@ -2639,6 +2637,8 @@ MSG_HASH(
+@@ -2630,6 +2628,8 @@
     "Bật/tắt giao thức SSH."
     )
  #endif
@@ -1251,11 +1139,10 @@ index 1ce7ba2439..0388691995 100644
  #ifdef GEKKO
  #endif
  #ifdef HAVE_ODROIDGO2
-diff --git a/menu/cbs/menu_cbs_deferred_push.c b/menu/cbs/menu_cbs_deferred_push.c
-index bf89a7dab7..17c53d8758 100644
---- a/menu/cbs/menu_cbs_deferred_push.c
-+++ b/menu/cbs/menu_cbs_deferred_push.c
-@@ -262,14 +262,10 @@ GENERIC_DEFERRED_PUSH(deferred_push_core_system_files_list,         DISPLAYLIST_
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_deferred_push.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_deferred_push.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_deferred_push.c	2023-04-04 05:39:03.034220670 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_deferred_push.c	2023-04-04 05:31:23.487652990 +0200
+@@ -256,14 +256,10 @@
  GENERIC_DEFERRED_PUSH(deferred_push_lakka_list,                     DISPLAYLIST_LAKKA)
  #endif
  
@@ -1271,7 +1158,7 @@ index bf89a7dab7..17c53d8758 100644
  #if defined(HAVE_LAKKA)
  GENERIC_DEFERRED_PUSH(deferred_push_cpu_perfpower,                  DISPLAYLIST_CPU_PERFPOWER_LIST)
  GENERIC_DEFERRED_PUSH(deferred_push_cpu_policy,                     DISPLAYLIST_CPU_POLICY_LIST)
-@@ -786,10 +782,7 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
+@@ -777,10 +773,7 @@
        {MENU_ENUM_LABEL_DEFERRED_AUDIO_RESAMPLER_SETTINGS_LIST, deferred_push_audio_resampler_settings_list},
        {MENU_ENUM_LABEL_DEFERRED_AUDIO_MIXER_SETTINGS_LIST, deferred_push_audio_mixer_settings_list},
        {MENU_ENUM_LABEL_DEFERRED_LATENCY_SETTINGS_LIST, deferred_push_latency_settings_list},
@@ -1283,11 +1170,10 @@ index bf89a7dab7..17c53d8758 100644
        {MENU_ENUM_LABEL_SWITCH_CPU_PROFILE, deferred_push_switch_cpu_profile},
  #endif
  #if defined(HAVE_LAKKA)
-diff --git a/menu/cbs/menu_cbs_get_value.c b/menu/cbs/menu_cbs_get_value.c
-index 53edd75bf5..c56c106598 100644
---- a/menu/cbs/menu_cbs_get_value.c
-+++ b/menu/cbs/menu_cbs_get_value.c
-@@ -599,7 +599,6 @@ static void menu_action_setting_disp_set_label_contentless_core(
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_get_value.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_get_value.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_get_value.c	2023-04-04 05:39:03.034220670 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_get_value.c	2023-04-04 05:31:23.487652990 +0200
+@@ -599,7 +599,6 @@
        strlcpy(s2, alt, len2);
  }
  
@@ -1295,7 +1181,7 @@ index 53edd75bf5..c56c106598 100644
  #ifdef HAVE_LAKKA
  static void menu_action_setting_disp_cpu_gov_mode(
        file_list_t* list,
-@@ -764,7 +763,6 @@ static void menu_action_cpu_governor_label(
+@@ -764,7 +763,6 @@
     strlcpy(s, d->scaling_governor, len);
  }
  #endif
@@ -1303,7 +1189,7 @@ index 53edd75bf5..c56c106598 100644
  
  static void menu_action_setting_disp_set_label_core_lock(
        file_list_t* list,
-@@ -2040,7 +2038,6 @@ static int menu_cbs_init_bind_get_string_representation_compare_label(
+@@ -2026,7 +2024,6 @@
              BIND_ACTION_GET_VALUE(cbs,
                    menu_action_setting_disp_set_label_core_option_override_info);
              break;
@@ -1311,7 +1197,7 @@ index 53edd75bf5..c56c106598 100644
           #ifdef HAVE_LAKKA
           case MENU_ENUM_LABEL_CPU_PERF_MODE:
              BIND_ACTION_GET_VALUE(cbs,
-@@ -2067,7 +2064,6 @@ static int menu_cbs_init_bind_get_string_representation_compare_label(
+@@ -2053,7 +2050,6 @@
              BIND_ACTION_GET_VALUE(cbs, menu_action_cpu_governor_label);
              break;
           #endif
@@ -1319,11 +1205,10 @@ index 53edd75bf5..c56c106598 100644
           default:
              return -1;
        }
-diff --git a/menu/cbs/menu_cbs_left.c b/menu/cbs/menu_cbs_left.c
-index b3c7441bfe..d8b8eb1b01 100644
---- a/menu/cbs/menu_cbs_left.c
-+++ b/menu/cbs/menu_cbs_left.c
-@@ -686,7 +686,6 @@ static int manual_content_scan_core_name_left(unsigned type, const char *label,
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_left.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_left.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_left.c	2023-04-04 05:39:03.034220670 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_left.c	2023-04-04 05:31:23.487652990 +0200
+@@ -686,7 +686,6 @@
     return 0;
  }
  
@@ -1331,7 +1216,7 @@ index b3c7441bfe..d8b8eb1b01 100644
  #ifdef HAVE_LAKKA
  static int cpu_policy_mode_change(unsigned type, const char *label,
        bool wraparound)
-@@ -801,7 +800,6 @@ static int cpu_policy_freq_tweak(unsigned type, const char *label,
+@@ -801,7 +800,6 @@
     return 0;
  }
  #endif
@@ -1339,7 +1224,7 @@ index b3c7441bfe..d8b8eb1b01 100644
  
  static int core_setting_left(unsigned type, const char *label,
        bool wraparound)
-@@ -1115,7 +1113,6 @@ static int menu_cbs_init_bind_left_compare_label(menu_file_list_cbs_t *cbs,
+@@ -1129,7 +1127,6 @@
              case MENU_ENUM_LABEL_MANUAL_CONTENT_SCAN_CORE_NAME:
                 BIND_ACTION_LEFT(cbs, manual_content_scan_core_name_left);
                 break;
@@ -1347,7 +1232,7 @@ index b3c7441bfe..d8b8eb1b01 100644
              #ifdef HAVE_LAKKA
              case MENU_ENUM_LABEL_CPU_PERF_MODE:
                 BIND_ACTION_LEFT(cbs, cpu_policy_mode_change);
-@@ -1134,7 +1131,6 @@ static int menu_cbs_init_bind_left_compare_label(menu_file_list_cbs_t *cbs,
+@@ -1148,7 +1145,6 @@
                 BIND_ACTION_LEFT(cbs, cpu_policy_freq_managed_gov);
                 break;
              #endif
@@ -1355,10 +1240,9 @@ index b3c7441bfe..d8b8eb1b01 100644
              default:
                 return -1;
           }
-diff --git a/menu/cbs/menu_cbs_ok.c b/menu/cbs/menu_cbs_ok.c
-index 5f4f7327bb..6104dc6e37 100644
---- a/menu/cbs/menu_cbs_ok.c
-+++ b/menu/cbs/menu_cbs_ok.c
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_ok.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_ok.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_ok.c	2023-04-04 05:39:03.034220670 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_ok.c	2023-04-04 05:31:23.487652990 +0200
 @@ -100,7 +100,7 @@
  #include "../../play_feature_delivery/play_feature_delivery.h"
  #endif
@@ -1368,7 +1252,7 @@ index 5f4f7327bb..6104dc6e37 100644
  #include "../../switch_performance_profiles.h"
  #endif
  
-@@ -3914,19 +3914,11 @@ static int action_ok_deferred_list_stub(const char *path,
+@@ -3874,19 +3874,11 @@
     return 0;
  }
  
@@ -1389,7 +1273,7 @@ index 5f4f7327bb..6104dc6e37 100644
     unsigned profile_clock          = SWITCH_CPU_SPEEDS_VALUES[entry_idx];
     settings_t *settings            = config_get_ptr();
  
-@@ -3943,7 +3935,6 @@ static int action_ok_set_switch_cpu_profile(const char *path,
+@@ -3903,7 +3895,6 @@
     }
     snprintf(command, sizeof(command),
           "Current Clock set to %i", profile_clock);
@@ -1397,7 +1281,7 @@ index 5f4f7327bb..6104dc6e37 100644
  
     runloop_msg_queue_push(command, 1, 90, true, NULL,
           MESSAGE_QUEUE_ICON_DEFAULT, MESSAGE_QUEUE_CATEGORY_INFO);
-@@ -3952,33 +3943,6 @@ static int action_ok_set_switch_cpu_profile(const char *path,
+@@ -3912,33 +3903,6 @@
  }
  #endif
  
@@ -1431,9 +1315,9 @@ index 5f4f7327bb..6104dc6e37 100644
  
  static int action_ok_load_core_deferred(const char *path,
        const char *label, unsigned type, size_t idx, size_t entry_idx)
-@@ -8270,10 +8234,8 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
- #ifdef HAVE_VIDEO_LAYOUT
-          {MENU_ENUM_LABEL_ONSCREEN_VIDEO_LAYOUT_SETTINGS,      action_ok_onscreen_video_layout_list},
+@@ -8266,10 +8230,8 @@
+          {MENU_ENUM_LABEL_NETPLAY_REFRESH_LAN,                 action_ok_push_netplay_refresh_lan},
+ #endif
  #endif
 -#ifdef HAVE_LAKKA_SWITCH
 -         {MENU_ENUM_LABEL_SWITCH_GPU_PROFILE,                  action_ok_push_default},
@@ -1444,7 +1328,7 @@ index 5f4f7327bb..6104dc6e37 100644
           {MENU_ENUM_LABEL_SWITCH_CPU_PROFILE,                  action_ok_push_default},
  #endif
           {MENU_ENUM_LABEL_MENU_WALLPAPER,                      action_ok_menu_wallpaper},
-@@ -8797,12 +8759,7 @@ static int menu_cbs_init_bind_ok_compare_type(menu_file_list_cbs_t *cbs,
+@@ -8790,12 +8752,7 @@
           case FILE_TYPE_PLAYLIST_ENTRY:
              BIND_ACTION_OK(cbs, action_ok_playlist_entry_collection);
              break;
@@ -1458,11 +1342,10 @@ index 5f4f7327bb..6104dc6e37 100644
           case MENU_SET_SWITCH_CPU_PROFILE:
              BIND_ACTION_OK(cbs, action_ok_set_switch_cpu_profile);
              break;
-diff --git a/menu/cbs/menu_cbs_right.c b/menu/cbs/menu_cbs_right.c
-index f47ea8c943..396b89064a 100644
---- a/menu/cbs/menu_cbs_right.c
-+++ b/menu/cbs/menu_cbs_right.c
-@@ -795,7 +795,6 @@ static int manual_content_scan_core_name_right(unsigned type, const char *label,
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_right.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_right.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_right.c	2023-04-04 05:39:03.038220761 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_right.c	2023-04-04 05:31:23.487652990 +0200
+@@ -795,7 +795,6 @@
     return 0;
  }
  
@@ -1470,7 +1353,7 @@ index f47ea8c943..396b89064a 100644
  #ifdef HAVE_LAKKA
  static int cpu_policy_mode_change(unsigned type, const char *label,
        bool wraparound)
-@@ -913,7 +912,7 @@ static int cpu_policy_freq_tweak(unsigned type, const char *label,
+@@ -913,7 +912,7 @@
     return 0;
  }
  #endif
@@ -1479,7 +1362,7 @@ index f47ea8c943..396b89064a 100644
  int core_setting_right(unsigned type, const char *label,
        bool wraparound)
  {
-@@ -1240,7 +1239,6 @@ static int menu_cbs_init_bind_right_compare_label(menu_file_list_cbs_t *cbs,
+@@ -1257,7 +1256,6 @@
              case MENU_ENUM_LABEL_MANUAL_CONTENT_SCAN_CORE_NAME:
                 BIND_ACTION_RIGHT(cbs, manual_content_scan_core_name_right);
                 break;
@@ -1487,7 +1370,7 @@ index f47ea8c943..396b89064a 100644
              #ifdef HAVE_LAKKA
              case MENU_ENUM_LABEL_CPU_PERF_MODE:
                 BIND_ACTION_RIGHT(cbs, cpu_policy_mode_change);
-@@ -1259,7 +1257,6 @@ static int menu_cbs_init_bind_right_compare_label(menu_file_list_cbs_t *cbs,
+@@ -1276,7 +1274,6 @@
                 BIND_ACTION_RIGHT(cbs, cpu_policy_freq_managed_gov);
                 break;
              #endif
@@ -1495,11 +1378,10 @@ index f47ea8c943..396b89064a 100644
              default:
                 return -1;
           }
-diff --git a/menu/cbs/menu_cbs_sublabel.c b/menu/cbs/menu_cbs_sublabel.c
-index 8d67fa41c3..c13741c31c 100644
---- a/menu/cbs/menu_cbs_sublabel.c
-+++ b/menu/cbs/menu_cbs_sublabel.c
-@@ -1156,14 +1156,10 @@ DEFAULT_SUBLABEL_MACRO(action_bind_sublabel_show_wimp,
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_sublabel.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_sublabel.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_sublabel.c	2023-04-04 05:39:03.038220761 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_sublabel.c	2023-04-04 05:31:23.487652990 +0200
+@@ -1155,14 +1155,10 @@
  #endif
  DEFAULT_SUBLABEL_MACRO(action_bind_sublabel_discord_allow,                         MENU_ENUM_SUBLABEL_DISCORD_ALLOW)
  
@@ -1515,7 +1397,7 @@ index 8d67fa41c3..c13741c31c 100644
  #ifdef __linux__
  DEFAULT_SUBLABEL_MACRO(action_bind_sublabel_gamemode_enable,                MENU_ENUM_SUBLABEL_GAMEMODE_ENABLE_LINUX)
  #else
-@@ -1306,7 +1302,6 @@ static int action_bind_sublabel_bluetooth_list(
+@@ -1305,7 +1301,6 @@
  }
  #endif
  
@@ -1523,7 +1405,7 @@ index 8d67fa41c3..c13741c31c 100644
  #ifdef HAVE_LAKKA
  static int action_bind_sublabel_cpu_policy_entry_list(
        file_list_t *list,
-@@ -1339,7 +1334,7 @@ static int action_bind_sublabel_cpu_perf_mode(
+@@ -1338,7 +1333,7 @@
     return 0;
  }
  #endif
@@ -1532,7 +1414,7 @@ index 8d67fa41c3..c13741c31c 100644
  #ifdef HAVE_CHEEVOS
  static int action_bind_sublabel_cheevos_entry(
        file_list_t *list,
-@@ -4853,14 +4848,12 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
+@@ -4868,7 +4863,6 @@
           case MENU_ENUM_LABEL_TIMEZONE:
              BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_timezone);
              break;
@@ -1540,14 +1422,15 @@ index 8d67fa41c3..c13741c31c 100644
           case MENU_ENUM_LABEL_CPU_POLICY_ENTRY:
              BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_cpu_policy_entry_list);
              break;
-          case MENU_ENUM_LABEL_CPU_PERF_MODE:
+@@ -4876,7 +4870,6 @@
              BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_cpu_perf_mode);
              break;
--#endif
  #endif
+-#endif
           case MENU_ENUM_LABEL_USER_LANGUAGE:
              BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_user_language);
-@@ -4950,15 +4943,10 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
+             break;
+@@ -4960,16 +4953,11 @@
              BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_show_wimp);
              break;
  #endif
@@ -1556,19 +1439,19 @@ index 8d67fa41c3..c13741c31c 100644
           case MENU_ENUM_LABEL_SWITCH_CPU_PROFILE:
              BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_switch_cpu_profile);
              break;
--#endif
+ #endif
 -#ifdef HAVE_LAKKA_SWITCH
 -         case MENU_ENUM_LABEL_SWITCH_GPU_PROFILE:
 -            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_switch_gpu_profile);
 -            break;
- #endif
+-#endif
           case MENU_ENUM_LABEL_GAMEMODE_ENABLE:
              BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_gamemode_enable);
-diff --git a/menu/cbs/menu_cbs_title.c b/menu/cbs/menu_cbs_title.c
-index be03e89c18..b24d740949 100644
---- a/menu/cbs/menu_cbs_title.c
-+++ b/menu/cbs/menu_cbs_title.c
-@@ -771,14 +771,10 @@ DEFAULT_TITLE_COPY_MACRO(action_get_title_video_shader_preset_save,MENU_ENUM_LAB
+             break;
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_title.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_title.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/cbs/menu_cbs_title.c	2023-04-04 05:39:03.042220853 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/cbs/menu_cbs_title.c	2023-04-04 05:31:23.487652990 +0200
+@@ -765,14 +765,10 @@
  DEFAULT_TITLE_COPY_MACRO(action_get_title_video_shader_preset_remove,MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_PRESET_REMOVE)
  DEFAULT_TITLE_COPY_MACRO(action_get_title_video_shader_preset_save_list,MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_PRESET_SAVE)
  
@@ -1584,7 +1467,7 @@ index be03e89c18..b24d740949 100644
  DEFAULT_TITLE_SEARCH_FILTER_MACRO(action_get_title_deferred_history_list,   MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_HISTORY)
  DEFAULT_TITLE_SEARCH_FILTER_MACRO(action_get_title_deferred_favorites_list, MENU_ENUM_LABEL_VALUE_GOTO_FAVORITES)
  DEFAULT_TITLE_SEARCH_FILTER_MACRO(action_get_title_deferred_images_list,    MENU_ENUM_LABEL_VALUE_GOTO_IMAGES)
-@@ -1298,13 +1294,9 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
+@@ -1285,14 +1281,10 @@
           action_get_title_core_directory},
        {MENU_ENUM_LABEL_LIBRETRO_INFO_PATH,
           action_get_title_core_info_directory},
@@ -1592,14 +1475,15 @@ index be03e89c18..b24d740949 100644
 +#if defined(HAVE_LIBNX)
        {MENU_ENUM_LABEL_SWITCH_CPU_PROFILE,
           action_get_title_switch_cpu_profile},
--#endif
+ #endif
 -#ifdef HAVE_LAKKA_SWITCH
 -      {MENU_ENUM_LABEL_SWITCH_GPU_PROFILE,
 -         action_get_title_switch_gpu_profile},
- #endif
+-#endif
        {MENU_ENUM_LABEL_DEFERRED_MANUAL_CONTENT_SCAN_LIST,
           action_get_title_manual_content_scan_list},
-@@ -1739,15 +1731,10 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
+       {MENU_ENUM_LABEL_MANUAL_CONTENT_SCAN_DIR,
+@@ -1716,16 +1708,11 @@
           case MENU_ENUM_LABEL_LIBRETRO_INFO_PATH:
              BIND_ACTION_GET_TITLE(cbs, action_get_title_core_info_directory);
              break;
@@ -1608,19 +1492,19 @@ index be03e89c18..b24d740949 100644
           case MENU_ENUM_LABEL_SWITCH_CPU_PROFILE:
              BIND_ACTION_GET_TITLE(cbs, action_get_title_switch_cpu_profile);
              break;
--#endif
+ #endif
 -#ifdef HAVE_LAKKA_SWITCH
 -         case MENU_ENUM_LABEL_SWITCH_GPU_PROFILE:
 -            BIND_ACTION_GET_TITLE(cbs, action_get_title_switch_gpu_profile);
 -            break;
- #endif
+-#endif
           case MENU_ENUM_LABEL_MANUAL_CONTENT_SCAN_LIST:
              BIND_ACTION_GET_TITLE(cbs, action_get_title_manual_content_scan_list);
-diff --git a/menu/drivers/ozone.c b/menu/drivers/ozone.c
-index 33a9e08583..de1aefd904 100644
---- a/menu/drivers/ozone.c
-+++ b/menu/drivers/ozone.c
-@@ -2047,10 +2047,7 @@ static uintptr_t ozone_entries_icon_get_texture(
+             break;
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/drivers/ozone.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/drivers/ozone.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/drivers/ozone.c	2023-04-04 05:39:03.042220853 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/drivers/ozone.c	2023-04-04 05:31:23.487652990 +0200
+@@ -2053,10 +2053,7 @@
        case MENU_ENUM_LABEL_USER_INTERFACE_SETTINGS:
        case MENU_ENUM_LABEL_SETTINGS_SHOW_USER_INTERFACE:
              return ozone->icons_textures[OZONE_ENTRIES_ICONS_TEXTURE_UI];
@@ -1632,7 +1516,7 @@ index 33a9e08583..de1aefd904 100644
        case MENU_ENUM_LABEL_SWITCH_CPU_PROFILE:
              return ozone->icons_textures[OZONE_ENTRIES_ICONS_TEXTURE_POWER];
  #endif
-@@ -9243,7 +9240,7 @@ static int ozone_list_push(void *data, void *userdata,
+@@ -9364,21 +9361,13 @@
                       false);
              }
  
@@ -1641,10 +1525,10 @@ index 33a9e08583..de1aefd904 100644
              MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(
                    info->list,
                    MENU_ENUM_LABEL_SWITCH_CPU_PROFILE,
-@@ -9251,14 +9248,6 @@ static int ozone_list_push(void *data, void *userdata,
+                   PARSE_ACTION,
                    false);
  #endif
- 
+-
 -#ifdef HAVE_LAKKA_SWITCH
 -            MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(
 -                  info->list,
@@ -1652,15 +1536,13 @@ index 33a9e08583..de1aefd904 100644
 -                  PARSE_ACTION,
 -                  false);
 -#endif
--
+ 
              if (settings->bools.menu_show_configurations && !settings->bools.kiosk_mode_enable)
              {
-                MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(
-diff --git a/menu/drivers/xmb.c b/menu/drivers/xmb.c
-index 3c735766c3..ad3d2edfe6 100644
---- a/menu/drivers/xmb.c
-+++ b/menu/drivers/xmb.c
-@@ -3180,10 +3180,7 @@ static uintptr_t xmb_icon_get_id(xmb_handle_t *xmb,
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/drivers/xmb.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/drivers/xmb.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/drivers/xmb.c	2023-04-04 05:39:03.046220945 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/drivers/xmb.c	2023-04-04 05:31:23.491653081 +0200
+@@ -3185,10 +3185,7 @@
        case MENU_ENUM_LABEL_USER_INTERFACE_SETTINGS:
        case MENU_ENUM_LABEL_SETTINGS_SHOW_USER_INTERFACE:
           return xmb->textures.list[XMB_TEXTURE_UI];
@@ -1672,7 +1554,7 @@ index 3c735766c3..ad3d2edfe6 100644
        case MENU_ENUM_LABEL_SWITCH_CPU_PROFILE:
           return xmb->textures.list[XMB_TEXTURE_POWER];
  #endif
-@@ -7970,22 +7967,13 @@ static int xmb_list_push(void *data, void *userdata,
+@@ -8092,22 +8089,13 @@
                       false);
              }
  
@@ -1696,10 +1578,9 @@ index 3c735766c3..ad3d2edfe6 100644
              if (menu_show_configurations && !kiosk_mode_enable)
              {
                 MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(
-diff --git a/menu/menu_displaylist.c b/menu/menu_displaylist.c
-index eaad04f5e9..a21c200af5 100644
---- a/menu/menu_displaylist.c
-+++ b/menu/menu_displaylist.c
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/menu_displaylist.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/menu_displaylist.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/menu_displaylist.c	2023-04-04 05:39:03.050221036 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/menu_displaylist.c	2023-04-04 05:31:23.491653081 +0200
 @@ -50,7 +50,7 @@
  #include "../core_updater_list.h"
  #endif
@@ -1718,7 +1599,7 @@ index eaad04f5e9..a21c200af5 100644
  #include "../../switch_performance_profiles.h"
  #endif
  
-@@ -11694,7 +11694,6 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type,
+@@ -11690,7 +11690,6 @@
           /* No-op */
           break;
  #endif
@@ -1726,7 +1607,7 @@ index eaad04f5e9..a21c200af5 100644
  #ifdef HAVE_LAKKA
        case DISPLAYLIST_CPU_POLICY_LIST:
           menu_entries_ctl(MENU_ENTRIES_CTL_CLEAR, info->list);
-@@ -11796,30 +11795,17 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type,
+@@ -11792,30 +11791,17 @@
           break;
        }
  #endif
@@ -1758,7 +1639,7 @@ index eaad04f5e9..a21c200af5 100644
           u32 currentClock = 0;
           if (hosversionBefore(8, 0, 0))
              pcvGetClockRate(PcvModule_CpuBus, &currentClock);
-@@ -11831,7 +11817,6 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type,
+@@ -11827,7 +11813,6 @@
              clkrstCloseSession(&session);
           }
           snprintf(text, sizeof(text), "Current Clock : %i", currentClock);
@@ -1766,7 +1647,7 @@ index eaad04f5e9..a21c200af5 100644
           if (menu_entries_append(info->list,
              text,
              "",
-@@ -11861,49 +11846,7 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type,
+@@ -11857,49 +11842,7 @@
                              | MD_FLAG_NEED_CLEAR;
           break;
        }
@@ -1817,11 +1698,10 @@ index eaad04f5e9..a21c200af5 100644
        case DISPLAYLIST_MUSIC_LIST:
           {
              menu_entries_ctl(MENU_ENTRIES_CTL_CLEAR, info->list);
-diff --git a/menu/menu_displaylist.h b/menu/menu_displaylist.h
-index 76ec5c7250..af54c0cb7b 100644
---- a/menu/menu_displaylist.h
-+++ b/menu/menu_displaylist.h
-@@ -268,10 +268,7 @@ enum menu_displaylist_ctl_state
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/menu_displaylist.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/menu_displaylist.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/menu_displaylist.h	2023-04-04 05:39:03.054221128 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/menu_displaylist.h	2023-04-04 05:31:23.491653081 +0200
+@@ -262,10 +262,7 @@
     DISPLAYLIST_CORE_CONTENT_DIRS,
     DISPLAYLIST_CORE_CONTENT_DIRS_SUBDIR,
     DISPLAYLIST_CORE_SYSTEM_FILES,
@@ -1833,10 +1713,9 @@ index 76ec5c7250..af54c0cb7b 100644
     DISPLAYLIST_SWITCH_CPU_PROFILE,
  #endif
     DISPLAYLIST_MANUAL_CONTENT_SCAN_LIST,
-diff --git a/menu/menu_driver.c b/menu/menu_driver.c
-index 273e8ed2b3..9609f48b59 100644
---- a/menu/menu_driver.c
-+++ b/menu/menu_driver.c
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/menu_driver.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/menu_driver.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/menu_driver.c	2023-04-04 05:39:03.054221128 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/menu_driver.c	2023-04-04 05:31:23.491653081 +0200
 @@ -74,9 +74,6 @@
  
  #ifdef HAVE_LIBNX
@@ -1847,7 +1726,7 @@ index 273e8ed2b3..9609f48b59 100644
  #include "../switch_performance_profiles.h"
  #endif
  
-@@ -6761,11 +6758,9 @@ void menu_driver_toggle(
+@@ -6761,11 +6758,9 @@
  
     if (on) 
     {
@@ -1859,7 +1738,7 @@ index 273e8ed2b3..9609f48b59 100644
  #ifdef HAVE_OVERLAY
        /* If an overlay was displayed before the toggle
         * and overlays are disabled in menu, need to
-@@ -6784,11 +6779,9 @@ void menu_driver_toggle(
+@@ -6784,11 +6779,9 @@
     }
     else
     {
@@ -1871,11 +1750,10 @@ index 273e8ed2b3..9609f48b59 100644
  #ifdef HAVE_OVERLAY
        /* Inhibits pointer 'select' and 'cancel' actions
         * (until the next time 'select'/'cancel' are released) */
-diff --git a/menu/menu_driver.h b/menu/menu_driver.h
-index e7fe155a99..ba5a80e3ee 100644
---- a/menu/menu_driver.h
-+++ b/menu/menu_driver.h
-@@ -242,10 +242,7 @@ enum menu_settings_type
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/menu_driver.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/menu_driver.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/menu_driver.h	2023-04-04 05:39:03.054221128 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/menu_driver.h	2023-04-04 05:31:23.491653081 +0200
+@@ -245,10 +245,7 @@
  
     MENU_SET_SCREEN_BRIGHTNESS,
  
@@ -1887,11 +1765,10 @@ index e7fe155a99..ba5a80e3ee 100644
     MENU_SET_SWITCH_CPU_PROFILE,
  #endif
  
-diff --git a/menu/menu_setting.c b/menu/menu_setting.c
-index 6aa2236def..1f024440f5 100644
---- a/menu/menu_setting.c
-+++ b/menu/menu_setting.c
-@@ -8074,7 +8074,8 @@ static void general_write_handler(rarch_setting_t *setting)
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/menu_setting.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/menu_setting.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/menu/menu_setting.c	2023-04-04 05:39:03.058221220 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/menu/menu_setting.c	2023-04-04 05:31:23.495653174 +0200
+@@ -8096,7 +8096,8 @@
              }
           }
           break;
@@ -1901,7 +1778,7 @@ index 6aa2236def..1f024440f5 100644
           core_set_poll_type(*setting->value.target.integer);
           break;
        case MENU_ENUM_LABEL_VIDEO_SCALE_INTEGER:
-@@ -9994,7 +9995,7 @@ static bool setting_append_list(
+@@ -10001,7 +10002,7 @@
           MENU_SETTINGS_LIST_CURRENT_ADD_CMD(list, list_info, CMD_EVENT_QUIT);
  #endif
  
@@ -1910,7 +1787,7 @@ index 6aa2236def..1f024440f5 100644
          CONFIG_ACTION(
                list, list_info,
                MENU_ENUM_LABEL_SWITCH_CPU_PROFILE,
-@@ -10005,15 +10006,6 @@ static bool setting_append_list(
+@@ -10012,15 +10013,6 @@
  #endif
  
  #if defined(HAVE_LAKKA)
@@ -1926,7 +1803,7 @@ index 6aa2236def..1f024440f5 100644
           CONFIG_ACTION(
                 list, list_info,
                 MENU_ENUM_LABEL_REBOOT,
-@@ -18578,7 +18570,6 @@ static bool setting_append_list(
+@@ -18554,7 +18546,6 @@
  #endif
  
  #ifdef HAVE_LAKKA
@@ -1934,7 +1811,7 @@ index 6aa2236def..1f024440f5 100644
           CONFIG_ACTION(
                 list, list_info,
                 MENU_ENUM_LABEL_CPU_PERFPOWER,
-@@ -18587,8 +18578,6 @@ static bool setting_append_list(
+@@ -18563,8 +18554,6 @@
                 &subgroup_info,
                 parent_group);
  #endif
@@ -1943,10 +1820,9 @@ index 6aa2236def..1f024440f5 100644
           if (frontend_driver_has_gamemode())
              CONFIG_BOOL(
                    list, list_info,
-diff --git a/retroarch.c b/retroarch.c
-index 6533c8f824..2624a9a9f9 100644
---- a/retroarch.c
-+++ b/retroarch.c
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/retroarch.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/retroarch.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/retroarch.c	2023-04-04 05:39:03.066221403 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/retroarch.c	2023-04-04 05:31:23.495653174 +0200
 @@ -90,9 +90,6 @@
  
  #ifdef HAVE_LIBNX
@@ -1957,7 +1833,7 @@ index 6533c8f824..2624a9a9f9 100644
  #include "switch_performance_profiles.h"
  #endif
  
-@@ -960,11 +957,9 @@ void drivers_init(
+@@ -960,11 +957,9 @@
     if (flags & DRIVER_MIDI_MASK)
        midi_driver_init(settings);
  
@@ -1969,7 +1845,7 @@ index 6533c8f824..2624a9a9f9 100644
  }
  
  void driver_uninit(int flags)
-@@ -1058,11 +1053,9 @@ void driver_uninit(int flags)
+@@ -1058,11 +1053,9 @@
     if (flags & DRIVER_MIDI_MASK)
        midi_driver_free();
  
@@ -1981,11 +1857,10 @@ index 6533c8f824..2624a9a9f9 100644
  }
  
  static void retroarch_deinit_drivers(struct retro_callbacks *cbs)
-diff --git a/runloop.c b/runloop.c
-index cfccbec4ca..7e09cf4925 100644
---- a/runloop.c
-+++ b/runloop.c
-@@ -94,9 +94,6 @@
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/runloop.c retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/runloop.c
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/runloop.c	2023-04-04 05:39:03.066221403 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/runloop.c	2023-04-04 05:31:23.495653174 +0200
+@@ -97,9 +97,6 @@
  
  #ifdef HAVE_LIBNX
  #include <switch.h>
@@ -1995,7 +1870,7 @@ index cfccbec4ca..7e09cf4925 100644
  #include "switch_performance_profiles.h"
  #endif
  
-@@ -4641,19 +4638,15 @@ void runloop_pause_checks(void)
+@@ -4599,19 +4596,15 @@
        command_event(CMD_EVENT_PRESENCE_UPDATE, &userdata);
  #endif
  
@@ -2015,10 +1890,9 @@ index cfccbec4ca..7e09cf4925 100644
     }
  
  #if defined(HAVE_TRANSLATE) && defined(HAVE_GFX_WIDGETS)
-diff --git a/switch_performance_profiles.h b/switch_performance_profiles.h
-index 5d07ba6ed5..d51d645d3d 100644
---- a/switch_performance_profiles.h
-+++ b/switch_performance_profiles.h
+diff -Naur retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/switch_performance_profiles.h retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/switch_performance_profiles.h
+--- retroarch-6616b807edea5b56683e9fbca8b003b436c22b13/switch_performance_profiles.h	2023-04-04 05:39:03.066221403 +0200
++++ retroarch-6616b807edea5b56683e9fbca8b003b436c22b13-2/switch_performance_profiles.h	2023-04-04 05:31:23.495653174 +0200
 @@ -17,52 +17,9 @@
  #ifndef __SWITCH_PERFORMANCE_PROFILES_H
  #define __SWITCH_PERFORMANCE_PROFILES_H
@@ -2073,7 +1947,7 @@ index 5d07ba6ed5..d51d645d3d 100644
      "Maximum Performance",
      "High Performance",
      "Boost Performance",
-@@ -70,25 +27,12 @@ static char *SWITCH_CPU_PROFILES[] = {
+@@ -70,25 +27,12 @@
      "Powersaving Mode 1",
      "Powersaving Mode 2",
      "Powersaving Mode 3",
@@ -2099,7 +1973,7 @@ index 5d07ba6ed5..d51d645d3d 100644
      "1785 MHz",
      "1581 MHz",
      "1224 MHz",
-@@ -96,11 +40,8 @@ static char *SWITCH_CPU_SPEEDS[] = {
+@@ -96,11 +40,8 @@
      "918 MHz",
      "816 MHz",
      "714 MHz"
@@ -2111,7 +1985,7 @@ index 5d07ba6ed5..d51d645d3d 100644
  static unsigned SWITCH_CPU_SPEEDS_VALUES[] = {
      1785000000,
      1581000000,
-@@ -110,7 +51,6 @@ static unsigned SWITCH_CPU_SPEEDS_VALUES[] = {
+@@ -110,7 +51,6 @@
      816000000,
      714000000
  };
@@ -2119,6 +1993,3 @@ index 5d07ba6ed5..d51d645d3d 100644
  
  #endif
  
--- 
-2.25.1
-

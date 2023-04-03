@@ -1,5 +1,5 @@
 PKG_NAME="mame2003_plus"
-PKG_VERSION="c3cc141d5385e90a64d798032e906c596b7c0437"
+PKG_VERSION="f146ea961edb9723b9859c0e5c7b6293678ea956"
 PKG_LICENSE="MAME"
 PKG_SITE="https://github.com/libretro/mame2003-plus-libretro"
 PKG_URL="${PKG_SITE}.git"

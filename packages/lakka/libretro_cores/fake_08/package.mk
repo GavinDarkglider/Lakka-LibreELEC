@@ -1,5 +1,5 @@
 PKG_NAME="fake_08"
-PKG_VERSION="49f4eb1bd465639d36ef6657e038da892399c7d9"
+PKG_VERSION="e9fe530dfdb91d80921ac490d0dfa5d184111c69"
 PKG_LICENSE="MIT"
 PKG_SITE="https://github.com/jtothebell/fake-08"
 PKG_URL="${PKG_SITE}.git"
