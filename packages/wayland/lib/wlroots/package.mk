@@ -13,13 +13,13 @@ PKG_LONGDESC="A modular Wayland compositor library"
 PKG_RENDERERS=""
 
 # OpenGLES Support
-if [ "${OPENGLES_SUPPORT}" = "yes" ]; then
-  PKG_DEPENDS_TARGET+=" ${OPENGLES}"
+#if [ "${OPENGLES_SUPPORT}" = "yes" -o "${PROJECT}" ="L4T" ]; then
+#  PKG_DEPENDS_TARGET+=" ${OPENGLES}"
   PKG_RENDERERS+=" gles2"
-fi
+#fi
 
 # Vulkan Support
-if [ "${VULKAN_SUPPORT}" = "yes" ]; then
+if [ "${VULKAN_SUPPORT}" = "yes" -a ! "${PROJECT}" = "L4T" ]; then
   PKG_DEPENDS_TARGET+=" ${VULKAN}"
   PKG_RENDERERS+=" vulkan"
 fi

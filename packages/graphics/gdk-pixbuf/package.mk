@@ -32,3 +32,18 @@ pre_configure_target() {
     PKG_MESON_OPTS_TARGET+=" -Dbuiltin_loaders=all"
   fi
 }
+
+pre_configure_host() {
+  PKG_MESON_OPTS_HOST="--wrap-mode=nodownload \
+                         -Dgtk_doc=false \
+                         -Ddocs=false \
+                         -Dintrospection=disabled \
+                         -Dman=false \
+                         -Drelocatable=false \
+                         -Dinstalled_tests=false \
+                         -Dtests=false"
+
+  if [ "${DISPLAYSERVER}" != "x11" ]; then
+    PKG_MESON_OPTS_HOST+=" -Dbuiltin_loaders=all"
+  fi
+}

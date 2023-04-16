@@ -2,6 +2,9 @@
 # setup system defaults
 ################################################################################
 
+  CUSTOM_LIBRETRO_CORES=""
+  LIBRETRO_CORES=""
+
     #VALGRIND="yes"
   
   # Bootloader to use (syslinux / u-boot / bcm2835-bootloader)
@@ -65,7 +68,7 @@
     UVESAFB_SUPPORT="no"
 
   # Displayserver to use (x11 / no)
-    DISPLAYSERVER="x11"
+    DISPLAYSERVER="wl"
 
   # Windowmanager to use (ratpoison / fluxbox / no)
     WINDOWMANAGER="no"

@@ -10,7 +10,7 @@ PKG_URL="https://github.com/swaywm/swaybg/archive/v${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain wayland wayland-protocols cairo pango gdk-pixbuf"
 PKG_LONGDESC="Wallpaper tool for Wayland compositors"
 
-PKG_MESON_OPTS_TARGET="-Dgdk-pixbuf=enabled \
+PKG_MESON_OPTS_TARGET="-Dgdk-pixbuf=disabled \
                        -Dman-pages=disabled"
 
 pre_configure_target() {
