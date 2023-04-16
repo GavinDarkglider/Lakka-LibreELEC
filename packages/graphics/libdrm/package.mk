@@ -55,7 +55,7 @@ if [ "${PROJECT}" = "L4T" ]; then
 
   configure_target() {
     create_meson_conf_target ${TARGET} ${MESON_CONF}
-    sed -i "s|'-fuse-ld=gold'|'-fuse-ld=gold', '-Bsymbolic-functions'|g"  ${PKG_BUILD}/.aarch64-libreelec-linux-gnueabi/meson.conf
+    sed -i "s|'-fuse-ld=gold'|'-fuse-ld=gold', '-Bsymbolic-functions'|g"  ${PKG_BUILD}/.aarch64-libreelec-linux-gnu/meson.conf
     echo "Executing (target): meson ${TARGET_MESON_OPTS} --cross-file=${MESON_CONF} ${PKG_MESON_OPTS_TARGET} ${PKG_MESON_SCRIPT%/*}" | tr -s " "
     CC="${HOST_CC}" CXX="${HOST_CXX}" meson ${TARGET_MESON_OPTS} --cross-file=${MESON_CONF} ${PKG_MESON_OPTS_TARGET} ${PKG_MESON_SCRIPT%/*}
   }
