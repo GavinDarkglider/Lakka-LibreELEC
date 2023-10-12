@@ -123,7 +123,7 @@ if [ "${PROJECT}" = "L4T" ]; then
   fi
 
   if [ "${DEVICE}" = "Switch" ]; then
-    PKG_MAKE_OPTS_TARGET+=" HAVE_LAKKA_SWITCH=1"
+    PKG_MAKE_OPTS_TARGET+=" HAVE_LAKKA_SWITCH=1 UDEV_TOUCH_SUPPORT=1"
   fi
 fi
 
