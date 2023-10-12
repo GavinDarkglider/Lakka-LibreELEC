@@ -184,7 +184,7 @@ elif test ${display_id} = 2050; then echo Display is SAM 7.0
 else echoe Unknown Display ID: ${display_id}!; fi
 
 # Set new active display panel handle.
-if test -n ${DHANDLE} -a ${sku} != 3; then echo Setting Display panel; fdt set /host1x/dsi nvidia,active-panel <$DHANDLE>; fi
+if test -n "${DHANDLE}" -a ${sku} != 3; then echo Setting Display panel; fdt set /host1x/dsi nvidia,active-panel <$DHANDLE>; fi
 
 # Disable USB3.
 if test ${usb3_enable} = 0; then
