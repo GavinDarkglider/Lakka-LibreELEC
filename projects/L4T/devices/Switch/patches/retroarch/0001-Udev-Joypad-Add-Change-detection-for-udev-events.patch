@@ -1,7 +1,8 @@
-From 1c640becd1d3a570eca2cfed11567bd650660cb7 Mon Sep 17 00:00:00 2001
+From ffc11c005d8d06fd99d1402e00f2c4732c9b6d57 Mon Sep 17 00:00:00 2001
 From: Ronald Brown <rbrown4014@yahoo.com>
 Date: Tue, 17 Oct 2023 03:29:02 +0200
-Subject: [PATCH] Udev: Joypad: Add Change detection for udev events
+Subject: [PATCH] Input: Joypad: Udev: Joypad: Add Change detection for udev
+ events
 
 This is handy with controllers like the Nintendo Joycons that have a daemon
 app in the background to handle combining them into one controller(Joycond)
@@ -14,14 +15,14 @@ Note: Needs a patch in joycond as well, to send change uevent.
 This shouldnt cause any issues with other controllers, as the kernel probably
 will never send change events for these device types.
 ---
- input/drivers_joypad/udev_joypad.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ input/drivers_joypad/udev_joypad.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/input/drivers_joypad/udev_joypad.c b/input/drivers_joypad/udev_joypad.c
-index f004d90..e186809 100644
+index f004d90482..ff4b55dcf0 100644
 --- a/input/drivers_joypad/udev_joypad.c
 +++ b/input/drivers_joypad/udev_joypad.c
-@@ -506,6 +506,11 @@ static void udev_joypad_poll(void)
+@@ -506,6 +506,12 @@ static void udev_joypad_poll(void)
              /* Hotplug removal */
              else if (string_is_equal(action, "remove"))
                 udev_joypad_remove_device(devnode);
@@ -30,6 +31,7 @@ index f004d90..e186809 100644
 +            {
 +               udev_joypad_remove_device(devnode);
 +               udev_check_device(dev, devnode);
++            }
           }
  
           udev_device_unref(dev);
