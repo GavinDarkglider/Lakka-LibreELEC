@@ -1,4 +1,4 @@
-From 9996a0027ee8b0149b639fdc1bb7b524a8176bc0 Mon Sep 17 00:00:00 2001
+From dab227de4e1fbd6d1197b7c6532ae4d3e3ff9e81 Mon Sep 17 00:00:00 2001
 From: Dom Cobley <popcornmix@gmail.com>
 Date: Mon, 15 May 2023 12:50:16 +0100
 Subject: [PATCH 7/7] DVDVideoCodecDRMPRIME: Fix missing flush after eof
@@ -8,10 +8,10 @@ Subject: [PATCH 7/7] DVDVideoCodecDRMPRIME: Fix missing flush after eof
  1 file changed, 8 insertions(+)
 
 diff --git a/xbmc/cores/VideoPlayer/DVDCodecs/Video/DVDVideoCodecDRMPRIME.cpp b/xbmc/cores/VideoPlayer/DVDCodecs/Video/DVDVideoCodecDRMPRIME.cpp
-index 0b44d90f13..a472a06792 100644
+index b221cdaf75..a591a90885 100644
 --- a/xbmc/cores/VideoPlayer/DVDCodecs/Video/DVDVideoCodecDRMPRIME.cpp
 +++ b/xbmc/cores/VideoPlayer/DVDCodecs/Video/DVDVideoCodecDRMPRIME.cpp
-@@ -891,7 +891,15 @@ CDVDVideoCodec::VCReturn CDVDVideoCodecDRMPRIME::GetPicture(VideoPicture* pVideo
+@@ -927,7 +927,15 @@ CDVDVideoCodec::VCReturn CDVDVideoCodecDRMPRIME::GetPicture(VideoPicture* pVideo
    if (ret == AVERROR(EAGAIN))
      return VC_BUFFER;
    else if (ret == AVERROR_EOF)

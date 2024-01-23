@@ -3,12 +3,13 @@
 # Copyright (C) 2017-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="kodi"
-PKG_VERSION="0f4ed67345a277d46a00e8090f5d4f026759ba31"
-PKG_SHA256="325a554fec47d29cc35978b230d2c96185fff56128b4766f6916cbdbfc45bc89"
+PKG_VERSION="f3f1df1eab2a38b7039e57635a6597b37510481a"
+PKG_SHA256="dfc46bc48a2d226bd121828b2370ea7be8ed38fc2a8dcd2cf2ed70fc4582a84a"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.kodi.tv"
 PKG_URL="https://github.com/xbmc/xbmc/archive/${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain JsonSchemaBuilder:host TexturePacker:host Python3 zlib systemd lzo pcre swig:host libass curl fontconfig fribidi tinyxml libjpeg-turbo freetype libcdio taglib libxml2 libxslt rapidjson sqlite ffmpeg crossguid libdvdnav libfmt lirc libfstrcmp flatbuffers:host flatbuffers libudfread spdlog"
+PKG_DEPENDS_TARGET="toolchain JsonSchemaBuilder:host TexturePacker:host Python3 zlib systemd lzo pcre swig:host libass curl fontconfig fribidi tinyxml tinyxml2 libjpeg-turbo freetype libcdio taglib libxml2 libxslt rapidjson sqlite ffmpeg crossguid libdvdnav libfmt lirc libfstrcmp flatbuffers:host flatbuffers libudfread spdlog"
+PKG_DEPENDS_UNPACK="commons-lang3 commons-text groovy"
 PKG_DEPENDS_HOST="toolchain"
 PKG_LONGDESC="A free and open source cross-platform media player."
 PKG_BUILD_FLAGS="+speed"
@@ -237,7 +238,6 @@ configure_package() {
   PKG_CMAKE_OPTS_TARGET="-DNATIVEPREFIX=${TOOLCHAIN} \
                          -DWITH_TEXTUREPACKER=${TOOLCHAIN}/bin/TexturePacker \
                          -DWITH_JSONSCHEMABUILDER=${TOOLCHAIN}/bin/JsonSchemaBuilder \
-                         -DDEPENDS_PATH=${PKG_BUILD}/depends \
                          -DSWIG_EXECUTABLE=${TOOLCHAIN}/bin/swig \
                          -DPYTHON_EXECUTABLE=${TOOLCHAIN}/bin/${PKG_PYTHON_VERSION} \
                          -DPYTHON_INCLUDE_DIRS=${SYSROOT_PREFIX}/usr/include/${PKG_PYTHON_VERSION} \
@@ -260,6 +260,9 @@ configure_package() {
                          -DENABLE_INTERNAL_FLATBUFFERS=OFF \
                          -DENABLE_LCMS2=OFF \
                          -DADDONS_CONFIGURE_AT_STARTUP=OFF \
+                         -Dgroovy_SOURCE_DIR=$(get_build_dir groovy) \
+                         -Dapache-commons-lang_SOURCE_DIR=$(get_build_dir commons-lang3) \
+                         -Dapache-commons-text_SOURCE_DIR=$(get_build_dir commons-text) \
                          ${PKG_KODI_USE_LTO} \
                          ${PKG_KODI_LINKER} \
                          ${KODI_ARCH} \
@@ -340,17 +343,17 @@ post_makeinstall_target() {
         -i ${INSTALL}/usr/lib/kodi/kodi.sh
 
     if [ "${KODI_PIPEWIRE_SUPPORT}" = "yes" ]; then
-      KODI_AE_SINK="PIPEWIRE"
+      KODI_AUDIO_ARGS="--audio-backend=pipewire"
     elif [ "${KODI_PULSEAUDIO_SUPPORT}" = "yes" -a "${KODI_ALSA_SUPPORT}" = "yes" ]; then
-      KODI_AE_SINK="ALSA+PULSE"
+      KODI_AUDIO_ARGS="--audio-backend=alsa+pulseaudio"
     elif [ "${KODI_PULSEAUDIO_SUPPORT}" = "yes" -a "${KODI_ALSA_SUPPORT}" != "yes" ]; then
-      KODI_AE_SINK="PULSE"
+      KODI_AUDIO_ARGS="--audio-backend=pulseaudio"
     elif [ "${KODI_PULSEAUDIO_SUPPORT}" != "yes" -a "${KODI_ALSA_SUPPORT}" = "yes" ]; then
-      KODI_AE_SINK="ALSA"
+      KODI_AUDIO_ARGS="--audio-backend=alsa"
     fi
 
     # adjust audio output device to what was built
-    sed "s/@KODI_AE_SINK@/${KODI_AE_SINK}/" ${PKG_DIR}/config/kodi.conf.in > ${INSTALL}/usr/lib/kodi/kodi.conf
+    sed "s/@KODI_AUDIO_ARGS@/${KODI_AUDIO_ARGS}/" ${PKG_DIR}/config/kodi.conf.in > ${INSTALL}/usr/lib/kodi/kodi.conf
 
     # set default display environment
     if [ "${DISPLAYSERVER}" = "x11" ]; then

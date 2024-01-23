@@ -2,8 +2,8 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="game.libretro.quicknes"
-PKG_VERSION="1.0.0.35-Nexus"
-PKG_SHA256="c1de5817baf6bb4365922db4c3ac9cf651d42cdaf50ecdab6ae3d83bb75fcd87"
+PKG_VERSION="1.0.0.41-Nexus"
+PKG_SHA256="b6aaddee872cd08c6498c14f4ff00474bf2991bb24958c8cee065355e469c92d"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
