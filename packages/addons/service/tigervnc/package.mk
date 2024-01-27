@@ -4,7 +4,7 @@
 PKG_NAME="tigervnc"
 PKG_VERSION="1.10.1"
 PKG_SHA256="19fcc80d7d35dd58115262e53cac87d8903180261d94c2a6b0c19224f50b58c4"
-PKG_REV="1"
+PKG_REV="0"
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPLv2"
 PKG_SITE="http://www.tigervnc.org"
@@ -27,11 +27,11 @@ makeinstall_target() {
 # find ${1}.so.[0-9]* in ${2} and copy it to dest
 _pkg_copy_lib() {
   find "${2}/usr/lib" -regextype sed -regex ".*/${1}\.so\.[0-9]*" \
-    -exec cp {} "${ADDON_BUILD}/${PKG_ADDON_ID}/lib" \;
+    -exec cp {} "${ADDON_BUILD}/${PKG_ADDON_ID}/lib.private" \;
 }
 
 addon() {
-  mkdir -p ${ADDON_BUILD}/${PKG_ADDON_ID}/{bin,lib}
+  mkdir -p ${ADDON_BUILD}/${PKG_ADDON_ID}/{bin,lib.private}
 
   cp ${PKG_BUILD}/.${TARGET_NAME}/unix/vncconfig/vncconfig     \
      ${PKG_BUILD}/.${TARGET_NAME}/unix/vncpasswd/vncpasswd     \

@@ -2,9 +2,9 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="mariadb"
-PKG_VERSION="10.11.5"
-PKG_REV="2"
-PKG_SHA256="4c9484048d4d0c71dd076ab33fc2a9ce8510bdf762886de0d63fe52496f3dbbb"
+PKG_VERSION="10.11.6"
+PKG_REV="1"
+PKG_SHA256="1c0163463e98d71f4780741611a40981eee2bc44d392601ca49bbf948d04dd67"
 PKG_LICENSE="GPL2"
 PKG_SITE="https://mariadb.org"
 PKG_URL="https://downloads.mariadb.com/MariaDB/${PKG_NAME}-${PKG_VERSION}/source/${PKG_NAME}-${PKG_VERSION}.tar.gz"
@@ -12,7 +12,6 @@ PKG_DEPENDS_HOST="toolchain:host ncurses:host openssl:host"
 PKG_DEPENDS_TARGET="toolchain binutils boost bzip2 libaio libfmt libxml2 lz4 lzo ncurses openssl pcre2 systemd zlib mariadb:host"
 PKG_SHORTDESC="MariaDB is a community-developed fork of the MySQL."
 PKG_LONGDESC="MariaDB (${PKG_VERSION}) is a fast SQL database server and a drop-in replacement for MySQL."
-PKG_TOOLCHAIN="cmake"
 PKG_BUILD_FLAGS="-gold -sysroot"
 
 PKG_IS_ADDON="yes"
@@ -66,7 +65,8 @@ configure_package() {
     -DMASK_LONGDOUBLE_EXITCODE=0 \
     -DMASK_LONGDOUBLE_EXITCODE__TRYRUN_OUTPUT='' \
     -DSTAT_EMPTY_STRING_BUG_EXITCODE=0 \
-    -DSTAT_EMPTY_STRING_BUG_EXITCODE__TRYRUN_OUTPUT=''"
+    -DSTAT_EMPTY_STRING_BUG_EXITCODE__TRYRUN_OUTPUT='' \
+    -DWITH_LIBFMT=system"
 }
 
 make_host() {

@@ -2,8 +2,8 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="game.libretro.bluemsx"
-PKG_VERSION="0.0.1.31-Nexus"
-PKG_SHA256="3988666b5cbff65de5a26c5ba789d22d38fb26f056e0cf7cf54735d3810fe0cc"
+PKG_VERSION="0.0.1.38-Nexus"
+PKG_SHA256="5e9d506beb730fd1f1b51a10a84a4f83762c012951b7fba4996bb65fe6b4ee29"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
