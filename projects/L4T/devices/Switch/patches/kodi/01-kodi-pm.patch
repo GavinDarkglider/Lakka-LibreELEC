@@ -1,0 +1,62 @@
+diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp
+--- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp	2024-02-05 02:52:24.647443509 +0100
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp	2024-02-05 03:19:19.410128496 +0100
+@@ -39,10 +39,10 @@
+   if (!m_hasUPower)
+     CLog::Log(LOGINFO, "LogindUPowerSyscall - UPower not found, battery information will not be available");
+ 
+-  m_canPowerdown = LogindCheckCapability("CanPowerOff");
+-  m_canReboot    = LogindCheckCapability("CanReboot");
+-  m_canHibernate = LogindCheckCapability("CanHibernate");
+-  m_canSuspend   = LogindCheckCapability("CanSuspend");
++  m_canPowerdown = true;
++  m_canReboot    = true;
++  m_canHibernate = false;
++  m_canSuspend   = true;
+ 
+   InhibitDelayLockSleep();
+ 
+@@ -57,7 +57,7 @@
+ 
+   CDBusError error;
+   dbus_connection_set_exit_on_disconnect(m_connection, false);
+-  dbus_bus_add_match(m_connection, "type='signal',interface='org.freedesktop.login1.Manager',member='PrepareForSleep'", error);
++  //dbus_bus_add_match(m_connection, "type='signal',interface='org.freedesktop.login1.Manager',member='PrepareForSleep'", error);
+ 
+   if (!error && m_hasUPower)
+     dbus_bus_add_match(m_connection, "type='signal',interface='org.freedesktop.UPower',member='DeviceChanged'", error);
+@@ -79,22 +79,30 @@
+ 
+ bool CLogindUPowerSyscall::Powerdown()
+ {
+-  return LogindSetPowerState("PowerOff");
++  system("systemctl poweroff");
++  return true;
++  //return LogindSetPowerState("PowerOff");
+ }
+ 
+ bool CLogindUPowerSyscall::Reboot()
+ {
+-  return LogindSetPowerState("Reboot");
++  system("systemctl reboot");
++  return true;
++  //return LogindSetPowerState("Reboot");
+ }
+ 
+ bool CLogindUPowerSyscall::Suspend()
+ {
+-  return LogindSetPowerState("Suspend");
++  system("systemctl suspend");
++  return true;
++  //return LogindSetPowerState("Suspend");
+ }
+ 
+ bool CLogindUPowerSyscall::Hibernate()
+ {
+-  return LogindSetPowerState("Hibernate");
++  system("systemctl hibernate");
++  return true;
++  //return LogindSetPowerState("Hibernate");
+ }
+ 
+ bool CLogindUPowerSyscall::CanPowerdown()

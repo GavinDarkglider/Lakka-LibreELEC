@@ -1,0 +1,118 @@
+diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp
+--- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp	2024-02-05 18:44:29.946154756 +0100
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp	2024-02-05 22:13:23.604580242 +0100
+@@ -44,23 +44,22 @@
+   m_canHibernate = false;
+   m_canSuspend   = true;
+ 
+-  InhibitDelayLockSleep();
+-
+   m_batteryLevel = 0;
+-  if (m_hasUPower)
+-    UpdateBatteryLevel();
+ 
+   if (!m_connection.Connect(DBUS_BUS_SYSTEM, true))
+   {
++    CLog::Log(LOGINFO, "LogindUPowerSyscall - Could Not Connect to System Bus");
+     return;
+   }
+ 
++  UpdateBatteryLevel();
++
+   CDBusError error;
+   dbus_connection_set_exit_on_disconnect(m_connection, false);
+-  //dbus_bus_add_match(m_connection, "type='signal',interface='org.freedesktop.login1.Manager',member='PrepareForSleep'", error);
+ 
+-  if (!error && m_hasUPower)
+-    dbus_bus_add_match(m_connection, "type='signal',interface='org.freedesktop.UPower',member='DeviceChanged'", error);
++
++  if (m_hasUPower)
++    dbus_bus_add_match(m_connection, "type='signal',interface='org.freedesktop.DBus.Properties',member='PropertiesChanged'", error);
+ 
+   dbus_connection_flush(m_connection);
+ 
+@@ -73,8 +72,8 @@
+ 
+ CLogindUPowerSyscall::~CLogindUPowerSyscall()
+ {
+-  ReleaseDelayLockSleep();
+-  ReleaseDelayLockShutdown();
++  if(m_connection)
++    m_connection.Destroy();
+ }
+ 
+ bool CLogindUPowerSyscall::Powerdown()
+@@ -215,8 +214,8 @@
+   {
+     CVariant properties = CDBusUtil::GetAll("org.freedesktop.UPower", source[i], "org.freedesktop.UPower.Device");
+     bool isRechargeable = properties["IsRechargeable"].asBoolean();
+-
+-    if (isRechargeable)
++    bool isPowerSupply = properties["PowerSupply"].asBoolean();
++    if (isPowerSupply && isRechargeable)
+     {
+       batteryCount++;
+       batteryLevelSum += properties["Percentage"].asDouble();
+@@ -228,7 +227,11 @@
+   if (batteryCount > 0)
+   {
+     m_batteryLevel = (int)(batteryLevelSum / (double)batteryCount);
+-    m_lowBattery = CDBusUtil::GetVariant("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", "OnLowBattery").asBoolean();
++    if (m_batteryLevel < 6){
++      m_lowBattery = true;
++    }else{
++      m_lowBattery = false;
++    }
+   }
+ }
+ 
+@@ -239,31 +242,18 @@
+ 
+   if (m_connection)
+   {
++    CLog::Log(LOGDEBUG, "LogindUPowerSyscall - Connected to System Bus");
+     dbus_connection_read_write(m_connection, 0);
+     DBusMessagePtr msg(dbus_connection_pop_message(m_connection));
+ 
+     if (msg)
+     {
+-      if (dbus_message_is_signal(msg.get(), "org.freedesktop.login1.Manager", "PrepareForSleep"))
+-      {
+-        dbus_bool_t arg;
+-        // the boolean argument defines whether we are going to sleep (true) or just woke up (false)
+-        dbus_message_get_args(msg.get(), NULL, DBUS_TYPE_BOOLEAN, &arg, DBUS_TYPE_INVALID);
+-        CLog::Log(LOGDEBUG, "LogindUPowerSyscall: Received PrepareForSleep with arg {}", (int)arg);
+-        if (arg)
+-        {
+-          callback->OnSleep();
+-          releaseLockSleep = true;
+-        }
+-        else
+-        {
+-          callback->OnWake();
+-          InhibitDelayLockSleep();
+-        }
++      //CLog::Log(LOGDEBUG, "LogindUPowerSyscall - Received signal {}",
++      //         dbus_message_get_member(msg.get()));
+ 
+-        result = true;
+-      }
+-      else if (dbus_message_is_signal(msg.get(), "org.freedesktop.UPower", "DeviceChanged"))
++      //TODO: Add proper parsing of message to make sure we arent parsing battery stats every
++      //      time a property on the bus changes.
++      if (dbus_message_is_signal(msg.get(), "org.freedesktop.DBus.Properties", "PropertiesChanged"))
+       {
+         bool lowBattery = m_lowBattery;
+         UpdateBatteryLevel();
+@@ -277,9 +267,8 @@
+                   dbus_message_get_member(msg.get()));
+     }
+   }
+-
+-  if (releaseLockSleep)
+-    ReleaseDelayLockSleep();
++  else
++    CLog::Log(LOGDEBUG, "LogindUPowerSyscall - Could Not Connect to System DBus");
+ 
+   return result;
+ }
