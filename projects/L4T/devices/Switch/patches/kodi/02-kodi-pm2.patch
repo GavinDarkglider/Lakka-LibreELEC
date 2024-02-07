@@ -1,7 +1,77 @@
+diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/GUIInfoManager.cpp kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/GUIInfoManager.cpp
+--- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/GUIInfoManager.cpp	2024-02-05 18:44:29.882153389 +0100
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/GUIInfoManager.cpp	2024-02-06 07:14:43.973973202 +0100
+@@ -1906,6 +1906,13 @@
+ ///     @return **True** when screensaver on idle is disabled.
+ ///     <p>
+ ///   }
++///   \table_row3{   <b>`System.BatteryStatus`</b>,
++///                  \anchor System_BatteryStatus
++///                  _string_,
++///     @return The battery battery chafging status boolean.
++///     <p>
++///   }
++
+ const infomap system_labels[] = {
+     {"hasnetwork", SYSTEM_ETHERNET_LINK_ACTIVE},
+     {"hasmediadvd", SYSTEM_MEDIA_DVD},
+@@ -1981,7 +1988,8 @@
+     {"addonupdatecount", SYSTEM_ADDON_UPDATE_COUNT},
+     {"supportscpuusage", SYSTEM_SUPPORTS_CPU_USAGE},
+     {"supportedhdrtypes", SYSTEM_SUPPORTED_HDR_TYPES},
+-    {"isscreensaverinhibited", SYSTEM_IS_SCREENSAVER_INHIBITED}};
++    {"isscreensaverinhibited", SYSTEM_IS_SCREENSAVER_INHIBITED},
++    {"batterystatus", SYSTEM_BATTERY_STATUS}};
+ 
+ /// \page modules__infolabels_boolean_conditions
+ ///   \table_row3{   <b>`System.HasAddon(id)`</b>,
+diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/guilib/guiinfo/GUIInfoLabels.h kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/guilib/guiinfo/GUIInfoLabels.h
+--- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/guilib/guiinfo/GUIInfoLabels.h	2024-02-05 18:44:29.926154328 +0100
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/guilib/guiinfo/GUIInfoLabels.h	2024-02-06 08:47:17.313478427 +0100
+@@ -465,6 +465,8 @@
+ #define LIBRARY_HAS_BOXSETS         736
+ #define LIBRARY_HAS_NODE            737
+ 
++#define SYSTEM_BATTERY_STATUS       740
++
+ #define SYSTEM_PLATFORM_LINUX       741
+ #define SYSTEM_PLATFORM_WINDOWS     742
+ #define SYSTEM_PLATFORM_DARWIN      743
+diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/guilib/guiinfo/SystemGUIInfo.cpp kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/guilib/guiinfo/SystemGUIInfo.cpp
+--- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/guilib/guiinfo/SystemGUIInfo.cpp	2024-02-05 18:44:29.926154328 +0100
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/guilib/guiinfo/SystemGUIInfo.cpp	2024-02-06 15:00:50.821633697 +0100
+@@ -149,6 +149,7 @@
+     case SYSTEM_UPTIME:
+     case SYSTEM_TOTALUPTIME:
+     case SYSTEM_BATTERY_LEVEL:
++    case SYSTEM_BATTERY_STATUS:
+       value = g_sysinfo.GetInfo(info.m_info);
+       return true;
+     case SYSTEM_PRIVACY_POLICY:
+@@ -387,6 +388,10 @@
+     case SYSTEM_BATTERY_LEVEL:
+       value = CServiceBroker::GetPowerManager().BatteryLevel();
+       return true;
++    case SYSTEM_BATTERY_STATUS:
++      value = CServiceBroker::GetPowerManager().BatteryStatus();
++      return true;
++
+   }
+ 
+   return false;
+diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/FallbackPowerSyscall.h kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/FallbackPowerSyscall.h
+--- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/FallbackPowerSyscall.h	2024-02-05 18:44:29.946154756 +0100
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/FallbackPowerSyscall.h	2024-02-06 15:50:38.061391639 +0100
+@@ -23,4 +23,5 @@
+   bool CanHibernate() override {return false; }
+   bool CanReboot() override {return true; }
+   int  BatteryLevel() override {return 0; }
++  int  BatteryStatus() override {return 0; }
+ };
 diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp
 --- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp	2024-02-05 18:44:29.946154756 +0100
-+++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp	2024-02-05 22:13:23.604580242 +0100
-@@ -44,23 +44,22 @@
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp	2024-02-06 15:40:03.761654970 +0100
+@@ -44,23 +44,23 @@
    m_canHibernate = false;
    m_canSuspend   = true;
  
@@ -10,6 +80,7 @@ diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/pow
    m_batteryLevel = 0;
 -  if (m_hasUPower)
 -    UpdateBatteryLevel();
++  m_batteryStatus = 0;
  
    if (!m_connection.Connect(DBUS_BUS_SYSTEM, true))
    {
@@ -17,7 +88,7 @@ diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/pow
      return;
    }
  
-+  UpdateBatteryLevel();
++  UpdateBatteryInfo();
 +
    CDBusError error;
    dbus_connection_set_exit_on_disconnect(m_connection, false);
@@ -31,7 +102,7 @@ diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/pow
  
    dbus_connection_flush(m_connection);
  
-@@ -73,8 +72,8 @@
+@@ -73,8 +73,8 @@
  
  CLogindUPowerSyscall::~CLogindUPowerSyscall()
  {
@@ -42,31 +113,74 @@ diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/pow
  }
  
  bool CLogindUPowerSyscall::Powerdown()
-@@ -215,8 +214,8 @@
+@@ -192,12 +192,17 @@
+   return m_batteryLevel;
+ }
+ 
+-void CLogindUPowerSyscall::UpdateBatteryLevel()
++int CLogindUPowerSyscall::BatteryStatus()
++{
++  return m_batteryStatus;
++}
++
++void CLogindUPowerSyscall::UpdateBatteryInfo()
+ {
+   char** source  = NULL;
+   int    length = 0;
+-  double batteryLevelSum = 0;
+   int    batteryCount = 0;
++  int    currentState = 0;
+ 
+   CDBusMessage message("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", "EnumerateDevices");
+   DBusMessage *reply = message.SendSystem();
+@@ -215,11 +220,17 @@
    {
      CVariant properties = CDBusUtil::GetAll("org.freedesktop.UPower", source[i], "org.freedesktop.UPower.Device");
      bool isRechargeable = properties["IsRechargeable"].asBoolean();
--
--    if (isRechargeable)
 +    bool isPowerSupply = properties["PowerSupply"].asBoolean();
+ 
+-    if (isRechargeable)
 +    if (isPowerSupply && isRechargeable)
      {
        batteryCount++;
-       batteryLevelSum += properties["Percentage"].asDouble();
-@@ -228,7 +227,11 @@
+-      batteryLevelSum += properties["Percentage"].asDouble();
++      if(batteryCount > 1){
++         CLog::Log(LOGWARNING, "LogindUPowerSyscall: More than one system battery found Ignoring");
++         continue;
++      }
++      m_batteryLevel = (int)properties["Percentage"].asDouble();
++      currentState = (int)properties["State"].asInteger();
+     }
+   }
+ 
+@@ -227,8 +238,24 @@
+ 
    if (batteryCount > 0)
    {
-     m_batteryLevel = (int)(batteryLevelSum / (double)batteryCount);
+-    m_batteryLevel = (int)(batteryLevelSum / (double)batteryCount);
 -    m_lowBattery = CDBusUtil::GetVariant("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", "OnLowBattery").asBoolean();
-+    if (m_batteryLevel < 6){
++    // valid battery state values
++    // 0: Unknown
++    // 1: Charging
++    // 2: Discharging
++    // 3: Empty
++    // 4: Fully charged
++    // 5: Pending charge
++    // 6: Pending discharge
++
++    if(currentState == 0 || currentState ==2 || currentState == 3)
++      m_batteryStatus=0;
++    else
++      m_batteryStatus=1;
++
++    if (m_batteryLevel < 6)
 +      m_lowBattery = true;
-+    }else{
++    else
 +      m_lowBattery = false;
-+    }
    }
  }
  
-@@ -239,31 +242,18 @@
+@@ -239,34 +266,21 @@
  
    if (m_connection)
    {
@@ -103,8 +217,12 @@ diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/pow
 +      if (dbus_message_is_signal(msg.get(), "org.freedesktop.DBus.Properties", "PropertiesChanged"))
        {
          bool lowBattery = m_lowBattery;
-         UpdateBatteryLevel();
-@@ -277,9 +267,8 @@
+-        UpdateBatteryLevel();
++        UpdateBatteryInfo();
+         if (m_lowBattery && !lowBattery)
+           callback->OnLowBattery();
+ 
+@@ -277,9 +291,8 @@
                    dbus_message_get_member(msg.get()));
      }
    }
@@ -116,3 +234,111 @@ diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/pow
  
    return result;
  }
+diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h
+--- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h	2024-02-05 18:44:29.950154841 +0100
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h	2024-02-06 15:04:11.757392919 +0100
+@@ -26,6 +26,7 @@
+   bool CanHibernate() override;
+   bool CanReboot() override;
+   int BatteryLevel() override;
++  int BatteryStatus() override;
+   bool PumpPowerEvents(IPowerEventsCallback *callback) override;
+   // we don't require UPower because everything except the battery level works fine without it
+   static bool HasLogind();
+@@ -38,9 +39,10 @@
+   bool m_hasUPower;
+   bool m_lowBattery;
+   int m_batteryLevel;
++  int m_batteryStatus;
+   int m_delayLockSleepFd = -1; // file descriptor for the logind sleep delay lock
+   int m_delayLockShutdownFd = -1; // file descriptor for the logind powerdown delay lock
+-  void UpdateBatteryLevel();
++  void UpdateBatteryInfo();
+   void InhibitDelayLockSleep();
+   void InhibitDelayLockShutdown();  
+   int InhibitDelayLock(const char *what);
+diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/UPowerSyscall.cpp kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/UPowerSyscall.cpp
+--- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/UPowerSyscall.cpp	2024-02-05 18:44:29.950154841 +0100
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/UPowerSyscall.cpp	2024-02-06 16:13:38.752747245 +0100
+@@ -40,6 +40,11 @@
+   return m_batteryLevel;
+ }
+ 
++int CUPowerSource::BatteryStatus()
++{
++  return 0;
++}
++
+ CUPowerSyscall::CUPowerSyscall()
+ {
+   CLog::Log(LOGINFO, "Selected UPower as PowerSyscall");
+@@ -121,6 +126,11 @@
+   return m_CanReboot;
+ }
+ 
++int CUPowerSyscall::BatteryStatus()
++{
++  return 0;
++}
++
+ int CUPowerSyscall::BatteryLevel()
+ {
+   unsigned int nBatteryCount  = 0;
+diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/UPowerSyscall.h kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/UPowerSyscall.h
+--- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/platform/linux/powermanagement/UPowerSyscall.h	2024-02-05 18:44:29.950154841 +0100
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/platform/linux/powermanagement/UPowerSyscall.h	2024-02-06 16:07:49.732865247 +0100
+@@ -23,7 +23,7 @@
+   void    Update();
+   bool    IsRechargeable();
+   double  BatteryLevel();
+-
++  int     BatteryStatus();
+ private:
+   std::string m_powerSource;
+   bool m_isRechargeable;
+@@ -43,6 +43,7 @@
+   bool CanHibernate() override;
+   bool CanReboot() override;
+   int  BatteryLevel() override;
++  int  BatteryStatus() override;
+   bool PumpPowerEvents(IPowerEventsCallback *callback) override;
+   static bool HasUPower();
+ protected:
+diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/powermanagement/IPowerSyscall.h kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/powermanagement/IPowerSyscall.h
+--- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/powermanagement/IPowerSyscall.h	2024-02-05 18:44:29.954154926 +0100
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/powermanagement/IPowerSyscall.h	2024-02-06 15:28:00.740127897 +0100
+@@ -48,7 +48,7 @@
+ 
+ // Battery related functions
+   virtual int  BatteryLevel() = 0;
+-
++  virtual int  BatteryStatus() = 0;
+   /*!
+    \brief Pump power related events back to xbmc.
+ 
+diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/powermanagement/PowerManager.cpp kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/powermanagement/PowerManager.cpp
+--- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/powermanagement/PowerManager.cpp	2024-02-05 18:44:29.954154926 +0100
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/powermanagement/PowerManager.cpp	2024-02-06 07:46:28.681495213 +0100
+@@ -169,6 +169,11 @@
+ {
+   return m_instance ? m_instance->BatteryLevel() : 0;
+ }
++int CPowerManager::BatteryStatus()
++{
++  return m_instance ? m_instance->BatteryStatus() : 0;
++}
++
+ void CPowerManager::ProcessEvents()
+ {
+   if (!m_instance)
+diff -Naur kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/powermanagement/PowerManager.h kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/powermanagement/PowerManager.h
+--- kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d/xbmc/powermanagement/PowerManager.h	2024-02-05 18:44:29.954154926 +0100
++++ kodi-af41d9a5798dd6b4e13a424e7da3afff55dc872d-2/xbmc/powermanagement/PowerManager.h	2024-02-06 07:44:53.203717011 +0100
+@@ -43,6 +43,7 @@
+   bool CanReboot();
+ 
+   int  BatteryLevel();
++  int  BatteryStatus();
+ 
+   void ProcessEvents();
+ 
