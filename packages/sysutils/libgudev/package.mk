@@ -9,3 +9,9 @@ PKG_LICENSE="GPL"
 PKG_SITE="http://www.linux-usb.org/"
 PKG_URL="https://github.com/GNOME/libgudev/archive/refs/tags/${PKG_VERSION}.zip"
 PKG_DEPENDS_TARGET="toolchain systemd"
+
+
+post_makeinstall_target() {
+  rm -rf ${INSTALL}/usr/lib/pkgconfig
+  rm -rf ${INSTALL}/usr/include
+}
