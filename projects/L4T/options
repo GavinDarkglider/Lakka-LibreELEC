@@ -38,10 +38,13 @@
   
   # build and install ALSA Audio support (yes / no)
     ALSA_SUPPORT="yes"
-  
+    KODI_ALSA_SUPPORT="no"
   # build and install PulseAudio support (yes / no)
-    PULSEAUDIO_SUPPORT="yes"
-
+    PULSEAUDIO_SUPPORT="no"
+    KODI_PULSEAUDIO_SUPPORT="no"
+  # build and install Pipewire support (yes / no)
+    PIPEWIRE_SUPPORT="yes"
+    KODI_PIPEWIRE_SUPPORT="yes"
   # build and install WireGuard support (yes / no)
     WIREGUARD_SUPPORT="no"
 

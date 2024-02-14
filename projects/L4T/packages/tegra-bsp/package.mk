@@ -5,7 +5,7 @@
 PKG_NAME="tegra-bsp"
 PKG_VERSION="${GENERIC_L4T_VERSION}"
 
-PKG_DEPENDS_TARGET="mesa libglvnd xorg-server"
+PKG_DEPENDS_TARGET="mesa libglvnd xorg-server alsa-plugins"
 PKG_DEPENDS_HOST="xorg-server"
 PKD_DEPENDS_INIT="busybox:init"
 
@@ -14,9 +14,10 @@ if [  "${VULKAN}" = "" -o "${VULKAN}" = "no" ]; then
 else
   PKG_DEPENDS_TARGET+=" vulkan-loader"
 fi
-if [  "${PULSEAUDIO_SUPPORT}" = "yes" ]; then
-  PKG_DEPENDS_TARGET+=" alsa-plugins pulseaudio"
-fi
+
+#if [  "${PULSEAUDIO_SUPPORT}" = "yes" ]; then
+#  PKG_DEPENDS_TARGET+=" pulseaudio"
+#fi
 
 PKG_SITE="https://developer.nvidia.com/EMBEDDED/linux-tegra%20/"
 
@@ -395,7 +396,7 @@ make_target() {
   cd ../../../../
   cd etc
 
-  if [ ! "${PULSEAUDIO_SUPPORT}" = "yes" ]; then
+  if [ ! "${PULSEAUDIO_SUPPORT}" = "yes" -o ! "${PIPEWIRE_SUPPORT}" = "yes" ]; then
     ln -sfn asound.conf.tegrasndt210ref asound.conf
   fi
 

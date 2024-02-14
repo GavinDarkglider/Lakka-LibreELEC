@@ -75,6 +75,10 @@ PKG_MESON_OPTS_TARGET="-Ddocs=disabled \
                        -Dlibcanberra=disabled \
                        -Dlegacy-rtkit=false"
 
+if [ "${PROJECT}" = "L4T" -a "${DEVICE}" = "Switch" ]; then
+  PKG_MESON_OPTS_TARGET+=" -Davb=disabled"
+fi
+
 post_makeinstall_target() {
   # connect to the system bus
   sed '/^\[Service\]/a Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket' -i ${INSTALL}/usr/lib/systemd/system/pipewire.service
