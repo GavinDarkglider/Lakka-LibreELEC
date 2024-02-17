@@ -14,45 +14,44 @@ test -n ${dvfsb}                         || setenv dvfsb 0
 test -n ${gpu_dvfsc}                     || setenv gpu_dvfsc 0
 test -n ${limit_gpu_clk}                 || setenv limit_gpu_clk 0
 test -n ${jc_rail_disable}               || setenv jc_rail_disable 0
-test -n ${cec_enable}                    || setenv cec_enable 0
 test -n ${performance_mode}              || setenv performance_mode 0
 test -n ${dock_freq_switch_enabled}      || setenv dock_freq_switch_enabled 0
 test -n ${touch_skip_tuning}             || setenv touch_skip_tuning 0
 test -n ${wifi_disable_vht80}            || setenv wifi_disable_vht80 0
 
 # Built-in IMU.
-test -n ${acc_cal_off_x}        || setenv acc_cal_off_x 0x0
-test -n ${acc_cal_off_y}        || setenv acc_cal_off_y 0x0
-test -n ${acc_cal_off_z}        || setenv acc_cal_off_z 0x0
-test -n ${acc_cal_scl_x}        || setenv acc_cal_scl_x 0x0
-test -n ${acc_cal_scl_y}        || setenv acc_cal_scl_y 0x0
-test -n ${acc_cal_scl_z}        || setenv acc_cal_scl_z 0x0
-test -n ${gyr_cal_off_x}        || setenv gyr_cal_off_x 0x0
-test -n ${gyr_cal_off_y}        || setenv gyr_cal_off_y 0x0
-test -n ${gyr_cal_off_z}        || setenv gyr_cal_off_z 0x0
-test -n ${gyr_cal_scl_x}        || setenv gyr_cal_scl_x 0x0
-test -n ${gyr_cal_scl_y}        || setenv gyr_cal_scl_y 0x0
-test -n ${gyr_cal_scl_z}        || setenv gyr_cal_scl_z 0x0
+test -n ${acc_cal_off_x} || setenv acc_cal_off_x 0x0
+test -n ${acc_cal_off_y} || setenv acc_cal_off_y 0x0
+test -n ${acc_cal_off_z} || setenv acc_cal_off_z 0x0
+test -n ${acc_cal_scl_x} || setenv acc_cal_scl_x 0x0
+test -n ${acc_cal_scl_y} || setenv acc_cal_scl_y 0x0
+test -n ${acc_cal_scl_z} || setenv acc_cal_scl_z 0x0
+test -n ${gyr_cal_off_x} || setenv gyr_cal_off_x 0x0
+test -n ${gyr_cal_off_y} || setenv gyr_cal_off_y 0x0
+test -n ${gyr_cal_off_z} || setenv gyr_cal_off_z 0x0
+test -n ${gyr_cal_scl_x} || setenv gyr_cal_scl_x 0x0
+test -n ${gyr_cal_scl_y} || setenv gyr_cal_scl_y 0x0
+test -n ${gyr_cal_scl_z} || setenv gyr_cal_scl_z 0x0
 
 # Lite Gamepad analog sticks calibration.
-test -n ${lite_cal_lx_lof}      || setenv lite_cal_lx_lof 0x0
-test -n ${lite_cal_lx_cnt}      || setenv lite_cal_lx_cnt 0x0
-test -n ${lite_cal_lx_rof}      || setenv lite_cal_lx_rof 0x0
-test -n ${lite_cal_ly_dof}      || setenv lite_cal_ly_dof 0x0
-test -n ${lite_cal_ly_cnt}      || setenv lite_cal_ly_cnt 0x0
-test -n ${lite_cal_ly_uof}      || setenv lite_cal_ly_uof 0x0
+test -n ${lite_cal_lx_lof}  || setenv lite_cal_lx_lof 0x0
+test -n ${lite_cal_lx_cnt}  || setenv lite_cal_lx_cnt 0x0
+test -n ${lite_cal_lx_rof}  || setenv lite_cal_lx_rof 0x0
+test -n ${lite_cal_ly_dof}  || setenv lite_cal_ly_dof 0x0
+test -n ${lite_cal_ly_cnt}  || setenv lite_cal_ly_cnt 0x0
+test -n ${lite_cal_ly_uof}  || setenv lite_cal_ly_uof 0x0
 
-test -n ${lite_cal_rx_lof}      || setenv lite_cal_rx_lof 0x0
-test -n ${lite_cal_rx_cnt}      || setenv lite_cal_rx_cnt 0x0
-test -n ${lite_cal_rx_rof}      || setenv lite_cal_rx_rof 0x0
-test -n ${lite_cal_ry_dof}      || setenv lite_cal_ry_dof 0x0
-test -n ${lite_cal_ry_cnt}      || setenv lite_cal_ry_cnt 0x0
-test -n ${lite_cal_ry_uof}      || setenv lite_cal_ry_uof 0x0
+test -n ${lite_cal_rx_lof}  || setenv lite_cal_rx_lof 0x0
+test -n ${lite_cal_rx_cnt}  || setenv lite_cal_rx_cnt 0x0
+test -n ${lite_cal_rx_rof}  || setenv lite_cal_rx_rof 0x0
+test -n ${lite_cal_ry_dof}  || setenv lite_cal_ry_dof 0x0
+test -n ${lite_cal_ry_cnt}  || setenv lite_cal_ry_cnt 0x0
+test -n ${lite_cal_ry_uof}  || setenv lite_cal_ry_uof 0x0
 
-test -n ${lite_cal_lx_coff}     || setenv lite_cal_lx_coff 0x0
-test -n ${lite_cal_ly_coff}     || setenv lite_cal_ly_coff 0xFFFFFF00
-test -n ${lite_cal_rx_coff}     || setenv lite_cal_rx_coff 0xFFFFFF00
-test -n ${lite_cal_ry_coff}     || setenv lite_cal_ry_coff 0x0
+test -n ${lite_cal_lx_coff} || setenv lite_cal_lx_coff 0x0
+test -n ${lite_cal_ly_coff} || setenv lite_cal_ly_coff 0xFFFFFF00
+test -n ${lite_cal_rx_coff} || setenv lite_cal_rx_coff 0xFFFFFF00
+test -n ${lite_cal_ry_coff} || setenv lite_cal_ry_coff 0x0
 
 # Set logging params for each serial type.
 setenv uarta "no_console_suspend console=ttyS0,115200,8n1 loglevel=8"
@@ -77,6 +76,9 @@ setenv fdtraddr 0x8d000000
 # Set temp addresses.
 setenv enviraddr 0x8d100000
 setenv fdtovaddr 0x8d200000
+
+# L4T Loader check. Minimum rev 4.
+if test "${loader_rev}" < 4; then echoe L4T Loader is old! Update bootloader folder!; echoe Rebooting in 10s..; sleep 10; reset; fi
 
 
 # Set SoC info.
@@ -105,7 +107,7 @@ if load mmc 1:1 ${fdtrload} ${boot_dir}/nx-plat.dtimg; then echo Device Tree Ima
 else echoe Device Tree Image read failed!; echoe Rebooting in 10s..; sleep 10; reset; fi
 
 
-# Get DT from image. If failed, reset.
+# Get DT from image.
 if dtimg load ${fdtrload} ${sku} ${fdtraddr} fdtrsize; then echo Device Tree for SKU ${sku_info} loaded
 else echoe Device Tree load for SKU ${sku_info} failed!; echoe Rebooting in 10s..; sleep 10; reset; fi
 
@@ -121,7 +123,7 @@ if test ${sku_info} != ${fdt_id_text} -o ${sku_rev} != ${fdt_rev}; then
 	echoe Rebooting in 10s..; sleep 10; reset
 fi
 
-# Add additional bootargs for UART Logging.
+# UART Logging.
 if   test ${uart_port} = 1; then
 	echoe UART-A logging enabled
 	setenv bootargs_extra ${bootargs_extra} ${uarta}
@@ -157,11 +159,9 @@ elif test ${uart_port} = 3; then
 	fi
 fi
 
-# Add additional bootargs for Serial USB.
-if test ${uart_port} = 4; then
-	setenv bootargs_extra ${usblg} ${bootargs_extra}; echoe USB Serial logging enabled
-fi
-
+# USB Serial Logging.
+if test ${uart_port} = 4; then setenv bootargs_extra ${usblg} ${bootargs_extra}; echoe USB Serial logging enabled; fi
+  
 # Disable Joycon Rails.
 if test ${jc_rail_disable} = 1; then
 	echoe Joycon Rails disabled
@@ -172,10 +172,8 @@ if test ${jc_rail_disable} = 1; then
 fi
 
 # Disable Touch panel tuning.
-if test ${touch_skip_tuning} = 1; then
-	setenv bootargs_extra ${bootargs_extra} "ftm4.skip_tuning=1"
-fi
-
+if test ${touch_skip_tuning} = 1; then setenv bootargs_extra ${bootargs_extra} "ftm4.skip_tuning=1"; fi
+ 
 # Check if SD is initialized in 1-bit mode.
 if test "${sd_1bit}" = 1; then
 	echoe SD Card is initialized in 1-bit mode!
@@ -183,30 +181,45 @@ if test "${sd_1bit}" = 1; then
 	fdt set /sdhci@700b0000 uhs-mask <0x7F>
 fi
 
-# Enable ALS sensor.
-if test ${als_enable} = 1; then
-	echo ALS sensor enabled
-	fdt set /i2c@7000c400/bh1730fvc@29 status okay
+# Check if SD DDR200 mode can be enabled.
+if test -n ${ddr200_mode}; then
+	setenv ddr200_mode 0
+	# Set ddr200 if Samsung.
+	if mmc 1 && mmc info manid && test ${manid} = 1b; then
+		setenv ddr200_mode 1
+	fi
 fi
 
-# Disable WiFi VHT80 bonding.
-if test ${wifi_disable_vht80} = 1; then
-	echo WiFi VHT80 bonding disabled
-	setenv bootargs_extra ${bootargs_extra} "brcmfmac.vht_mask=12"
+if test "${ddr200_mode}" != 0; then
+	echo SD DDR200 mode enabled
+	fdt set /sdhci@700b0000 enable-ddr200
 fi
+
+# Force PLLP for 408/204MHz Host/Card clock if set.
+if test "${ddr200_mode}" = 2; then
+	echoe SD DDR200 PLLP enabled
+	fdt set /sdhci@700b0000 ddr200-clk-limit 210000000
+fi
+
+# Enable ALS sensor.
+if test ${als_enable} = 1; then fdt set /i2c@7000c400/bh1730fvc@29 status okay; fi
+
+# Disable WiFi VHT80 bonding.
+if test ${wifi_disable_vht80} = 1; then setenv bootargs_extra ${bootargs_extra} "brcmfmac.vht_mask=12"; f
 
 # Set Sio calibration data.
 if test ${sku} = 2; then
 	if load mmc ${devnum}:${distro_bootpart} ${enviraddr} /switchroot/switch.cal; then
 		env import -t -r ${enviraddr} ${filesize}
-		echo Sio Calibration set
-		fdt set /serial@70006200/sio sio-stick-cal-l <$lite_cal_lx_lof $lite_cal_lx_cnt $lite_cal_lx_rof $lite_cal_ly_dof $lite_cal_ly_cnt $lite_cal_ly_uof>
-		fdt set /serial@70006200/sio sio-stick-cal-r <$lite_cal_rx_lof $lite_cal_rx_cnt $lite_cal_rx_rof $lite_cal_ry_dof $lite_cal_ry_cnt $lite_cal_ry_uof>
-		fdt set /serial@70006200/sio sio-acc-cal <$acc_cal_off_x $acc_cal_off_y $acc_cal_off_z $acc_cal_scl_x $acc_cal_scl_y $acc_cal_scl_z>
-		fdt set /serial@70006200/sio sio-gyr-cal <$gyr_cal_off_x $gyr_cal_off_y $gyr_cal_off_z $gyr_cal_scl_x $gyr_cal_scl_y $gyr_cal_scl_z>
-
-		fdt set /serial@70006200/sio sio-stick-cnt-off-l <$lite_cal_lx_coff $lite_cal_ly_coff>
-		fdt set /serial@70006200/sio sio-stick-cnt-off-r <$lite_cal_rx_coff $lite_cal_ry_coff>
+		if test ${sku} = 2; then
+			echo Sio Calibration set
+			fdt set /serial@70006200/sio sio-stick-cal-l <$lite_cal_lx_lof $lite_cal_lx_cnt $lite_cal_lx_rof $lite_cal_ly_dof $lite_cal_ly_cnt $lite_cal_ly_uof>
+			fdt set /serial@70006200/sio sio-stick-cal-r <$lite_cal_rx_lof $lite_cal_rx_cnt $lite_cal_rx_rof $lite_cal_ry_dof $lite_cal_ry_cnt $lite_cal_ry_uof>
+			fdt set /serial@70006200/sio sio-acc-cal <$acc_cal_off_x $acc_cal_off_y $acc_cal_off_z $acc_cal_scl_x $acc_cal_scl_y $acc_cal_scl_z>
+			fdt set /serial@70006200/sio sio-gyr-cal <$gyr_cal_off_x $gyr_cal_off_y $gyr_cal_off_z $gyr_cal_scl_x $gyr_cal_scl_y $gyr_cal_scl_z>
+			fdt set /serial@70006200/sio sio-stick-cnt-off-l <$lite_cal_lx_coff $lite_cal_ly_coff>
+			fdt set /serial@70006200/sio sio-stick-cnt-off-r <$lite_cal_rx_coff $lite_cal_ry_coff>
+		fi
 	fi
 fi
 
@@ -220,8 +233,9 @@ elif test ${display_id} = 1040; then echo Display is SHP 5.5; fdt get value DHAN
 elif test ${display_id} = 2050; then echo Display is SAM 7.0
 else echoe Unknown Display ID: ${display_id}!; fi
 
-# Set new active display panel handle.
+# Set active display handle.
 if test -n "${DHANDLE}" -a ${sku} != 3; then echo Setting Display panel; fdt set /host1x/dsi nvidia,active-panel <$DHANDLE>; fi
+
 
 # Disable USB3.
 if test ${usb3_enable} = 0; then
@@ -261,14 +275,19 @@ if test ${sku} = 2 -a -n "${VLIM}"; then
 	fi
 fi
 
-# Enable DVFS B-Side.
-if test ${t210b01} = 1 -a ${dvfsb} = 1; then
-	echoe DVFS B-Side enabled
-	setenv bootargs_extra ${bootargs_extra} "speedo_tegra210.sku_id=0x83 speedo_tegra210.cspd_id=2 speedo_tegra210.sspd_id=2"
-	fdt set /cpufreq/cpu-scaling-data max-frequency <0x249348>
+# DVFS B-Side.
+if test ${dvfsb} = 1; then
+	if test ${t210b01} = 1; then
+		setenv bootargs_extra ${bootargs_extra} "speedo_tegra210.sku_id=0x83 speedo_tegra210.cspd_id=2 speedo_tegra210.sspd_id=2"
+		fdt set /cpufreq/cpu-scaling-data max-frequency <0x249348>
+	else
+		setenv bootargs_extra ${bootargs_extra} "speedo_tegra210.sku_id=0x83 speedo_tegra210.cspd_id=11"
+		fdt set /cpufreq/cpu-scaling-data max-frequency <0x1FE7F8>
+	fi
 
 	if test ${gpu_dvfsc} != 1; then
-		setenv bootargs_extra ${bootargs_extra} "speedo_tegra210.gspd_id=2"
+		if test ${t210b01} = 1; then setenv bootargs_extra ${bootargs_extra} "speedo_tegra210.gspd_id=2"
+		else setenv bootargs_extra ${bootargs_extra} "speedo_tegra210.gspd_id=5"; fi
 	fi
 
 	if test ${sku} = 2; then
@@ -278,14 +297,16 @@ if test ${t210b01} = 1 -a ${dvfsb} = 1; then
 	fi
 fi
 
-# Enable GPU DVFS C-Side.
+# GPU DVFS C-Side.
 if test ${t210b01} = 1 -a ${gpu_dvfsc} = 1; then
 	echoe DVFS C-Side GPU enabled
 
 	if test ${dvfsb} != 1; then
-		setenv bootargs_extra ${bootargs_extra} "speedo_tegra210.sku_id=0x83 speedo_tegra210.gspd_id=3"
+		if test ${t210b01} = 1; setenv bootargs_extra ${bootargs_extra} "speedo_tegra210.sku_id=0x83 speedo_tegra210.gspd_id=3"
+		else setenv bootargs_extra ${bootargs_extra} "speedo_tegra210.sku_id=0x83 speedo_tegra210.gspd_id=6"; fi
 	else
-		setenv bootargs_extra ${bootargs_extra} "speedo_tegra210.gspd_id=3"
+		if test ${t210b01} = 1; setenv bootargs_extra ${bootargs_extra} "speedo_tegra210.gspd_id=3"
+		else setenv bootargs_extra ${bootargs_extra} "speedo_tegra210.gspd_id=6"; fi
 	fi
 fi
 
@@ -294,7 +315,7 @@ if test ${t210b01} = 1 -a ${limit_gpu_clk} = 1; then
 
 	if test ${sku} != 2; then
 		# If not Vali set GPU hard limit to 1075 MHz.
-		echoe GPU clock limit enabled
+		echoe GPU clock limited
 		fdt set /dvfs nvidia,gpu-max-freq-khz <0x106800>
 	fi
 fi
@@ -308,12 +329,7 @@ if test ${t210b01} = 1 -a -n "${pmic_type}" -a ${pmic_type} = 1; then
 	fdt set /dvfs nvidia,gpu-max-volt-mv <0x3B6>
 fi
 
-# Check if ptsa rework is done.
-if test ${t210b01} = 1 -a "${loader_rev}" > 1; then
-	echo PTSA rework done
-	setenv bootargs_extra ${bootargs_extra} "latency_allowance.ptsa_rework"
-fi
-
+setenv bootargs_extra ${bootargs_extra} "latency_allowance.ptsa_rework"
 
 # Set serial number.
 if test -n ${device_serial};   then fdt set / serial-number ${device_serial}; fi
