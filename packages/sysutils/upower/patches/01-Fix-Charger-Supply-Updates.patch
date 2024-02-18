@@ -1,0 +1,16 @@
+diff -Naur upower-v1.90.0/src/linux/up-device-supply.c upower-v1.90.0-2/src/linux/up-device-supply.c
+--- upower-v1.90.0/src/linux/up-device-supply.c	2024-02-13 04:47:45.985364890 +0100
++++ upower-v1.90.0-2/src/linux/up-device-supply.c	2024-02-18 18:36:49.005976866 +0100
+@@ -518,10 +518,10 @@
+ 		     NULL);
+ 
+ 	/* Handled by separate battery class */
+-	if (is_power_supply)
++	/*if (is_power_supply)
+ 		g_assert (type == UP_DEVICE_KIND_LINE_POWER);
+ 
+-	if (type != UP_DEVICE_KIND_LINE_POWER)
++	if (type != UP_DEVICE_KIND_LINE_POWER)*/
+ 		g_object_set (device, "poll-timeout", UP_DAEMON_SHORT_TIMEOUT, NULL);
+ 
+ 	return TRUE;
