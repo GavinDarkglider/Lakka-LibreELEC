@@ -3,6 +3,16 @@
 dock_hotplug_handle() {
     export DISPLAY=
     export DP_SETTINGS=
+    export PULSE_SERVER="127.0.0.1"
+
+    pactl info | grep -q "^Server Name:*PipeWire" > /dev/null
+
+    if [ $@ = "0" ]; then
+       HAVE_PIPEWIRE=1
+       unset PULSE_SERVER
+    else
+       HAVE_PIPEWIRE=0
+    fi
 
     # Let X parse connected display info.
     sleep 0.2
@@ -22,22 +32,21 @@ dock_hotplug_handle() {
         do
             if [ ! -e "$x" ]; then continue; fi
             export DISPLAY=":${x#X}"
-            export PULSE_SERVER="127.0.0.1"
 
             if [[ "$1" -eq 1 ]]
             then
                 xrandr --output DP-0 $DP_SETTINGS --output DSI-0 --off
 
                 #Handle DP audio.
-		if [[ -x $(command -v pactl) && ! $(pactl info | grep -q "^Server Name:*PipeWire") ]]; then
-			sudo -u "$DH_USER_NAME" pactl --server "$DH_PULSE_SERVER" set-card-profile 1 off
-			sudo -u "$DH_USER_NAME" pactl --server "$DH_PULSE_SERVER" set-card-profile 0 output:hdmi-stereo
+		if [ $HAVE_PIPEWIRE = "0" ]; then
+			pactl set-card-profile 1 off
+			pactl set-card-profile 0 output:hdmi-stereo
 		else
-			sudo -u "$DH_USER_NAME" wpctl set-default $(wpctl status | grep "Built-in Audio Digital Stereo (HDMI)" | grep "\d+" -Po | head -n 1)
+			wpctl set-default $(wpctl status | grep "Built-in Audio Digital Stereo (HDMI)" | grep "\d+" -Po | head -n 1)
 		fi
 
                 #Fix volume if needed(Pulseaudio sink volume's should not change ever in libreelec builds)
-                if [ -x $(command -v pactl) -a ! $(pactl info | grep -q "^Server Name:*PipeWire") -a ! $(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,') -eq 100 ]; then
+                if [ $HAVE_PIPEWIRE = "0" -a ! $(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,') -eq 100 ]; then
                   pactl set-sink-volume alsa_output.0.hdmi-stereo 100%
                 fi
 
@@ -47,16 +56,16 @@ dock_hotplug_handle() {
             else
                 xrandr --output DSI-0 --primary --mode 720x1280 --rotate left --panning 1280x720+0+0 --pos 0x0 --dpi 237  --output DP-0 --off
                 #Handle Tablet Audio
-                if [[ -x $(command -v pactl) && ! $(pactl info | grep -q "^Server Name:*PipeWire") ]]; then
-			sudo -u "$DH_USER_NAME" pactl --server "$DH_PULSE_SERVER" set-card-profile 1 HiFi
-			sudo -u "$DH_USER_NAME" pactl --server "$DH_PULSE_SERVER" set-card-profile 0 off
+                if [ $HAVE_PIPEWIRE = "0" ]; then
+			pactl set-card-profile 1 HiFi
+			pactl set-card-profile 0 off
 		else
-			sudo -u "$DH_USER_NAME" wpctl set-default $(wpctl status | grep "Built-in Audio Speaker playback + Headphones playback" | grep "\d+" -Po | head -n 1)
+			wpctl set-default $(wpctl status | grep "Built-in Audio Speaker playback + Headphones playback" | grep "\d+" -Po | head -n 1)
 		fi
 
                 #Fix volume if needed(Pulseaudio sink volume's should not change ever in libreelec builds
-                if [ -x $(command -v pactl) -a ! $(pactl info | grep -q "^Server Name:*PipeWire") -a ! $(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,') -eq 100 ]; then
-                  pactl set-sink-volume alsa_output.1.HiFi__hw_tegrasndt210ref__sink 100%
+                if [ $HAVE_PIPEWIRE = "0" -a ! $(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,') -eq 100 ]; then
+                 pactl set-sink-volume alsa_output.1.HiFi__hw_tegrasndt210ref__sink 100%
                 fi
                 # Reapply config to avoid X stubbornness.
                 sleep 0.2
