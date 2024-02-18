@@ -33,7 +33,7 @@ ADDITIONAL_PACKAGES+=" switch-bsp v4l-utils"
 #Included in switch-bsp package, to match version in kernel(0.9.5).
 ADDITIONAL_PACKAGES="${ADDITIONAL_PACKAGES/xpadneo/}"
 
-if [ ${PULSEAUDIO_SUPPORT} = "yes" ]; then
+if [ "${PULSEAUDIO_SUPPORT}" = "yes" ]; then
   ADDITIONAL_PACKAGES+="  pulseaudio-configs"
 fi
 
