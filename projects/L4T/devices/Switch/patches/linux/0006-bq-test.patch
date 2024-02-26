@@ -1,0 +1,43 @@
+diff -Naur linux-Switch-5.1.2/drivers/power/supply/bq2419x-charger.c linux-Switch-5.1.2-2/drivers/power/supply/bq2419x-charger.c
+--- linux-Switch-5.1.2/drivers/power/supply/bq2419x-charger.c	2024-02-14 02:36:30.078090256 +0100
++++ linux-Switch-5.1.2-2/drivers/power/supply/bq2419x-charger.c	2024-02-21 01:24:56.646321131 +0100
+@@ -6,7 +6,7 @@
+  * Author: Laxman Dewangan <ldewangan@nvidia.com>
+  * Author: Syed Rafiuddin <srafiuddin@nvidia.com>
+  *
+- * Copyright (c) 2020-2023, CTCaer <ctcaer@gmail.com>
++ * Copyright (c) 2020-2024, CTCaer <ctcaer@gmail.com>
+  *
+  * This program is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU General Public License as
+@@ -1122,6 +1122,8 @@
+ 		dev_info(bq2419x->dev, "USB is disconnected\n");
+ 	}
+ 
++	power_supply_changed(bq2419x->charger);
++
+ 	return 0;
+ }
+ 
+@@ -1955,6 +1957,7 @@
+ 		cancel_delayed_work_sync(&bq2419x->soc_regulation_work);
+ 		schedule_delayed_work(&bq2419x->soc_regulation_work,
+ 				      msecs_to_jiffies(60 * 1000));
++		power_supply_changed(bq2419x->charger);
+ 		break;
+ 	default:
+ 		return -EINVAL;
+@@ -2730,11 +2733,13 @@
+ 						bq2419x_extcon_cable[0], true);
+ 		if (!bq2419x->cable_connected)
+ 			dev_info(bq2419x->dev, "USB is connected\n");
++		power_supply_changed(bq2419x->charger);
+ 	} else if ((val & BQ2419x_VBUS_PG_STAT) == BQ2419x_VBUS_UNKNOWN) {
+ 		extcon_set_cable_state_(&bq2419x->edev,
+ 						bq2419x_extcon_cable[0], false);
+ 		if (bq2419x->cable_connected)
+ 			dev_info(bq2419x->dev, "USB is disconnected\n");
++		power_supply_changed(bq2419x->charger);
+ 	}
+ 
+ 	if (!bq2419x->battery_presense)

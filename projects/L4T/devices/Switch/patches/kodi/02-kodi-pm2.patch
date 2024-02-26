@@ -1154,7 +1154,7 @@ diff -Naur kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/FallbackPowerSy
  };
 diff -Naur kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp kodi-21.0b3-Omega-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp
 --- kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp	2024-02-18 19:04:44.137099445 +0100
-+++ kodi-21.0b3-Omega-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp	2024-02-18 23:56:06.443125543 +0100
++++ kodi-21.0b3-Omega-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp	2024-02-19 17:39:36.190533376 +0100
 @@ -44,23 +44,31 @@
    m_canHibernate = false;
    m_canSuspend   = true;
@@ -1190,7 +1190,7 @@ diff -Naur kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSys
 -    dbus_bus_add_match(m_connection, "type='signal',interface='org.freedesktop.UPower',member='DeviceChanged'", error);
 +
 +  if (m_hasUPower)
-+    dbus_bus_add_match(m_connection, "type='signal',interface='org.freedesktop.DBus.Properties',member='PropertiesChanged'", error);
++    dbus_bus_add_match(m_connection, "type='signal',interface='org.freedesktop.DBus.Properties',member='PropertiesChanged',path_namespace='/org/freedesktop/UPower/devices'", error);
  
    dbus_connection_flush(m_connection);
  
@@ -1244,7 +1244,7 @@ diff -Naur kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSys
  
    CDBusMessage message("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", "EnumerateDevices");
    DBusMessage *reply = message.SendSystem();
-@@ -215,21 +247,85 @@
+@@ -215,61 +247,118 @@
    {
      CVariant properties = CDBusUtil::GetAll("org.freedesktop.UPower", source[i], "org.freedesktop.UPower.Device");
      bool isRechargeable = properties["IsRechargeable"].asBoolean();
@@ -1319,15 +1319,15 @@ diff -Naur kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSys
 +    m_hasBattery = 0;
 +
 +  if(deviceBatteryCount > 1) // TODO: Actually do something with this data
-+    CLog::Log(LOGWARNING, "LogindUPowerSyscall: {} Unhandled Device Batteries found", deviceBatteryCount);
++    CLog::Log(LOGDEBUG, "LogindUPowerSyscall: {} Unhandled Device Batteries found", deviceBatteryCount);
 +
 +  if (chargerCount > 1)
-+    CLog::Log(LOGWARNING, "LogindUPowerSyscall: {} Unhandled Line Power Supplies found", chargerCount);
++    CLog::Log(LOGDEBUG, "LogindUPowerSyscall: {} Unhandled Line Power Supplies found", chargerCount);
 +  if (m_hasBattery)
    {
 -    m_batteryLevel = (int)(batteryLevelSum / (double)batteryCount);
 -    m_lowBattery = CDBusUtil::GetVariant("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", "OnLowBattery").asBoolean();
-+    CLog::Log(LOGWARNING, "LogindUPowerSyscall: Line Power Supplie Status: {}", m_chargerState);
++    CLog::Log(LOGDEBUG, "LogindUPowerSyscall: Line Power Supply Status: {}", m_chargerState);
 +    if (m_batteryLevel < 10 && !m_chargerState  == 0) //Android/Windows PM backends do the same thing, and set the value to 10% to keep the convention
 +      m_lowBattery = true;
 +    else
@@ -1337,8 +1337,10 @@ diff -Naur kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSys
  }
  
  bool CLogindUPowerSyscall::PumpPowerEvents(IPowerEventsCallback *callback)
-@@ -239,37 +335,23 @@
- 
+ {
+   bool result = false;
+   bool releaseLockSleep = false;
+-
    if (m_connection)
    {
 +    CLog::Log(LOGDEBUG, "LogindUPowerSyscall - Connected to System Bus");
@@ -1373,6 +1375,14 @@ diff -Naur kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSys
 +      //      time a property on the bus changes.
 +      if (dbus_message_is_signal(msg.get(), "org.freedesktop.DBus.Properties", "PropertiesChanged"))
        {
++        //if (test <= 20){
++        //   test++;
++        //   goto out;
++        //}
++        //else {
++        //   test=0;
++        //}
++
          bool lowBattery = m_lowBattery;
 -        UpdateBatteryLevel();
 +        UpdateBatteryInfo();
@@ -1382,7 +1392,7 @@ diff -Naur kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSys
          result = true;
        }
        else
-@@ -277,9 +359,8 @@
+@@ -277,11 +366,12 @@
                    dbus_message_get_member(msg.get()));
      }
    }
@@ -1393,10 +1403,14 @@ diff -Naur kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSys
 +    CLog::Log(LOGDEBUG, "LogindUPowerSyscall - Could Not Connect to System DBus");
  
    return result;
++out:
++   return true;
  }
+ 
+ void CLogindUPowerSyscall::InhibitDelayLockSleep()
 diff -Naur kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h kodi-21.0b3-Omega-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h
 --- kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h	2024-02-18 19:03:49.304028311 +0100
-+++ kodi-21.0b3-Omega-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h	2024-02-18 19:08:07.168359940 +0100
++++ kodi-21.0b3-Omega-2/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h	2024-02-19 07:13:19.705632283 +0100
 @@ -25,7 +25,13 @@
    bool CanSuspend() override;
    bool CanHibernate() override;
@@ -1412,7 +1426,7 @@ diff -Naur kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSys
    bool PumpPowerEvents(IPowerEventsCallback *callback) override;
    // we don't require UPower because everything except the battery level works fine without it
    static bool HasLogind();
-@@ -36,14 +42,18 @@
+@@ -36,14 +42,19 @@
    bool m_canHibernate;
    bool m_canReboot;
    bool m_hasUPower;
@@ -1426,6 +1440,7 @@ diff -Naur kodi-21.0b3-Omega/xbmc/platform/linux/powermanagement/LogindUPowerSys
 +  int  m_batteryLevel;
 +  bool m_batteryIsCharging;
 +  int  m_batteryState;
++  int  test = 0;
 +  int  m_delayLockSleepFd = -1; // file descriptor for the logind sleep delay lock
 +  int  m_delayLockShutdownFd = -1; // file descriptor for the logind powerdown delay lock
 +  void UpdateBatteryInfo();

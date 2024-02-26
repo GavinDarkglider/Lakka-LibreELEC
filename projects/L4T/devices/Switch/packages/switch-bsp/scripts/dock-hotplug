@@ -5,9 +5,9 @@ dock_hotplug_handle() {
     export DP_SETTINGS=
     export PULSE_SERVER="127.0.0.1"
 
-    pactl info | grep -q "^Server Name:*PipeWire" > /dev/null
+    PULSE_SERVER=127.0.01 pactl info | grep -q "^Server Name:*PipeWire" > /dev/null
 
-    if [ $@ = "0" ]; then
+    if [ $@ = "0" -a ! $@ = ""]; then
        HAVE_PIPEWIRE=1
        unset PULSE_SERVER
     else
