@@ -1,16 +1,16 @@
-From e87175867300eff4da57f61fc40522c3190b4eeb Mon Sep 17 00:00:00 2001
+From 47f068c420ede9c30bd177cd86d31c38782eb809 Mon Sep 17 00:00:00 2001
 From: Ronald Brown <rbrown4014@yahoo.com>
 Date: Mon, 26 Feb 2024 20:44:32 +0100
 Subject: [PATCH] Platform: Linux: PowerManagement: Logind/Upower: Fix battery
  info/Upower Dbus Handling.
 
 ---
- .../powermanagement/LogindUPowerSyscall.cpp   | 89 ++++++++++++++++---
- .../powermanagement/LogindUPowerSyscall.h     |  1 +
- 2 files changed, 77 insertions(+), 13 deletions(-)
+ .../powermanagement/LogindUPowerSyscall.cpp   | 99 ++++++++++++++++---
+ .../powermanagement/LogindUPowerSyscall.h     | 14 +--
+ 2 files changed, 93 insertions(+), 20 deletions(-)
 
 diff --git a/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp b/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp
-index bd04197a51..51038ef329 100644
+index bd04197a51..2fc0ceb043 100644
 --- a/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp
 +++ b/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.cpp
 @@ -48,7 +48,7 @@ CLogindUPowerSyscall::CLogindUPowerSyscall()
@@ -32,7 +32,7 @@ index bd04197a51..51038ef329 100644
  
    dbus_connection_flush(m_connection);
  
-@@ -186,12 +187,15 @@ int CLogindUPowerSyscall::BatteryLevel()
+@@ -186,12 +187,16 @@ int CLogindUPowerSyscall::BatteryLevel()
    return m_batteryLevel;
  }
  
@@ -47,10 +47,11 @@ index bd04197a51..51038ef329 100644
    int    batteryCount = 0;
 +  int    chargerCount = 0;
 +  int    deviceBatteryCount = 0;
++  bool   hasBattery = false;
  
    CDBusMessage message("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", "EnumerateDevices");
    DBusMessage *reply = message.SendSystem();
-@@ -209,21 +213,80 @@ void CLogindUPowerSyscall::UpdateBatteryLevel()
+@@ -209,21 +214,87 @@ void CLogindUPowerSyscall::UpdateBatteryLevel()
    {
      CVariant properties = CDBusUtil::GetAll("org.freedesktop.UPower", source[i], "org.freedesktop.UPower.Device");
      bool isRechargeable = properties["IsRechargeable"].asBoolean();
@@ -86,15 +87,15 @@ index bd04197a51..51038ef329 100644
 +             CLog::Log(LOGDEBUG, "LogindUPowerSyscall: More than one system battery found Ignoring");
 +             continue;
 +          }
- 
++
 +          m_batteryLevel = (int)properties["Percentage"].asDouble();
 +          //WAR: Some devices come up with screwy info for battery and dont seem to update the battery state properly, work around this....
 +          //Connecting charger on such devices fixes this, TODO: add check if charger has been connected before.
-+          if ((properties["State"].asInteger == 4 || properties["State"].asInteger == 0) && int(properties["Percentage"].asDouble() != 100 )
++          if ((properties["State"].asInteger() == 4 || properties["State"].asInteger() == 0) && (int)properties["Percentage"].asDouble() != 100 )
 +            m_batteryState = 2; // Discharging.
 +          else
 +            m_batteryState = properties["State"].asInteger();
-+
+ 
 +        }
 +        else
 +        {
@@ -112,20 +113,28 @@ index bd04197a51..51038ef329 100644
 +  }
    dbus_free_string_array(source);
  
-   if (batteryCount > 0)
+-  if (batteryCount > 0)
++  if (batteryCount > 0){
 +    CLog::Log(LOGDEBUG, "LogindUPowerSyscall: Battery State: {}", m_batteryState);
++    hasBattery = true;
++  }
 +
-+  if(deviceBatteryCount > 1) // TODO: Actually do something with this data
++  if(batteryCount > 1)
++    CLog::Log(LOGDEBUG, "LogindUPowerSyscall: {} Unhandled Device Batteries found", (deviceBatteryCount - 1));
++
++  if(deviceBatteryCount > 0) // TODO: Actually do something with this data
 +    CLog::Log(LOGDEBUG, "LogindUPowerSyscall: {} Unhandled Device Batteries found", deviceBatteryCount);
 +
 +  if (chargerCount > 1)
-+    CLog::Log(LOGDEBUG, "LogindUPowerSyscall: {} Unhandled Line Power Supplies found", chargerCount);
++    CLog::Log(LOGDEBUG, "LogindUPowerSyscall: {} Unhandled Line Power Supplies found", (chargerCount - 1));
 +
-+  if (m_hasBattery)
++  if (hasBattery)
    {
 -    m_batteryLevel = (int)(batteryLevelSum / (double)batteryCount);
 -    m_lowBattery = CDBusUtil::GetVariant("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", "OnLowBattery").asBoolean();
-+    CLog::Log(LOGDEBUG, "LogindUPowerSyscall: Line Power Supply Status: {}", m_chargerState);
++    CLog::Log(LOGDEBUG, "LogindUPowerSyscall: Battery State: {}", m_batteryState);
++    if(chargerCount > 0)
++      CLog::Log(LOGDEBUG, "LogindUPowerSyscall: Line Power Supply Status: {}", m_chargerState);
 +    //Set Low battery level at 15% since upower doesnt calculate this anymore. 
 +    //Other backends that do this use 10%, but not all devices have properly calibrated fuel gages
 +    //So set this a little higher to compinsate. Other backends that dont calculate this hard set to 10% Capacity.
@@ -138,7 +147,7 @@ index bd04197a51..51038ef329 100644
  }
  
  bool CLogindUPowerSyscall::PumpPowerEvents(IPowerEventsCallback *callback)
-@@ -257,10 +320,10 @@ bool CLogindUPowerSyscall::PumpPowerEvents(IPowerEventsCallback *callback)
+@@ -257,10 +328,10 @@ bool CLogindUPowerSyscall::PumpPowerEvents(IPowerEventsCallback *callback)
  
          result = true;
        }
@@ -152,17 +161,39 @@ index bd04197a51..51038ef329 100644
            callback->OnLowBattery();
  
 diff --git a/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h b/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h
-index 998e706326..30de464dc1 100644
+index 998e706326..6d4d3976da 100644
 --- a/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h
 +++ b/xbmc/platform/linux/powermanagement/LogindUPowerSyscall.h
-@@ -37,6 +37,7 @@ private:
+@@ -25,7 +25,7 @@ public:
+   bool CanSuspend() override;
+   bool CanHibernate() override;
+   bool CanReboot() override;
+-  int BatteryLevel() override;
++  int  BatteryLevel() override;
+   bool PumpPowerEvents(IPowerEventsCallback *callback) override;
+   // we don't require UPower because everything except the battery level works fine without it
+   static bool HasLogind();
+@@ -37,13 +37,15 @@ private:
    bool m_canReboot;
    bool m_hasUPower;
    bool m_lowBattery;
+-  int m_batteryLevel;
+-  int m_delayLockSleepFd = -1; // file descriptor for the logind sleep delay lock
+-  int m_delayLockShutdownFd = -1; // file descriptor for the logind powerdown delay lock
+-  void UpdateBatteryLevel();
 +  bool m_chargerState;
-   int m_batteryLevel;
-   int m_delayLockSleepFd = -1; // file descriptor for the logind sleep delay lock
-   int m_delayLockShutdownFd = -1; // file descriptor for the logind powerdown delay lock
++  int  m_batteryState;
++  int  m_batteryLevel;
++  int  m_delayLockSleepFd = -1; // file descriptor for the logind sleep delay lock
++  int  m_delayLockShutdownFd = -1; // file descriptor for the logind powerdown delay lock
++  void UpdatePowerSupplyInfo();
+   void InhibitDelayLockSleep();
+   void InhibitDelayLockShutdown();  
+-  int InhibitDelayLock(const char *what);
++  int  InhibitDelayLock(const char *what);
+   void ReleaseDelayLockSleep();
+   void ReleaseDelayLockShutdown();
+   void ReleaseDelayLock(int lockFd, const char *what);
 -- 
 2.25.1
 
