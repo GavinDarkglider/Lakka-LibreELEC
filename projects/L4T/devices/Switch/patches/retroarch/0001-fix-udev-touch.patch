@@ -1,0 +1,37 @@
+From 2e23327177011d12afa046af374bf1ba5c9c8f39 Mon Sep 17 00:00:00 2001
+From: Ronald Brown <rbrown4014@yahoo.com>
+Date: Sat, 29 Nov 2025 13:59:21 -0800
+Subject: [PATCH] Touch support fixes
+
+---
+ Makefile.common            | 1 +
+ input/drivers/udev_input.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile.common b/Makefile.common
+index 329211fe14..e509e5729b 100644
+--- a/Makefile.common
++++ b/Makefile.common
+@@ -1392,6 +1392,7 @@ ifeq ($(HAVE_UDEV), 1)
+    LIBS += $(UDEV_LIBS)
+    OBJ += input/drivers/udev_input.o \
+           input/drivers_joypad/udev_joypad.o
++   DEFINES += -DUDEV_TOUCH_SUPPORT
+ endif
+ 
+ ifeq ($(HAVE_LIBUSB), 1)
+diff --git a/input/drivers/udev_input.c b/input/drivers/udev_input.c
+index ef5cbf0f12..63c2db9263 100644
+--- a/input/drivers/udev_input.c
++++ b/input/drivers/udev_input.c
+@@ -3209,7 +3209,7 @@ static int udev_input_add_device(udev_input_t *udev,
+ 
+       if (ioctl(fd, EVIOCGBIT(EV_ABS, sizeof (abscaps)), abscaps) != -1)
+       {
+-         if ( (test_bit(abscaps, ABS_X)) && (test_bit(abscaps, ABS_Y)) )
++         if ( ( (test_bit(abscaps, ABS_X)) || (test_bit(abscaps, ABS_MT_POSITION_X)) ) && ( (test_bit(abscaps, ABS_Y)) || (test_bit(abscaps, ABS_MT_POSITION_Y)) ) )
+          {
+             mouse = 1;
+ 
+-- 
+2.17.1

@@ -75,6 +75,10 @@ while [ "$i" -le "$LOOPS" ]; do
       if [[ "$DP_ENABLED" -eq 0 ]]; then cec-ctl -C
         else cec-ctl -s -o NintendoSwitch --playback --active-source phys-addr="$(cec-ctl | sed -n 's/.*Physical Address.*: //p')"; fi
     fi
+    if  [ "$(cat /etc/os-release | grep Lakka)" != "" ]; then
+        #Let retroarch handle touchscreen
+        xinput disable touchscreen
+    fi
   fi
 
   # Configure dock
