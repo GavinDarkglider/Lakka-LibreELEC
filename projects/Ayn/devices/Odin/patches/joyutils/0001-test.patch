@@ -1,0 +1,11 @@
+diff -Naur joyutils-b6703eb/jscal.c joyutils-b6703eb-2/jscal.c
+--- joyutils-b6703eb/jscal.c	2025-12-03 05:28:19.670533151 +0100
++++ joyutils-b6703eb-2/jscal.c	2025-12-03 05:30:47.992583585 +0100
+@@ -39,6 +39,7 @@
+ #include <getopt.h>
+ #include <string.h>
+ #include <fcntl.h>
++#include <stdlib.h>
+ 
+ #include <asm/param.h>
+ #include <linux/joystick.h>

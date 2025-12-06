@@ -973,7 +973,7 @@ prepare_sysroot() {
 
 # Do init tasks to bring up system
 
-if [ ! "$(cat /proc/cmdline | grep -s show_kernel_messages)" ]; then
+if [ ! "$SPLASH" = "no" ]; then
   # hide kernel log messages on console
   echo '1 4 1 7' > /proc/sys/kernel/printk
 fi

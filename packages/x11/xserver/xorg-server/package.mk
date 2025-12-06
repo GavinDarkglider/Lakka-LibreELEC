@@ -1,3 +1,4 @@
+
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
@@ -99,6 +100,7 @@ fi
 #  fi
 #}
 
+CFLAGS+=" -Wincompatible-pointer-types"
 if [ "${COMPOSITE_SUPPORT}" = "yes" ]; then
   PKG_DEPENDS_TARGET+=" libXcomposite"
 fi
@@ -116,15 +118,15 @@ post_makeinstall_target() {
     cp -P ${PKG_DIR}/scripts/xorg-configure ${INSTALL}/usr/lib/xorg
       sed -i -e "s|@NVIDIA_VERSION@|$(get_pkg_version xf86-video-nvidia)|g" ${INSTALL}/usr/lib/xorg/xorg-configure
 
-  if [ ! "${OPENGL}" = "no" ]; then
-    if [ ! "${PROJECT}" = "L4T" ] || [ ! "${DEVICE}" = "Odin" ]; then
-      if [ -f ${INSTALL}/usr/lib/xorg/modules/extensions/libglx.so ]; then
-        mv ${INSTALL}/usr/lib/xorg/modules/extensions/libglx.so \
-           ${INSTALL}/usr/lib/xorg/modules/extensions/libglx_mesa.so # rename for cooperate with nvidia drivers
-        ln -sf /var/lib/libglx.so ${INSTALL}/usr/lib/xorg/modules/extensions/libglx.so
-      fi
-    fi
-  fi
+#  if [ ! "${OPENGL}" = "no" ]; then
+#    if [ ! "${PROJECT}" = "L4T" ] || [ ! "${DEVICE}" = "Odin" ]; then
+#      if [ -f ${INSTALL}/usr/lib/xorg/modules/extensions/libglx.so ]; then
+#        mv ${INSTALL}/usr/lib/xorg/modules/extensions/libglx.so \
+#           ${INSTALL}/usr/lib/xorg/modules/extensions/libglx_mesa.so # rename for cooperate with nvidia drivers
+#        ln -sf /var/lib/libglx.so ${INSTALL}/usr/lib/xorg/modules/extensions/libglx.so
+#      fi
+#    fi
+#  fi
 
   mkdir -p ${INSTALL}/etc/X11
     if find_file_path config/xorg.conf; then

@@ -208,7 +208,19 @@ elif [ "${PROJECT}" = "Amlogic" ]; then
                             panda3ds"
 
 elif [ "${PROJECT}" = "Ayn" ]; then
-  EXCLUDE_LIBRETRO_CORES+=" lr_moonlight"
+#  LIBRETRO_CORES=""
+  EXCLUDE_LIBRETRO_CORES+=" lr_moonlight \
+                            kronos \
+                            panda3ds \
+                            daphne \
+                            play \
+                            gme \
+                            superbroswar \
+                            np2kai \
+                            vircon32 \
+                            vitaquake3 \
+                            yabasanshiro \
+                            fbalpha2012"
 
 elif [ "${PROJECT}" = "Generic" ]; then
   EXCLUDE_LIBRETRO_CORES+=" lr_moonlight"

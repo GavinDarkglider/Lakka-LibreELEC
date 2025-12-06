@@ -4,3 +4,12 @@ for i in 5 4 3 2 1 0; do [ -e /dev/snd/pcmC${i}D0p ] && export ALSA_CARD=$i; don
 
 echo "ALSA_CARD=\"$ALSA_CARD\"" > /run/libreelec/retroarch.conf
 echo "LD_LIBRARY_PATH=\"/usr/lib:/tmp/cores\"" >> /run/libreelec/retroarch.conf
+
+if [ -f /storage/runme.sh ]; then
+  /storage/runme.sh
+fi
+
+dmesg > /storage/dmesg.log
+journalctl > /storage/journal.log
+lsmod > /storage/modules.log
+

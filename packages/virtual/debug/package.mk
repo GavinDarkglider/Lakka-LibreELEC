@@ -33,3 +33,7 @@ fi
 if [ "${REMOTE_GDB}" = "yes" ]; then
   PKG_DEPENDS_TARGET+=" gdb:host"
 fi
+
+if [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ]; then
+  PKG_DEPENDS_TARGET="${PKG_DEPENDS_TARGET//strace/}"
+fi

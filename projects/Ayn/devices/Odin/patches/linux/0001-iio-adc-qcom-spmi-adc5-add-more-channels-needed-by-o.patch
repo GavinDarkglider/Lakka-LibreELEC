@@ -34,4 +34,3 @@ index 87438d1e5c0b..6455af20d359 100644
  static int adc5_get_dt_channel_data(struct adc5_chip *adc,
 -- 
 2.34.1
-

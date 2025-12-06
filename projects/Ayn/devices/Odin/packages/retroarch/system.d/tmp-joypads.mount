@@ -8,7 +8,7 @@ DefaultDependencies=no
 [Mount]
 What=/storage/joypads:/etc/retroarch-joypad-autoconfig
 Where=/tmp/joypads
-Type=mergerfs
+Type=fuse.mergerfs
 Options=defaults,allow_other,use_ino
 
 [Install]

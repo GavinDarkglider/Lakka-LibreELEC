@@ -8,7 +8,7 @@ DefaultDependencies=no
 [Mount]
 What=/storage/shaders:/usr/share/retroarch/shaders
 Where=/tmp/shaders
-Type=mergerfs
+Type=fuse.mergerfs
 Options=defaults,allow_other,use_ino
 
 [Install]

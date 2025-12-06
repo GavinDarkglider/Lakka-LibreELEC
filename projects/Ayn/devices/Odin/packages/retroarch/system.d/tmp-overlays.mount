@@ -8,7 +8,7 @@ DefaultDependencies=no
 [Mount]
 What=/storage/overlays:/usr/share/retroarch/overlays
 Where=/tmp/overlays
-Type=mergerfs
+Type=fuse.mergerfs
 Options=defaults,allow_other,use_ino
 
 [Install]

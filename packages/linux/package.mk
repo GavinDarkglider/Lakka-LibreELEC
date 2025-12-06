@@ -48,11 +48,12 @@ case "${LINUX}" in
     PKG_SHA256=${L4T_COMBINED_KERNEL_SHA256}
     ;;
   ayn-odin)
-    PKG_SHA256="9aa25bf492928bc7a4542e87d28919c9ac36d27c"
+    PKG_SHA256="7d0a66e4bb9081d75c82ec4957c50034cb0ea449"
     PKG_VERSION="${PKG_SHA256}"
-    PKG_URL="https://gitlab.com/sdm845-mainline/linux.git"
-    PKG_PATCH_DIRS="ayn-odin"
-    PKG_GIT_CLONE_BRANCH="sdm845-5.19.16"
+    PKG_URL="https://github.com/torvalds/linux.git"
+    PKG_DEPENDS_TARGET+=" kernel-firmware:init"
+#    PKG_PATCH_DIRS="ayn-odin"
+#    PKG_GIT_CLONE_BRANCH="sdm845-5.19.16"
     ;;
   *)
     PKG_VERSION="6.16.9"
@@ -107,7 +108,7 @@ post_patch() {
     kernel_make -C ${PKG_BUILD} prepare
 
     # restore the required Module.symvers from an earlier build
-    cp -p ${PKG_INSTALL}/.image/Module.symvers ${PKG_BUILD}
+      cp -p ${PKG_INSTALL}/.image/Module.symvers ${PKG_BUILD}
   fi
 }
 

@@ -1,5 +1,5 @@
 PKG_NAME="retroarch"
-PKG_VERSION="baee906ef35b99283f9a1a060a2ce5ac86159b63"
+PKG_VERSION="8618e55115aafc94f01181b16d90c7d46303df89"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/RetroArch"
 PKG_URL="${PKG_SITE}.git"
@@ -328,9 +328,12 @@ makeinstall_target() {
     if [ ! "${PROJECT}" = "Ayn" -a ! "${DEVICE}" = "Odin" ]; then
       echo 'input_joypad_driver = "udev"' >> ${INSTALL}/etc/retroarch.cfg
       echo 'video_hard_sync = "true"' >> ${INSTALL}/etc/retroarch.cfg
+      sed -i -e 's|^input_driver=.*|input_driver = "udev"|' ${INSTALL}/etc/retroarch.cfg
+      
+    else
+      sed -i -e 's|^input_driver =.*|input_driver = "x"|' ${INSTALL}/etc/retroarch.cfg
     fi
 
-    sed -i -e 's|^input_driver =.*|input_driver= "x"|' ${INSTALL}/etc/retroarch.cfg
     sed -i -e 's|^video_smooth =.*|video_smooth = "true"|' ${INSTALL}/etc/retroarch.cfg
     sed -i -e 's|^menu_driver =.*|menu_driver = "ozone"|' ${INSTALL}/etc/retroarch.cfg
 

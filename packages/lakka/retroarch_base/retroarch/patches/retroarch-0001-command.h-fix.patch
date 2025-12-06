@@ -1,0 +1,12 @@
+diff -Naur retroarch-8618e55115aafc94f01181b16d90c7d46303df89/command.h retroarch-8618e55115aafc94f01181b16d90c7d46303df89-2/command.h
+--- retroarch-8618e55115aafc94f01181b16d90c7d46303df89/command.h	2025-12-03 17:32:21.986044071 +0100
++++ retroarch-8618e55115aafc94f01181b16d90c7d46303df89-2/command.h	2025-12-03 17:34:20.159492047 +0100
+@@ -350,7 +350,7 @@
+ #ifdef HAVE_STDIN_CMD
+ command_t* command_stdin_new(void);
+ #endif
+-#ifdef LAKKA
++#ifdef HAVE_LAKKA
+ command_t* command_uds_new(void);
+ #endif
+ #ifdef EMSCRIPTEN

@@ -87,6 +87,80 @@ makeinstall_target() {
   if [ "${DISTRO}" = "Lakka" -a "${PROJECT}" = "Generic" ]; then
     cp -Lv ${PKG_FW_SOURCE}/iwlwifi-* ${FW_TARGET_DIR}/
   fi
+
+  if [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ]; then
+    mkdir -p "${INSTALL}"/usr/lib/firmware/qcom/sdm845
+    cp "${PKG_BUILD}"/qcom/a630_sqe.fw "${INSTALL}"/usr/lib/firmware/qcom/
+    cp "${PKG_BUILD}"/qcom/a630_gmu.bin "${INSTALL}"/usr/lib/firmware/qcom/
+    cp "${PKG_BUILD}"/qcom/sdm845/adsp.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/cdsp.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/a630_zap.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/mba.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    #cp "${PKG_BUILD}"/qcom/sdm845/modem.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    #cp "${PKG_BUILD}"/qcom/sdm845/wlanmdsp.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/adspr.jsn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/modemuw.jsn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/cdspr.jsn  "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/adspua.jsn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/modem_nm.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845
+    mkdir -p "${INSTALL}"/usr/lib/firmware/qcom/sdm845/AYN/Odin
+    #cp "${PKG_BUILD}"/qcom/sdm845/AYN/Odin/slpi.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/AYN/Odin/
+    #cp "${PKG_BUILD}"/qcom/sdm845/AYN/Odin/slpir.jsn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/AYN/Odin/
+    #cp "${PKG_BUILD}"/qcom/sdm845/AYN/Odin/slpius.jsn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/AYN/Odin/
+    mkdir -p "${INSTALL}"/usr/lib/firmware/qcom/venus-5.2
+    #cp "${PKG_BUILD}"/qcom/venus-5.2/venus.mbn "${INSTALL}"/usr/lib/firmware/qcom/venus-5.2/
+    #cp "${PKG_BUILD}"/qcom/venus-5.2/venus.mdt "${INSTALL}"/usr/lib/firmware/qcom/venus-5.2/
+    cp -r "${PKG_BUILD}"/ath10k "${INSTALL}"/usr/lib/firmware/
+    cp -r "${PKG_BUILD}"/ath11k  "${INSTALL}"/usr/lib/firmware/
+    mkdir -p "${INSTALL}"/usr/lib/firmware/qcom/vpu
+    cp "${PKG_BUILD}"/qcom/vpu/vpu20_p4.mbn "${INSTALL}"/usr/lib/firmware/qcom/vpu/
+    mkdir -p "${INSTALL}"/usr/lib/firmware/qca
+    cp "${PKG_BUILD}"/qca/htbtfw20.tlv "${INSTALL}"/usr/lib/firmware/qca/
+    cp "${PKG_BUILD}"/qca/htnv20.bin "${INSTALL}"/usr/lib/firmware/qca/
+    mkdir -p "${INSTALL}"/usr/lib/firmware/rtl_nic
+    cp "${PKG_BUILD}"/rtl_nic/rtl8153a-4.fw "${INSTALL}"/usr/lib/firmware/rtl_nic/
+  fi
   # Cleanup - which may be project or device specific
   find_file_path scripts/cleanup.sh && ${FOUND_PATH} ${FW_TARGET_DIR} || true
+}
+
+makeinstall_init() {
+  if [ ! -d "${INSTALL}" ]; then
+    mkdir -p ${INSTALL}
+  fi
+  #Install iniramfs
+  if [ "${PROJECT}" = "Ayn" -a "${DEVICE}" = "Odin" ]; then
+    mkdir -p "${INSTALL}"/usr/lib/firmware/qcom/sdm845
+    cp "${PKG_BUILD}"/qcom/a630_sqe.fw "${INSTALL}"/usr/lib/firmware/qcom/
+    cp "${PKG_BUILD}"/qcom/a630_gmu.bin "${INSTALL}"/usr/lib/firmware/qcom/
+    cp "${PKG_BUILD}"/qcom/sdm845/adsp.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/cdsp.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/a630_zap.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/mba.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    #cp "${PKG_BUILD}"/qcom/sdm845/modem.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    #cp "${PKG_BUILD}"/qcom/sdm845/wlanmdsp.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/adspr.jsn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/modemuw.jsn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/cdspr.jsn  "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/adspua.jsn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/
+    cp "${PKG_BUILD}"/qcom/sdm845/modem_nm.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845
+    mkdir -p "${INSTALL}"/usr/lib/firmware/qcom/sdm845/AYN/Odin
+    #cp "${PKG_BUILD}"/qcom/sdm845/AYN/Odin/slpi.mbn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/AYN/Odin/
+    #cp "${PKG_BUILD}"/qcom/sdm845/AYN/Odin/slpir.jsn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/AYN/Odin/
+    #cp "${PKG_BUILD}"/qcom/sdm845/AYN/Odin/slpius.jsn "${INSTALL}"/usr/lib/firmware/qcom/sdm845/AYN/Odin/
+    mkdir -p "${INSTALL}"/usr/lib/firmware/qcom/venus-5.2
+    #cp "${PKG_BUILD}"/qcom/venus-5.2/venus.mbn "${INSTALL}"/usr/lib/firmware/qcom/venus-5.2/
+    #cp "${PKG_BUILD}"/qcom/venus-5.2/venus.mdt "${INSTALL}"/usr/lib/firmware/qcom/venus-5.2/
+    mkdir -p "${INSTALL}"/usr/lib/firmware/ath11k/QCA6390/hw2.0
+    cp "${PKG_BUILD}"/ath11k/QCA6390/hw2.0/board-2.bin "${INSTALL}"/usr/lib/firmware/ath11k/QCA6390/hw2.0/
+    cp "${PKG_BUILD}"/ath11k/QCA6390/hw2.0/amss.bin "${INSTALL}"/usr/lib/firmware/ath11k/QCA6390/hw2.0/
+    cp "${PKG_BUILD}"/ath11k/QCA6390/hw2.0/m3.bin "${INSTALL}"/usr/lib/firmware/ath11k/QCA6390/hw2.0/
+    mkdir -p "${INSTALL}"/usr/lib/firmware/qcom/vpu
+    cp "${PKG_BUILD}"/qcom/vpu/vpu20_p4.mbn "${INSTALL}"/usr/lib/firmware/qcom/vpu/
+    mkdir -p "${INSTALL}"/usr/lib/firmware/qca
+    cp "${PKG_BUILD}"/qca/htbtfw20.tlv "${INSTALL}"/usr/lib/firmware/qca/
+    cp "${PKG_BUILD}"/qca/htnv20.bin "${INSTALL}"/usr/lib/firmware/qca/
+    mkdir -p "${INSTALL}"/usr/lib/firmware/rtl_nic
+    cp "${PKG_BUILD}"/rtl_nic/rtl8153a-4.fw "${INSTALL}"/usr/lib/firmware/rtl_nic/
+  fi
 }
